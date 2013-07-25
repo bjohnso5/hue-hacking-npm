@@ -1,4 +1,4 @@
-# hue-hacking-node: Hue Control Library #
+# hue-hacking-npm: Hue Control Library #
 
 hue-hacking is a javascript library designed to control the Philips Hue smart LED bulb system. This version has been modified to be used as a Node module.
 
