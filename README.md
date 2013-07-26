@@ -17,7 +17,10 @@ For a full breakdown of what the Philips Hue API/SDK offers, check out the [offi
 
 3. To use the Hue library in a web application, make sure to call the 
 ```javascript 
-setConfig({ip: <ipAddress>, key: <hash>})
+setConfig({
+	ip: <ipAddress>, 
+	key: <hash>
+});
 ``` 
 function, passing in the IP address and the API key value generated and registered with the hub.
 
