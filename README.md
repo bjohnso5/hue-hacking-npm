@@ -11,15 +11,15 @@ Once you've followed the instructions with your Hue starter kit and you have you
 
 For a full breakdown of what the Philips Hue API/SDK offers, check out the [official developer site](http://developers.meethue.com/). Full details about how to register a new 'user' with the wireless bridge can be found at the SDK [getting started page](http://developers.meethue.com/gettingstarted.html).
 
-1. Generate and save your MD5 hash (any [MD5 generator](http://www.miraclesalad.com/webtools/md5.php) will do).Be sure to save your hash and the passphrase used to generate it in a safe place.
+1. Generate and save your MD5 hash (any [MD5 generator](http://www.miraclesalad.com/webtools/md5.php) will do). Be sure to save your hash and the passphrase used to generate it in a safe place.
 
-2. __Optional:__Find the IP address of your Hue wireless bridge. This can be gathered in a number of ways, including the meethue.com control panel, https://www.meethue.com/en-US/user/preferencessmartbridge, by clicking on the "Show me more" link. See [screenshot](http://imgur.com/yDhCp) for an example. This can be automatically determined using UPnP, see next step.
+2. __Optional:__Find the IP address of your Hue wireless bridge. This can be gathered in a number of ways, including the meethue.com control panel, https://www.meethue.com/en-US/user/preferencessmartbridge, by clicking on the "Show me more" link. See [screenshot](http://imgur.com/yDhCp) for an example.
 
 3. To use the Hue library in a web application, make sure to call the 
 ```javascript 
 setConfig({
-	ip: <ipAddress>, 
-	key: <hash>
+        ip: <ipAddress>, 
+        key: <hash>
 });
 ``` 
 function, passing in the IP address and the API key value generated and registered with the hub.
