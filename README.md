@@ -15,7 +15,11 @@ For a full breakdown of what the Philips Hue API/SDK offers, check out the [offi
 
 2. __Optional:__Find the IP address of your Hue wireless bridge. This can be gathered in a number of ways, including the meethue.com control panel, https://www.meethue.com/en-US/user/preferencessmartbridge, by clicking on the "Show me more" link. See [screenshot](http://imgur.com/yDhCp) for an example. This can be automatically determined using UPnP, see next step.
 
-3. To use the Hue library in a web application, make sure to call the `setConfig({ip: <ipAddress>, key: <hash>})` function, passing in the IP address and the API key value generated and registered with the hub.
+3. To use the Hue library in a web application, make sure to call the 
+```javascript 
+setConfig({ip: <ipAddress>, key: <hash>})
+``` 
+function, passing in the IP address and the API key value generated and registered with the hub.
 
 4. __Optional:__ If you have more than 3 bulbs (the number included in the Hue starter kit), call the setNumberOfLamps() function, passing in the total number of lamps available, prior to using the lamp control functions.
 
