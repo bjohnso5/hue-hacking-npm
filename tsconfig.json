@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitAny": false,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "allowJs": true,
+        "target": "es2015",
+        "types": [
+            "node"
+        ]
+    },
+    "files": [
+        "index.ts",
+        "src/**/*.ts",
+        "test/**/*.ts"
+    ]
+}

@@ -2,9 +2,9 @@
   "name": "hue-hacking-node",
   "version": "0.0.11",
   "description": "Utility to control Philips Hue light bulbs",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "nodeunit test"
+    "test": "gulp && nodeunit dist/test"
   },
   "keywords": [
     "Philips",
@@ -13,9 +13,20 @@
   "author": "Bryan Johnson",
   "license": "MIT",
   "dependencies": {
-    "needle": "~0.5.2"
+    "axios": "^0.15.3",
+    "needle": "^0.5.9"
   },
   "devDependencies": {
-    "nodeunit": "~0.8.1"
+    "@ryancavanaugh/nodeunit": "0.0.14-alpha",
+    "@types/node": "^7.0.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babelify": "^7.3.0",
+    "gulp": "^3.9.1",
+    "gulp-sourcemaps": "^2.4.0",
+    "gulp-typescript": "^3.1.4",
+    "nock": "^9.0.2",
+    "nodeunit": "^0.8.8",
+    "typescript": "^2.1.5",
+    "vinyl-buffer": "^1.0.0"
   }
 }

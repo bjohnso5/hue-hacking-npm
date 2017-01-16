@@ -1,5 +1,6 @@
 /* CSS Named Colors to hex code mapping, pulled from http://www.w3schools.com/cssref/css_colornames.asp */
-var cssColors = {
+
+const cssColors: any = {
 	"aliceblue": "F0F8FF",
 	"antiquewhite": "FAEBD7",
 	"aqua": "00FFFF",
@@ -142,4 +143,8 @@ var cssColors = {
 	"yellowgreen": "9ACD32"
 };
 
-module.exports = cssColors;
+export class CssColors {
+	public getHexCode(name: string): string {
+		return cssColors[name];
+	}
+}
