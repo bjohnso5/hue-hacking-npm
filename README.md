@@ -28,19 +28,19 @@ function, passing in the IP address and the API key value generated and register
 
 ## Included Files ##
 
-### lib/hue-colors.js ###
+### src/hue-colors.ts ###
 Provides convenience functions to convert between CSS-style hex color values, their corresponding RGB color values, and the CIE 1931 X,Y color coordinates supported by the Hue lamp system.
 
-### lib/hue-css-colors.js ###
+### src/hue-css-colors.ts ###
 Provides a map of CSS named colors and their corresponding hex color values.
 
-### lib/hue-node.js ###
+### src/hue-node.ts ###
 Provides control functions to control either single lamps, groups of lamps, or all available lamps. Lamps can be toggled (on/off), flashed for a short or long time, and have their color changed.
 
-### lib/hue-test-constants.js ###
+### test/hue-test-constants.js ###
 Provides some simple properties to match JSON state responses.
 
-### tests/** ###
-nodeunit test suites for colors.js and hue.js. __Note:__ Setup detailed above must be completed in the hue.js file to have tests run.
+### test/** ###
+nodeunit test suites.
 
 &copy; 2013 Bryan Johnson; Licensed MIT.

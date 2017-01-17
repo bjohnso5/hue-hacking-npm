@@ -4,3 +4,6 @@
 
 # NPM modules (no need to distribute via Git...)
 node_modules/
+coverage/
+
+npm-debug.log
