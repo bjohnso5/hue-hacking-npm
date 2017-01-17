@@ -45,9 +45,7 @@ class Hue {
      * @return {AxiosPromise} Promise representing the remote call to the Hue bridge
      */
     putJSON(url, data) {
-        return this._http.put(url, {
-            data: data
-        });
+        return this._http.put(url, data);
     }
     ;
     /**
