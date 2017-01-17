@@ -15,5 +15,8 @@
         "index.ts",
         "src/**/*.ts",
         "test/**/*.ts"
-    ]
+    ],
+    "typeAcquisition": {
+        "enable": true
+    }
 }

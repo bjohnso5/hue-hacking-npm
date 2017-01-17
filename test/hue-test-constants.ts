@@ -1,7 +1,6 @@
 
-module.exports = {
-	state_off: {on: false},
-	state_on:  {on: true},
-	color_red: { xy: [ 0.6484272236872118, 0.330856101472778 ] },
-	color_white: { xy: [ 0.33618074375880236, 0.3603696362840742 ] }
-};
+export const state_off: any = {on: false};
+export const state_on: any =  {on: true};
+export const color_red: any = { xy: [ 0.6484272236872118, 0.330856101472778 ] };
+export const color_white: any = { xy: [ 0.33618074375880236, 0.3603696362840742 ] };
+

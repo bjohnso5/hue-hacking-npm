@@ -1,29 +1,125 @@
 import { Hue } from '../index';
-let test_constants = require('./hue-test-constants');
+import { ICallbackFunction, Test } from '@types/nodeunit';
+import * as TestConstants from './hue-test-constants';
 
-let hue = new Hue();
+let moxios = require('moxios');
 
-hue.setConfig({
-	ip: "192.168.11.10",
-	key: "9cf5fd0c39b5845d0b8099e9c0daf2cd"
+const ip = 'localhost';
+const key = 'testapp';
+const baseURL = `http://${ip}/api/${key}`;
+
+let hue = new Hue({
+	ip: "localhost",
+	key: "testapp"
 });
 
-module.exports['turnOffLamp1'] = function(test) {
-	test.deepEqual(hue.turnOff(1), test_constants.state_off);
-	test.done();
-};
+module.exports = {
 
-module.exports['turnOnLamp1'] = function(test) {
-	test.deepEqual(hue.turnOn(1), test_constants.state_on);
-	test.done();
-};
+	setUp: function(callback: ICallbackFunction): void {
+		moxios.install(hue.getHttp());
+		callback();
+	},
 
-module.exports['turnOffAll'] = function(test) {
-	test.deepEqual(hue.turnOffAll(), test_constants.state_off);
-	test.done();
-};
+	tearDown: function(callback: ICallbackFunction): void {
+		moxios.uninstall(hue.getHttp());
+		callback();
+	},
 
-module.exports['turnOnAll'] = function(test) {
-	test.deepEqual(hue.turnOnAll(), test_constants.state_on);
-	test.done();
+	"getDefaultBrightness": function(test: Test): void {
+		test.deepEqual(254, hue.getCurrentBrightness(0));
+		test.done();
+	},
+
+	"turnOnLamp1": function(test: Test): void {
+
+		moxios.stubRequest(`${baseURL}/lights/1/state`, {
+			status: 200,
+			response: TestConstants.state_on
+		});
+
+		hue.turnOn(1).then(response => {
+			test.deepEqual(response.data, TestConstants.state_on);
+			test.done();
+		}).catch(error => {
+			test.done(error);
+		});
+	},
+
+	"turnOffLamp1": function(test: Test): void {
+		
+		moxios.stubRequest(`${baseURL}/lights/1/state`, {
+			status: 200,
+			response: TestConstants.state_off
+		});
+
+		hue.turnOff(1).then(response => {
+			test.deepEqual(response.data, TestConstants.state_off);
+			test.done();
+		}).catch(error => {
+			test.done(error);
+		});
+	},
+
+	"turnOffAll": function(test: Test): void {
+		
+		moxios.stubRequest(`${baseURL}/groups/0/action`, {
+			status: 200,
+			response: TestConstants.state_off
+		});
+
+		hue.turnOffAll().then(response => {
+			test.deepEqual(response.data, TestConstants.state_off);
+			test.done();
+		}).catch(error => {
+			test.done(error);
+		});
+	},
+
+	"turnOnAll": function(test: Test): void {
+		
+		moxios.stubRequest(`${baseURL}/groups/0/action`, {
+			status: 200,
+			response: TestConstants.state_on
+		});
+
+		hue.turnOnAll().then(response => {
+			test.deepEqual(response.data, TestConstants.state_on);
+			test.done();
+		}).catch(error => {
+			test.done(error);
+		});
+	},
+
+	"testSetCssColor": function(test: Test): void {
+
+		moxios.stubRequest(`${baseURL}/lights/1/state`, {
+			status: 200,
+			response: TestConstants.color_red
+		});
+
+		hue.setColor(1, 'red').then(response => {
+			test.deepEqual(response.data, TestConstants.color_red);
+			test.done();
+		}).catch(error => {
+			test.done(error);
+		});
+
+	},
+
+	"testSetCssColorAll": function(test: Test): void {
+
+		moxios.stubRequest(`${baseURL}/groups/0/action`, {
+			status: 200,
+			response: TestConstants.color_white
+		});
+
+		hue.setAllColors('white').then(response => {
+			test.deepEqual(response.data, TestConstants.color_white);
+			test.done();
+		}).catch(error => {
+			test.done(error);
+		});
+
+	}
+
 };
