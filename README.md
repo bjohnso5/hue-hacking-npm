@@ -24,7 +24,7 @@ import { Hue } from 'hue-hacking-node';
 const bridgeIP = '192.168.x.x';
 const appname = 'myfirsthueapp'; // This is the hash / name / id that you registered with the bridge previously using the official Hue docs
 
-hue.setConfig({
+const hue = new Hue({
   ip: bridgeIP, 
   key: appname,
   numberOfLamps: 3,
