@@ -9,13 +9,13 @@
   },
   "scripts": {
     "test": "gulp && nyc ava",
+    "clean": "rm -rf dist",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "prepublish": "gulp && nyc ava"
+    "prepublish": "rm -rf dist && gulp && nyc ava"
   },
   "ava": {
     "files": [
-      "dist/test/*.js",
-      "!dist/test/hue-test-constants.js"
+      "dist/src/*.spec.js"
     ],
     "source": [
       "src/**/*.ts",
@@ -24,7 +24,9 @@
   },
   "nyc": {
     "exclude": [
-      "dist/test/**.js"
+      "dist/src/**.spec.js",
+      "dist/src/hue-interfaces.js",
+      "dist/src/hue-test-constants.js"
     ]
   },
   "keywords": [
