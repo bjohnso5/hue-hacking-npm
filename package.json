@@ -1,6 +1,6 @@
 {
   "name": "hue-hacking-node",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Utility to control Philips Hue light bulbs",
   "main": "dist/index.js",
   "repository": {
