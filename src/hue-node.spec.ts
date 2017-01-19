@@ -9,11 +9,10 @@ const ip = 'localhost';
 const key = 'testapp';
 const baseURL = `http://${ip}/api/${key}`;
 
-let hue = new Hue({
-	ip: "localhost",
-	key: "testapp"
+let hue: Hue = new Hue({
+	ip: ip,
+	key: key
 });
-
 
 test.beforeEach(t => {
 	moxios.install(hue.getHttp());
@@ -21,11 +20,11 @@ test.beforeEach(t => {
 
 test.afterEach(t => {
 	moxios.uninstall(hue.getHttp());
-})
+});
 
-test('getDefaultBrightness', async t => {
+test.serial('getDefaultBrightness (no initial call)', async t => {
 
-	t.is(hue.getCurrentBrightness(0), 254);
+	t.is(hue.getCurrentBrightness(1), 254);
 	
 });
 
@@ -98,4 +97,32 @@ test.serial('setCssColorAll', async t => {
 	const response = await hue.setAllColors('white');
 	t.is(response.data, TestConstants.color_white);
 
+});
+
+test.serial('init with retrieval', async t => {
+	
+	moxios.stubRequest('${baseURL}/lights/1', {
+		status: 200,
+		response: TestConstants.full_brightness
+	});
+
+	moxios.stubRequest('${baseURL}/lights/2', {
+		status: 200,
+		response: TestConstants.full_brightness
+	});
+
+	moxios.stubRequest('${baseURL}/lights/3', {
+		status: 200,
+		response: TestConstants.no_brightness
+	});
+	
+	hue = new Hue({
+		ip: ip,
+		key: key,
+		retrieveInitialState: true
+	});
+
+	t.is(hue.getCurrentBrightness(1), TestConstants.full_brightness);
+	t.is(hue.getCurrentBrightness(2), TestConstants.full_brightness);
+	t.is(hue.getCurrentBrightness(3), TestConstants.no_brightness);
 });

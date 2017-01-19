@@ -1,4 +1,6 @@
 # hue-hacking-npm: Hue Control Library #
+[![Build Status](https://travis-ci.org/bjohnso5/hue-hacking-npm.svg?branch=master)](https://travis-ci.org/bjohnso5/hue-hacking-npm)
+[![Coverage Status](https://coveralls.io/repos/github/bjohnso5/hue-hacking-npm/badge.svg?branch=master)](https://coveralls.io/github/bjohnso5/hue-hacking-npm?branch=master)
 
 hue-hacking is a javascript library designed to control the Philips Hue smart LED bulb system. This version has been modified to be used as a Node module.
 
@@ -15,36 +17,23 @@ For a full breakdown of what the Philips Hue API/SDK offers, check out the [offi
 
 2. Find the IP address of your Hue wireless bridge. This can be gathered in a number of ways, including the meethue.com control panel, https://www.meethue.com/en-US/user/preferencessmartbridge, by clicking on the "Show me more" link. See [screenshot](http://imgur.com/yDhCp) for an example. Alternatively, you can browse to [this URL](http://www.meethue.com/api/nupnp), and use the value displayed in `internalipaddress`.
 
-3. To use the Hue library in a web application, make sure to call the 
-```javascript 
-setConfig({
-        ip: <ipAddress>, 
-        key: <hash>
+3. Quick example configuration: 
+```typescript 
+import { Hue } from 'hue-hacking-node';
+
+const bridgeIP = '192.168.x.x';
+const appname = 'myfirsthueapp'; // This is the hash / name / id that you registered with the bridge previously using the official Hue docs
+
+hue.setConfig({
+  ip: bridgeIP, 
+  key: appname,
+  numberOfLamps: 3,
+  retrieveInitialState: false
 });
-``` 
-function, passing in the IP address and the API key value generated and registered with the hub.
+```
 
 4. __Optional:__ If you have more than 3 bulbs (the number included in the Hue starter kit), call the setNumberOfLamps() function, passing in the total number of lamps available, prior to using the lamp control functions.
 
-## Included Files ##
-
-### src/hue-colors.ts ###
-Provides convenience functions to convert between CSS-style hex color values, their corresponding RGB color values, and the CIE 1931 X,Y color coordinates supported by the Hue lamp system.
-
-### src/hue-css-colors.ts ###
-Provides a map of CSS named colors and their corresponding hex color values.
-
-### src/hue-node.ts ###
-Provides control functions to control either single lamps, groups of lamps, or all available lamps. Lamps can be toggled (on/off), flashed for a short or long time, and have their color changed.
-
-### test/hue-test-constants.js ###
-Provides some simple properties to match JSON state responses.
-
-### test/** ###
-Ava.js test suites.
-
-## Badges ##
-[![Build Status](https://travis-ci.org/bjohnso5/hue-hacking-npm.svg?branch=master)](https://travis-ci.org/bjohnso5/hue-hacking-npm)
-[![Coverage Status](https://coveralls.io/repos/github/bjohnso5/hue-hacking-npm/badge.svg?branch=master)](https://coveralls.io/github/bjohnso5/hue-hacking-npm?branch=master)
+For the best introduction to instantiating / using this module, please see the hue-node.spec.ts file.
 
 &copy; 2013 Bryan Johnson; Licensed MIT.

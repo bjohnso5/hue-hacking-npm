@@ -44,8 +44,8 @@ export class Hue {
 
         if(!!retrieveState) {
             for(let i = 0; i < this.numberOfLamps; i++) {
-                this.getBrightness(i + 1).then(response => {
-                    this.currentBrightness[i] = response.data.state.bri;
+                this.getBrightness(i + 1).then(async response => {
+                    this.currentBrightness[i] = await response.data.state.bri;
                 });
             }
         }
