@@ -3,7 +3,7 @@
 import { HueColors } from './hue-colors';
 import { XYPoint } from './hue-interfaces';
 import axios = require('axios');
-import { AxiosInstance, AxiosPromise, AxiosRequestConfig } from 'axios';
+import { AxiosInstance, AxiosPromise, AxiosResponse, AxiosRequestConfig } from 'axios';
 import { HueConfig, LampState, AlertState, PoweredState } from './hue-interfaces';
 
 const shortFlashType = 'select';
@@ -13,42 +13,61 @@ const onState: PoweredState = { on: true };
 const shortFlashState: AlertState = { alert: this.shortFlashType };
 const longFlashState: AlertState = { alert: this.longFlashType };
 const fullBrightness: number = 254;
+const _colors = new HueColors();
 
 export class Hue {
 
-    private lampStates: LampState[];
-    private bridgeIP: string = '';
-    private apiKey: string = '';
+    private lampStates: LampState[] = [];
     private baseApiUrl: string = '';
-    private numberOfLamps: number = 3; // defaulted to the # of lamps included in the starter kit, update if you've connected additional bulbs
     private transitionTime: number;
     private _http: AxiosInstance;
     private currentBrightness: number[] = [254, 254, 254]; // default to full brightness
+    private config: HueConfig = null;
 
     constructor(config?: HueConfig) {
-        this.colors = new HueColors();
-        this.lampStates = [];
-
         this.setConfig(config);
     }
-    
-    public colors: HueColors;
+
+    /**
+     * Set the IP address of the bridge and the API key to use to control
+     * the Hue lamps.
+     * 
+     * @param {Object} Containing key and ip properties.
+     */
+    private setConfig(config: HueConfig): void {
+        this.config = config || {ip: '', key: '', retrieveInitialState: false, numberOfLamps: 3};
+        this.config.retrieveInitialState = this.config.retrieveInitialState || false;
+        this.config.numberOfLamps = this.config.numberOfLamps || 3;
+
+        this.baseApiUrl = `http://${this.config.ip}/api/${this.config.key}`;
+
+        this._http = axios.default.create({
+            baseURL: this.baseApiUrl
+        });
+    }
 
     /**
      * Reconstruct the baseUrl and baseApiUrl members when configuration is updated.
      * 
      * @param {boolean} retrieveState Pass true to retrieve the initial brightness state of all bulbs from the Hue bridge
      */
-    private updateURLs(retrieveState?: boolean): void {
-        this.baseApiUrl = `http://${this.bridgeIP}/api/${this.apiKey}`;
-
-        if(!!retrieveState) {
-            for(let i = 0; i < this.numberOfLamps; i++) {
-                this.getBrightness(i + 1).then(async response => {
-                    this.currentBrightness[i] = await response.data.state.bri;
-                });
-            }
+    private async retrieveInitialState(): Promise<any> {
+        let promises: Promise<any>[] = [];
+        for(let i = 0; i < this.config.numberOfLamps; i++) {
+            let promise = this.getBrightness(i + 1);
+            promises.push(promise);
+            
+            promise.then(response => {
+                this.currentBrightness[i] = response.data.state.bri;
+            }); 
         }
+
+        let returnGroup = Promise.all(promises);
+        returnGroup.then(reason => {
+            console.log(reason);
+        });
+
+        return returnGroup;
     }
 
     /**
@@ -62,7 +81,7 @@ export class Hue {
      */
     private putJSON(url: string, data: any): AxiosPromise {
         return this._http.put(url, data);
-    };
+    }
 
     /**
      * Convenience function used to query the state of a Hue lamp or other
@@ -132,7 +151,7 @@ export class Hue {
      */
     private putAll(data: any, success?: Function): AxiosPromise[] {
         let promises: AxiosPromise[] = [];
-        for (let i = 0; i < this.numberOfLamps; ++i) {
+        for (let i = 0; i < this.config.numberOfLamps; ++i) {
             promises.push(this.putJSON(this.buildStateURL(i + 1), data));
         }
         return promises;
@@ -172,7 +191,7 @@ export class Hue {
      * @param {number} lampIndex 1-based index of the lamp to query.
      * @return {AxiosPromise} Brightness of the lamp at lampIndex. 0 - 255.
      */
-    private getBrightness(lampIndex: number): AxiosPromise {
+    private async getBrightness(lampIndex: number): Promise<AxiosResponse> {
         return this.get(this.buildLampQueryURL(lampIndex));
     }
 
@@ -186,6 +205,14 @@ export class Hue {
      */
     private buildBrightnessState(brightness: number): any {
         return { bri: brightness };
+    }
+
+    public colors: HueColors = _colors;
+
+    public async init(): Promise<void> {
+        return this.config.retrieveInitialState ? 
+                this.retrieveInitialState() : 
+                Promise.resolve();
     }
 
     /** 
@@ -344,7 +371,7 @@ export class Hue {
      */
     public dimAll(decrement?: number): AxiosPromise[] {
         let states: AxiosPromise[] = [];
-        for (let i = 0; i < this.numberOfLamps; ++i) {
+        for (let i = 0; i < this.config.numberOfLamps; ++i) {
             states.push(this.dim(i + 1, decrement));
         }
         return states;
@@ -373,7 +400,7 @@ export class Hue {
      */
     public brightenAll(increment: number): AxiosPromise[] {
         let states: AxiosPromise[] = [];
-        for (let i = 0; i < this.numberOfLamps; ++i) {
+        for (let i = 0; i < this.config.numberOfLamps; ++i) {
             states.push(this.brighten(i + 1, increment));
         }
         return states;
@@ -404,7 +431,7 @@ export class Hue {
      * @param {number} The total number of lamps available to interact with. Default is 3.
      */
     public setnumberOfLamps(numLamps: number): void {
-        this.numberOfLamps = numLamps;
+        this.config.numberOfLamps = numLamps;
     }
 
     /**
@@ -428,27 +455,5 @@ export class Hue {
      */
     public getHttp(): AxiosInstance {
         return this._http;
-    }
-
-    /**
-     * Set the IP address of the bridge and the API key to use to control
-     * the Hue lamps.
-     * 
-     * @param {Object} Containing key and ip properties.
-     */
-    public setConfig(config: HueConfig): void {
-        let retrieveState = false;
-        if(config) {
-            this.apiKey = config.key || "";
-            this.bridgeIP = config.ip || "";
-            retrieveState = config.retrieveInitialState || false;
-            this.numberOfLamps = config.numberOfLamps || 3;
-        }
-
-        this.updateURLs(retrieveState);
-
-        this._http = axios.default.create({
-            baseURL: this.baseApiUrl
-        });
     }
 }
