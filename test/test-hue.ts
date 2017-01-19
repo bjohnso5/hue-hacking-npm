@@ -1,5 +1,6 @@
 import { Hue } from '../index';
-import { ICallbackFunction, Test } from '@types/nodeunit';
+import { AxiosResponse } from 'axios';
+import test from 'ava';
 import * as TestConstants from './hue-test-constants';
 
 let moxios = require('moxios');
@@ -13,113 +14,88 @@ let hue = new Hue({
 	key: "testapp"
 });
 
-module.exports = {
 
-	setUp: function(callback: ICallbackFunction): void {
-		moxios.install(hue.getHttp());
-		callback();
-	},
+test.beforeEach(t => {
+	moxios.install(hue.getHttp());
+});
 
-	tearDown: function(callback: ICallbackFunction): void {
-		moxios.uninstall(hue.getHttp());
-		callback();
-	},
+test.afterEach(t => {
+	moxios.uninstall(hue.getHttp());
+})
 
-	"getDefaultBrightness": function(test: Test): void {
-		test.deepEqual(254, hue.getCurrentBrightness(0));
-		test.done();
-	},
+test('getDefaultBrightness', async t => {
 
-	"turnOnLamp1": function(test: Test): void {
+	t.is(hue.getCurrentBrightness(0), 254);
+	
+});
 
-		moxios.stubRequest(`${baseURL}/lights/1/state`, {
-			status: 200,
-			response: TestConstants.state_on
-		});
+test.serial('turnOnLamp1', async t => {
 
-		hue.turnOn(1).then(response => {
-			test.deepEqual(response.data, TestConstants.state_on);
-			test.done();
-		}).catch(error => {
-			test.done(error);
-		});
-	},
+	moxios.stubRequest(`${baseURL}/lights/1/state`, {
+		status: 200,
+		response: TestConstants.state_on
+	});
 
-	"turnOffLamp1": function(test: Test): void {
-		
-		moxios.stubRequest(`${baseURL}/lights/1/state`, {
-			status: 200,
-			response: TestConstants.state_off
-		});
+	const response = await hue.turnOn(1);
+	t.is(response.data, TestConstants.state_on);
 
-		hue.turnOff(1).then(response => {
-			test.deepEqual(response.data, TestConstants.state_off);
-			test.done();
-		}).catch(error => {
-			test.done(error);
-		});
-	},
+});
 
-	"turnOffAll": function(test: Test): void {
-		
-		moxios.stubRequest(`${baseURL}/groups/0/action`, {
-			status: 200,
-			response: TestConstants.state_off
-		});
+test.serial('turnOffLamp1', async t => {
 
-		hue.turnOffAll().then(response => {
-			test.deepEqual(response.data, TestConstants.state_off);
-			test.done();
-		}).catch(error => {
-			test.done(error);
-		});
-	},
+	moxios.stubRequest(`${baseURL}/lights/1/state`, {
+		status: 200,
+		response: TestConstants.state_off
+	});
 
-	"turnOnAll": function(test: Test): void {
-		
-		moxios.stubRequest(`${baseURL}/groups/0/action`, {
-			status: 200,
-			response: TestConstants.state_on
-		});
+	const response = await hue.turnOff(1);
+	t.is(response.data, TestConstants.state_off);
 
-		hue.turnOnAll().then(response => {
-			test.deepEqual(response.data, TestConstants.state_on);
-			test.done();
-		}).catch(error => {
-			test.done(error);
-		});
-	},
+});
 
-	"testSetCssColor": function(test: Test): void {
+test.serial('turnOffAll', async t =>{
 
-		moxios.stubRequest(`${baseURL}/lights/1/state`, {
-			status: 200,
-			response: TestConstants.color_red
-		});
+	moxios.stubRequest(`${baseURL}/groups/0/action`, {
+		status: 200,
+		response: TestConstants.state_off
+	});
 
-		hue.setColor(1, 'red').then(response => {
-			test.deepEqual(response.data, TestConstants.color_red);
-			test.done();
-		}).catch(error => {
-			test.done(error);
-		});
+	const response = await hue.turnOffAll();
+	t.is(response.data, TestConstants.state_off);
 
-	},
+});
 
-	"testSetCssColorAll": function(test: Test): void {
+test.serial('turnOnAll', async t =>{
 
-		moxios.stubRequest(`${baseURL}/groups/0/action`, {
-			status: 200,
-			response: TestConstants.color_white
-		});
+	moxios.stubRequest(`${baseURL}/groups/0/action`, {
+		status: 200,
+		response: TestConstants.state_on
+	});
 
-		hue.setAllColors('white').then(response => {
-			test.deepEqual(response.data, TestConstants.color_white);
-			test.done();
-		}).catch(error => {
-			test.done(error);
-		});
+	const response = await hue.turnOnAll();
+	t.is(response.data, TestConstants.state_on);
 
-	}
+});
 
-};
+test.serial('setCssColor', async t => {
+
+	moxios.stubRequest(`${baseURL}/lights/1/state`, {
+		status: 200,
+		response: TestConstants.color_red
+	});
+
+	const response = await hue.setColor(1, 'red');
+	t.is(response.data, TestConstants.color_red);
+
+});
+
+test.serial('setCssColorAll', async t => {
+	moxios.stubRequest(`${baseURL}/groups/0/action`, {
+		status: 200,
+		response: TestConstants.color_white
+	});
+
+	const response = await hue.setAllColors('white');
+	t.is(response.data, TestConstants.color_white);
+
+});
