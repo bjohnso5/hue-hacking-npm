@@ -41,7 +41,7 @@ Provides control functions to control either single lamps, groups of lamps, or a
 Provides some simple properties to match JSON state responses.
 
 ### test/** ###
-nodeunit test suites.
+Ava.js test suites.
 
 ## Badges ##
 [![Build Status](https://travis-ci.org/bjohnso5/hue-hacking-npm.svg?branch=master)](https://travis-ci.org/bjohnso5/hue-hacking-npm)
