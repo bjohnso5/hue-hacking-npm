@@ -10,7 +10,7 @@
   "scripts": {
     "test": "gulp && nyc ava",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "prepublish": "test"
+    "prepublish": "gulp && nyc ava"
   },
   "ava": {
     "files": [
