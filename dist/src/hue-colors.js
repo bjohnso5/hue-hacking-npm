@@ -9,15 +9,10 @@
  * Copyright (c) 2013 Bryan Johnson; Licensed MIT */
 "use strict";
 const hue_css_colors_1 = require("./hue-css-colors");
-class XYPoint {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-}
-exports.Red = new XYPoint(0.675, 0.322);
-exports.Lime = new XYPoint(0.4091, 0.518);
-exports.Blue = new XYPoint(0.167, 0.04);
+const hue_interfaces_1 = require("./hue-interfaces");
+exports.CIERed = new hue_interfaces_1.XYPoint(0.675, 0.322);
+exports.CIELime = new hue_interfaces_1.XYPoint(0.4091, 0.518);
+exports.CIEBlue = new hue_interfaces_1.XYPoint(0.167, 0.04);
 exports.hexFullRed = "FF0000";
 exports.hexFullGreen = "00FF00";
 exports.hexFullBlue = "0000FF";
@@ -60,8 +55,7 @@ class HueColors {
      * @return {Array} Array containing R, G, B values
      */
     hexToRGB(h) {
-        var rgb = [this.hexToRed(h), this.hexToGreen(h), this.hexToBlue(h)];
-        return rgb;
+        return new hue_interfaces_1.RGB(this.hexToRed(h), this.hexToGreen(h), this.hexToBlue(h));
     }
     /**
      * Converts an RGB component to a hex string.
@@ -70,19 +64,17 @@ class HueColors {
      * @returns {String} Hex value string (e.g. FF)
      */
     componentToHex(c) {
-        var hex = c.toString(16);
+        const hex = c.toString(16);
         return hex.length == 1 ? '0' + hex : hex;
     }
     /**
      * Converts RGB color components to a valid hex color string.
      *
-     * @param {Number} RGB red value, integer between 0 and 255.
-     * @param {Number} RGB green value, integer between 0 and 255.
-     * @param {Number} RGB blue value, integer between 0 and 255.
+     * @param {number[]} RGB components with values between 0 and 255.
      * @returns {String} Hex color string (e.g. FF0000)
      */
-    rgbToHex(r, g, b) {
-        return this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
+    rgbToHex(rgb) {
+        return this.componentToHex(rgb.r) + this.componentToHex(rgb.g) + this.componentToHex(rgb.b);
     }
     /**
      * Generates a random number between 'from' and 'to'.
@@ -119,7 +111,7 @@ class HueColors {
      * @return {boolean} Flag indicating if the point is within reproducible range.
      */
     checkPointInLampsReach(p) {
-        var v1 = new XYPoint(exports.Lime.x - exports.Red.x, exports.Lime.y - exports.Red.y), v2 = new XYPoint(exports.Blue.x - exports.Red.x, exports.Blue.y - exports.Red.y), q = new XYPoint(p.x - exports.Red.x, p.y - exports.Red.y), s = this.crossProduct(q, v2) / this.crossProduct(v1, v2), t = this.crossProduct(v1, q) / this.crossProduct(v1, v2);
+        const v1 = new hue_interfaces_1.XYPoint(exports.CIELime.x - exports.CIERed.x, exports.CIELime.y - exports.CIERed.y), v2 = new hue_interfaces_1.XYPoint(exports.CIEBlue.x - exports.CIERed.x, exports.CIEBlue.y - exports.CIERed.y), q = new hue_interfaces_1.XYPoint(p.x - exports.CIERed.x, p.y - exports.CIERed.y), s = this.crossProduct(q, v2) / this.crossProduct(v1, v2), t = this.crossProduct(v1, q) / this.crossProduct(v1, v2);
         return (s >= 0.0) && (t >= 0.0) && (s + t <= 1.0);
     }
     /**
@@ -131,14 +123,14 @@ class HueColors {
      * @return {XYPoint} A point that is on the line, and closest to the XYPoint provided.
      */
     getClosestPointToLine(A, B, P) {
-        var AP = new XYPoint(P.x - A.x, P.y - A.y), AB = new XYPoint(B.x - A.x, B.y - A.y), ab2 = AB.x * AB.x + AB.y * AB.y, ap_ab = AP.x * AB.x + AP.y * AB.y, t = ap_ab / ab2;
+        let AP = new hue_interfaces_1.XYPoint(P.x - A.x, P.y - A.y), AB = new hue_interfaces_1.XYPoint(B.x - A.x, B.y - A.y), ab2 = AB.x * AB.x + AB.y * AB.y, ap_ab = AP.x * AB.x + AP.y * AB.y, t = ap_ab / ab2;
         if (t < 0.0) {
             t = 0.0;
         }
         else if (t > 1.0) {
             t = 1.0;
         }
-        return new XYPoint(A.x + AB.x * t, A.y + AB.y * t);
+        return new hue_interfaces_1.XYPoint(A.x + AB.x * t, A.y + AB.y * t);
     }
     /**
      * Find the closest Hue-producivle point to a provided point.
@@ -148,7 +140,7 @@ class HueColors {
      */
     getClosestPointToPoint(xyPoint) {
         // Color is unreproducible, find the closest point on each line in the CIE 1931 'triangle'.
-        let pAB = this.getClosestPointToLine(exports.Red, exports.Lime, xyPoint), pAC = this.getClosestPointToLine(exports.Blue, exports.Red, xyPoint), pBC = this.getClosestPointToLine(exports.Lime, exports.Blue, xyPoint), 
+        let pAB = this.getClosestPointToLine(exports.CIERed, exports.CIELime, xyPoint), pAC = this.getClosestPointToLine(exports.CIEBlue, exports.CIERed, xyPoint), pBC = this.getClosestPointToLine(exports.CIELime, exports.CIEBlue, xyPoint), 
         // Get the distances per point and see which point is closer to our Point.
         dAB = this.getDistanceBetweenTwoPoints(xyPoint, pAB), dAC = this.getDistanceBetweenTwoPoints(xyPoint, pAC), dBC = this.getDistanceBetweenTwoPoints(xyPoint, pBC), lowest = dAB, closestPoint = pAB;
         if (dAC < lowest) {
@@ -169,7 +161,7 @@ class HueColors {
      * @param {Number} The distance between points one and two.
      */
     getDistanceBetweenTwoPoints(one, two) {
-        var dx = one.x - two.x, // horizontal difference
+        const dx = one.x - two.x, // horizontal difference
         dy = one.y - two.y; // vertical difference
         return Math.sqrt(dx * dx + dy * dy);
     }
@@ -187,34 +179,33 @@ class HueColors {
         cx = isNaN(cx) ? 0.0 : cx;
         cy = isNaN(cy) ? 0.0 : cy;
         //Check if the given XY value is within the colourreach of our lamps.
-        var xyPoint = new XYPoint(cx, cy), inReachOfLamps = this.checkPointInLampsReach(xyPoint);
+        let xyPoint = new hue_interfaces_1.XYPoint(cx, cy), inReachOfLamps = this.checkPointInLampsReach(xyPoint);
         if (!inReachOfLamps) {
-            var closestPoint = this.getClosestPointToPoint(xyPoint);
+            let closestPoint = this.getClosestPointToPoint(xyPoint);
             cx = closestPoint.x;
             cy = closestPoint.y;
         }
-        return new XYPoint(cx, cy);
+        return new hue_interfaces_1.XYPoint(cx, cy);
     }
     /**
      * Returns a rgb array for given x, y values. Not actually an inverse of
      * getXYPointFromRGB. Implementation of the instructions found on the
      * Philips Hue iOS SDK docs: http://goo.gl/kWKXKl
      */
-    getRGBFromXYAndBrightness(x, y, bri) {
-        let xyPoint = new XYPoint(x, y);
+    getRGBFromXYAndBrightness(coords, bri) {
         if (bri === undefined) {
             bri = 1;
         }
         // Check if the xy value is within the color gamut of the lamp.
         // If not continue with step 2, otherwise step 3.
         // We do this to calculate the most accurate color the given light can actually do.
-        if (!this.checkPointInLampsReach(xyPoint)) {
+        if (!this.checkPointInLampsReach(coords)) {
             // Calculate the closest point on the color gamut triangle
             // and use that as xy value See step 6 of color to xy.
-            xyPoint = this.getClosestPointToPoint(xyPoint);
+            coords = this.getClosestPointToPoint(coords);
         }
         // Calculate XYZ values Convert using the following formulas:
-        let Y = bri, X = (Y / xyPoint.y) * xyPoint.x, Z = (Y / xyPoint.y) * (1 - xyPoint.x - xyPoint.y);
+        let Y = bri, X = (Y / coords.y) * coords.x, Z = (Y / coords.y) * (1 - coords.x - coords.y);
         // Convert to RGB using Wide RGB D65 conversion.
         let rgb = [
             X * 1.612 - Y * 0.203 - Z * 0.302,
@@ -233,7 +224,7 @@ class HueColors {
             rgb = rgb.map(function (x) { return x / max; });
         }
         rgb = rgb.map(function (x) { return Math.floor(x * 255); });
-        return rgb;
+        return new hue_interfaces_1.RGB(...rgb);
     }
     /**
      * Converts hexadecimal colors represented as a String to approximate
@@ -243,7 +234,7 @@ class HueColors {
      * @return {Array{Number}} Approximate CIE 1931 x,y coordinates.
      */
     hexToCIE1931(h) {
-        let rgb = this.hexToRGB(h);
+        const rgb = this.hexToRGB(h);
         return this.rgbToCIE1931(rgb[0], rgb[1], rgb[2]);
     }
     /**
@@ -258,8 +249,8 @@ class HueColors {
      * @return {Array{Number}} Approximate CIE 1931 x,y coordinates.
      */
     rgbToCIE1931(red, green, blue) {
-        let point = this.getXYPointFromRGB(red, green, blue);
-        return [point.x, point.y];
+        const point = this.getXYPointFromRGB(red, green, blue);
+        return point;
     }
     /**
      * Returns the approximate CIE 1931 x,y coordinates represented by the
@@ -270,7 +261,7 @@ class HueColors {
      * @return {Array{Number}} Approximate CIE 1931 x,y coordinates.
      */
     getCIEColor(hexColor) {
-        let hex = hexColor || null, xy = [], lowerCaseHex = hex !== null ? hexColor.toString().toLowerCase() : null, cssColor = this.cssColors.getHexCode(lowerCaseHex);
+        let hex = hexColor || null, xy = null, lowerCaseHex = hex !== null ? hexColor.toString().toLowerCase() : null, cssColor = this.cssColors.getHexCode(lowerCaseHex);
         if (cssColor !== undefined) {
             xy = this.hexToCIE1931(cssColor);
         }
@@ -292,12 +283,12 @@ class HueColors {
      * @param {Number} brightness value expressed between 0 and 1.
      * @return {String} hex color string.
      */
-    CIE1931ToHex(x, y, bri) {
+    CIE1931ToHex(coords, bri) {
         if (bri === undefined) {
             bri = 1;
         }
-        let rgb = this.getRGBFromXYAndBrightness(x, y, bri);
-        return this.rgbToHex(rgb[0], rgb[1], rgb[2]);
+        const rgb = this.getRGBFromXYAndBrightness(coords, bri);
+        return this.rgbToHex(rgb);
     }
 }
 exports.HueColors = HueColors;

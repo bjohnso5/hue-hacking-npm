@@ -8,7 +8,18 @@
     "url": "https://github.com/bjohnso5/hue-hacking-npm"
   },
   "scripts": {
-    "test": "gulp && ava dist/test/test-hue.js"
+    "test": "gulp && nyc ava && ",
+    "coverage": "nyc report --reporter=text-lcov | .\\node_modules\\.bin\\coveralls"
+  },
+  "ava": {
+    "files": [
+      "dist/test/*.js",
+      "!dist/test/hue-test-constants.js"
+    ],
+    "source": [
+      "src/**/*.ts",
+      "!dist/**/*"
+    ]
   },
   "keywords": [
     "Philips",
@@ -23,12 +34,13 @@
     "@types/node": "^7.0.0",
     "@types/nodeunit": "0.0.30",
     "ava": "^0.17.0",
+    "coveralls": "^2.11.15",
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^2.4.0",
     "gulp-typescript": "^3.1.4",
-    "istanbul": "^0.4.5",
     "moxios": "^0.3.0",
     "nodeunit": "^0.8.8",
+    "nyc": "^10.1.2",
     "typescript": "^2.1.5"
   }
 }

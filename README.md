@@ -43,4 +43,7 @@ Provides some simple properties to match JSON state responses.
 ### test/** ###
 nodeunit test suites.
 
+## Badges ##
+[![Coverage Status](https://coveralls.io/repos/github/bjohnso5/hue-hacking-npm/badge.svg?branch=master)](https://coveralls.io/github/bjohnso5/hue-hacking-npm?branch=master)
+
 &copy; 2013 Bryan Johnson; Licensed MIT.

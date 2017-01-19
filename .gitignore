@@ -5,5 +5,8 @@
 # NPM modules (no need to distribute via Git...)
 node_modules/
 coverage/
+.nyc_output/
 
 npm-debug.log
+
+.coveralls.yml

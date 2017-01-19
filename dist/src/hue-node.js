@@ -134,7 +134,7 @@ class Hue {
      * @return {Object} State object containing CIE X,Y coordinates.
      */
     buildXYState(xyCoords) {
-        let stateObj = { xy: xyCoords };
+        let stateObj = { xy: [xyCoords.x, xyCoords.y] };
         if (typeof (this.transitionTime) === 'number') {
             stateObj.transitiontime = this.transitionTime;
         }

@@ -1,0 +1,12 @@
+
+language: node_js
+node_js:
+  - "node"
+  - "6"
+  - "7"
+
+install:
+  - npm install
+
+after_success:
+  - './node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls'

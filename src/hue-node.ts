@@ -1,6 +1,7 @@
 /** Copyright (c) 2013 Bryan Johnson; Licensed MIT */
 
 import { HueColors } from './hue-colors';
+import { XYPoint } from './hue-interfaces';
 import axios = require('axios');
 import { AxiosInstance, AxiosPromise, AxiosRequestConfig } from 'axios';
 import { HueConfig, LampState, AlertState, PoweredState } from './hue-interfaces';
@@ -155,8 +156,8 @@ export class Hue {
      * @param {number[]} CIE 1931 X,Y color coordinates.
      * @return {Object} State object containing CIE X,Y coordinates.
      */
-    private buildXYState(xyCoords: number[]): any {
-        let stateObj: any = { xy: xyCoords };
+    private buildXYState(xyCoords: XYPoint): any {
+        let stateObj: any = { xy: [xyCoords.x, xyCoords.y] };
 
         if (typeof (this.transitionTime) === 'number') {
             stateObj.transitiontime = this.transitionTime;

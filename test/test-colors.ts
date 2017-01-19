@@ -1,36 +1,37 @@
 import { Hue } from '../index';
-import { Test } from '@types/nodeunit';
+import { XYPoint } from '../src/hue-interfaces';
+import test from 'ava';
 
 let hue = new Hue();
 let colors = hue.getColors();
 
 const hexRGBRed = 'ff6c22';
-const cieRGBRed = [0.6484272236872118, 0.330856101472778];
+const cieRGBRed: XYPoint = { x: 0.6484272236872118, y: 0.330856101472778 };
 const hexRGBGreen = 'fffe50';
-const cieRGBGreen = [0.4091, 0.518];
+const cieRGBGreen: XYPoint = { x: 0.4091, y: 0.518 };
 const hexRGBBlue = '3639ff';
-const cieRGBBlue = [0.167, 0.04];
+const cieRGBBlue: XYPoint = { x: 0.167, y: 0.04 };
 
-module.exports = {
+function closeEnoughForGovernmentWork(actual: XYPoint, expected: XYPoint): boolean {
+  const epsilon = 1e-7,
+        dX = Math.abs(actual.x - expected.x),
+        dY = Math.abs(actual.y - expected.y);
 
-  "known parameter returns known coordinates (full red)": function(test: Test): void {
-    test.deepEqual(colors.CIE1931ToHex(cieRGBRed[0], cieRGBRed[1]), hexRGBRed);
-	  test.done();
-  },
+  return dX < epsilon && dY < epsilon;
+}
 
-  "known parameter returns known coordinates (full green)": function(test: Test): void {
-    test.deepEqual(colors.CIE1931ToHex(cieRGBGreen[0], cieRGBGreen[1]), hexRGBGreen);
-    test.done();
-  },
+test('known parameter returns known coordinates (full red)', t => {
+  t.is(colors.CIE1931ToHex(cieRGBRed), hexRGBRed);
+});
 
-  "known parameter returns known coordinates (full blue with brightness)": function(test: Test): void {
-    test.deepEqual(colors.CIE1931ToHex(cieRGBBlue[0], cieRGBBlue[1], 1), hexRGBBlue);
-    test.done();
-  },
+test('known parameter returns known coordinates (full green)', t => {
+  t.is(colors.CIE1931ToHex(cieRGBGreen), hexRGBGreen);
+});
 
-  "getCIEColor full blue": function(test: Test): void {
-    test.deepEqual(colors.getCIEColor('0000f'), cieRGBBlue);
-    test.done();
-  }
+test('known parameter returns known coordinates (full blue with brightness)', t => {
+  t.is(colors.CIE1931ToHex(cieRGBBlue, 1), hexRGBBlue);
+});
 
-};
+test('getCIEColor full blue', t => {
+  t.true(closeEnoughForGovernmentWork(colors.getCIEColor('0000f'), cieRGBBlue));
+});
