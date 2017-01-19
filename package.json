@@ -32,7 +32,6 @@
   },
   "devDependencies": {
     "@types/node": "^7.0.0",
-    "@types/nodeunit": "0.0.30",
     "ava": "^0.17.0",
     "coveralls": "^2.11.15",
     "gulp": "^3.9.1",
