@@ -21,6 +21,11 @@
       "!dist/**/*"
     ]
   },
+  "nyc": {
+    "exclude": [
+      "dist/test/**.js"
+    ]
+  },
   "keywords": [
     "Philips",
     "Hue"
