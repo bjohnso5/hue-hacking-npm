@@ -9,7 +9,7 @@
  * Copyright (c) 2013 Bryan Johnson; Licensed MIT */
 
 import { CssColors } from './hue-css-colors';
-import { RGB, XYPoint } from './hue-interfaces';
+import { RGB, XYPoint, __debug } from './hue-interfaces';
 
 export const CIERed = new XYPoint(0.675, 0.322);
 export const CIELime = new XYPoint(0.4091, 0.518);
@@ -218,11 +218,11 @@ export class HueColors {
      * @param {Number} RGB blue value, integer between 0 and 255.
      * @return {XYPoint} CIE 1931 XY coordinates, corrected for reproducibility.
      */
-    private getXYPointFromRGB(red: number, green: number, blue: number): XYPoint {
+    private getXYPointFromRGB(rgb: RGB): XYPoint {
         
-        let r = (red > 0.04045) ? Math.pow((red + 0.055) / (1.0 + 0.055), 2.4) : (red / 12.92),
-            g = (green > 0.04045) ? Math.pow((green + 0.055) / (1.0 + 0.055), 2.4) : (green / 12.92),
-            b = (blue > 0.04045) ? Math.pow((blue + 0.055) / (1.0 + 0.055), 2.4) : (blue / 12.92),
+        let r = (rgb.r > 0.04045) ? Math.pow((rgb.r + 0.055) / (1.0 + 0.055), 2.4) : (rgb.r / 12.92),
+            g = (rgb.g > 0.04045) ? Math.pow((rgb.g + 0.055) / (1.0 + 0.055), 2.4) : (rgb.g / 12.92),
+            b = (rgb.b > 0.04045) ? Math.pow((rgb.b + 0.055) / (1.0 + 0.055), 2.4) : (rgb.b / 12.92),
 
             X = r * 0.4360747 + g * 0.3850649 + b * 0.0930804,
             Y = r * 0.2225045 + g * 0.7168786 + b * 0.0406169,
@@ -307,7 +307,7 @@ export class HueColors {
      */
     public hexToCIE1931(h: string): XYPoint {
         const rgb = this.hexToRGB(h);
-        return this.rgbToCIE1931(rgb[0], rgb[1], rgb[2]);
+        return this.rgbToCIE1931(rgb);
     }
 
     /**
@@ -321,9 +321,8 @@ export class HueColors {
      * @param {Number} blue Integer in the 0-255 range.
      * @return {Array{Number}} Approximate CIE 1931 x,y coordinates.
      */
-    public rgbToCIE1931(red: number, green: number, blue: number): XYPoint {
-        const point = this.getXYPointFromRGB(red, green, blue);
-        return point;
+    public rgbToCIE1931(rgb: RGB): XYPoint {
+        return this.getXYPointFromRGB(rgb);
     }
 
     /**
@@ -334,20 +333,21 @@ export class HueColors {
      * @param {String} hexColor String representing a hexidecimal color value OR a named CSS color (e.g. "red", "yellow", etc.).
      * @return {Array{Number}} Approximate CIE 1931 x,y coordinates.
      */
-    public getCIEColor(hexColor: string): XYPoint {
+    public getCIEColor(hexColor?: string): XYPoint {
         let hex = hexColor || null,
             xy: XYPoint = null,
             lowerCaseHex = hex !== null ? hexColor.toString().toLowerCase() : null,
             cssColor = this.cssColors.getHexCode(lowerCaseHex);
         if(cssColor !== undefined) {
             xy = this.hexToCIE1931(cssColor);
+            __debug(`CSS Color found: ${hexColor}, with CIE coordinates: ${xy}`);
         } else if (null !== hex) {
             xy = this.hexToCIE1931(hex);
+            __debug(`Hex literal found: ${hex}, with CIE coordinates: ${xy}`);
         } else {
-            let r = this.randomRGBValue(),
-                g = this.randomRGBValue(),
-                b = this.randomRGBValue();
-            xy = this.rgbToCIE1931(r, g, b);
+            let rgb = new RGB(this.randomRGBValue(), this.randomRGBValue(), this.randomRGBValue());
+            xy = this.rgbToCIE1931(rgb);
+            __debug(`No value found, generating random RGB value: ${rgb}, with CIE coordinates: ${xy}`);
         }
         return xy;
     }

@@ -8,25 +8,23 @@
     "url": "https://github.com/bjohnso5/hue-hacking-npm"
   },
   "scripts": {
-    "test": "gulp && nyc ava --serial --verbose",
+    "test": "tsc && nyc --reporter=lcov ava --verbose && gulp",
     "clean": "rm -rf dist",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "prepublish": "rm -rf dist && gulp && nyc ava"
+    "prepublish": "rm -rf dist && tsc && nyc --reporter=lcov ava && gulp"
   },
   "ava": {
     "files": [
-      "dist/src/*.spec.js"
+      "src/*.spec.js"
     ],
     "source": [
-      "src/**/*.ts",
-      "!dist/**/*"
+      "src/**/*.ts"
     ]
   },
   "nyc": {
     "exclude": [
-      "dist/src/**.spec.js",
-      "dist/src/hue-interfaces.js",
-      "dist/src/hue-test-constants.js"
+      "src/**.spec.*",
+      "src/hue-test-constants.*"
     ]
   },
   "keywords": [
@@ -42,11 +40,10 @@
     "@types/node": "^7.0.0",
     "ava": "^0.17.0",
     "coveralls": "^2.11.15",
+    "dotenv": "^4.0.0",
     "gulp": "^3.9.1",
-    "gulp-sourcemaps": "^2.4.0",
-    "gulp-typescript": "^3.1.4",
+    "gulp-copy": "^1.0.0",
     "moxios": "^0.3.0",
-    "nodeunit": "^0.8.8",
     "nyc": "^10.1.2",
     "typescript": "^2.1.5"
   }

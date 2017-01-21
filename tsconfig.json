@@ -5,16 +5,17 @@
         "removeComments": false,
         "preserveConstEnums": true,
         "sourceMap": true,
-        "allowJs": true,
+        "inlineSources": true,
         "target": "es2015",
         "types": [
             "node"
         ]
     },
-    "files": [
-        "index.ts",
-        "src/**/*.ts",
-        "test/**/*.ts"
+    "exclude": [
+        "node_modules",
+        "dist/**",
+        "coverage",
+        "gulpfile.js"
     ],
     "typeAcquisition": {
         "enable": true

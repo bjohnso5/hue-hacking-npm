@@ -11,43 +11,58 @@ export interface HueConfig {
     transitionTime?: number;
 }
 
-export interface PoweredState {
-    on?: boolean;
-}
+export module States {
+    export interface PoweredState {
+        on?: boolean;
+    }
 
-export interface AlertState {
-    alert?: string;
-}
+    export type AlertOption = "select" | "lselect" | "none";
 
-export interface ColorState {
-    xy?: number[];
-}
+    export interface AlertState {
+        alert?: AlertOption;
+    }
 
-export interface BrightnessState {
-    bri?: number;
-}
+    export type EffectOption = "colorloop" | "none";
 
-export interface HueState {
-    hue?: number;
-}
+    export interface EffectState {
+        effect?: EffectOption;
+    }
 
-export interface SaturationState {
-    sat?: number;
-}
+    export interface ColorState {
+        xy?: number[];
+    }
 
-export interface ColorTempState {
-    ct?: number;
-}
+    export interface BrightnessState {
+        bri?: number;
+    }
 
-export interface LampState extends 
-    PoweredState, 
-    AlertState, 
-    ColorState, 
-    BrightnessState, 
-    HueState, 
-    SaturationState, 
-    ColorTempState {
+    export interface BrightnessIncrementState {
+        bri_inc?: number;
+    }
 
+    export interface HueState {
+        hue?: number;
+    }
+
+    export interface SaturationState {
+        sat?: number;
+    }
+
+    export interface ColorTempState {
+        ct?: number;
+    }
+
+    export interface LampState extends 
+        PoweredState, 
+        EffectState, 
+        AlertState, 
+        ColorState, 
+        BrightnessState, 
+        HueState, 
+        SaturationState, 
+        ColorTempState {
+
+    }
 }
 
 export class XYPoint {
@@ -57,6 +72,10 @@ export class XYPoint {
     constructor(...xy: number[]) {
         this.x = xy[0];
         this.y = xy[1];
+    }
+
+    public toString(): string {
+        return `{x: ${this.x}, y: ${this.y}}`;
     }
 }
 
@@ -72,13 +91,19 @@ export class RGB {
     }
 
     private clampToRange(value: number): number {
-        if(value === undefined) {
-            value = 0;
-        }
         return Math.min(Math.max(0, value), 255);
     }
 
     public toString(): string {
         return `r: ${this.r}, g: ${this.g}, b: ${this.b}`;
+    }
+}
+
+/**
+ * Debug-only output
+ */
+export function __debug(message: string) {
+    if(process.env.DEBUG) {
+        console.log(message);
     }
 }

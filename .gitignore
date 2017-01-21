@@ -12,3 +12,10 @@ dist/
 npm-debug.log
 
 .coveralls.yml
+
+.env
+
+*.spec.js
+*.js.map
+src/**/*.js
+index.js
