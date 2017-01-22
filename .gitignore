@@ -18,4 +18,5 @@ npm-debug.log
 *.spec.js
 *.js.map
 src/**/*.js
-index.js
+index.js*
+index.d.ts
