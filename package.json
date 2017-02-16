@@ -11,7 +11,7 @@
     "test": "tsc && nyc --reporter=lcov ava --verbose && gulp",
     "clean": "rm -rf dist",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "prepublish": "rm -rf dist && tsc && nyc --reporter=lcov ava && gulp"
+    "prepublish": "rm -rf dist && tsc && ava && gulp"
   },
   "ava": {
     "files": [
@@ -34,15 +34,15 @@
   "author": "Bryan Johnson",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.15.3"
+    "axios": "^0.15.3",
+    "dotenv": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "^7.0.0",
     "ava": "^0.17.0",
     "coveralls": "^2.11.15",
-    "dotenv": "^4.0.0",
     "gulp": "^3.9.1",
-    "gulp-copy": "^1.0.0",
+    "gulp-clean": "^0.3.2",
     "moxios": "^0.3.0",
     "nyc": "^10.1.2",
     "typescript": "^2.1.5"

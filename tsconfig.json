@@ -6,6 +6,9 @@
         "preserveConstEnums": true,
         "sourceMap": true,
         "inlineSources": true,
+        "declaration": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
         "target": "es2015",
         "types": [
             "node"

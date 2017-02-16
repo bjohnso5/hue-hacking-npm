@@ -9,6 +9,8 @@ export interface HueConfig {
     retrieveInitialState?: boolean;
     /** Number of milliseconds between lamp state changes */
     transitionTime?: number;
+    /** Timeout (in milliseconds) of all remote bridge communication */
+    timeout?: number;
 }
 
 export module States {
@@ -52,16 +54,87 @@ export module States {
         ct?: number;
     }
 
-    export interface LampState extends 
-        PoweredState, 
-        EffectState, 
-        AlertState, 
-        ColorState, 
-        BrightnessState, 
-        HueState, 
-        SaturationState, 
-        ColorTempState {
+    export type ColormodeOption = "hs" | "xy" | "ct";
 
+    export interface ColormodeState {
+        colormode?: ColormodeOption;
+    }
+
+    export interface ReachableState {
+        reachable?: boolean;
+    }
+
+    export interface FullLampState {
+        on: boolean;
+        bri: number;
+        hue: number;
+        sat: number;
+        effect: EffectOption;
+        xy: number[];
+        colortemp: number;
+        alert: AlertOption;
+        colormode: ColormodeOption;
+        reachable: boolean;
+    }
+
+    export type LampState = Partial<FullLampState>;
+}
+
+export interface Lamp {
+    state: States.LampState;
+    type: string;
+    name: string;
+    modelid: string;
+    swversion: string;
+    pointsymbol?: any;
+}
+
+export type HueStateValue = string | number | number[] | boolean;
+
+export interface StateChangeConfirmation {
+    attribute: string;
+    value: HueStateValue;
+}
+
+export class HueBridgeStateChangeResponse {
+    public changedStates: StateChangeConfirmation[];
+
+    constructor(response: any[]) {
+        let changedStates: StateChangeConfirmation[] = [];
+        for(let update of response) {
+            let changedState: StateChangeConfirmation;
+            for(let key in update.success) {
+                if(key.includes(`/lights/`) && key.includes(`/state/`)) {
+                    changedState = {
+                        attribute: key,
+                        value: update.success[key]
+                    };
+                }
+            }
+            if(changedState !== undefined && 
+               changedState.attribute !== undefined && 
+               changedState.value !== undefined) { 
+                changedStates.push(changedState);
+            }
+        }
+        this.changedStates = changedStates;
+    }
+}
+
+export interface GroupActionConfirmation {
+    address: string;
+    value: HueStateValue;
+}
+
+export class HueBridgeGroupActionResponse {
+    public acknowledgedActions: GroupActionConfirmation[];
+
+    constructor(response: any[]) {
+        let acknowledgedActions: GroupActionConfirmation[] = [];
+        for(let update of response) {
+            acknowledgedActions.push(update.success);
+        }
+        this.acknowledgedActions = acknowledgedActions;
     }
 }
 
@@ -85,9 +158,9 @@ export class RGB {
     public b: number;
 
     constructor(...rgb: number[]) {
-        this.r = this.clampToRange(rgb[0]);
-        this.g = this.clampToRange(rgb[1]);
-        this.b = this.clampToRange(rgb[2]);
+        this.r = this.clampToRange(rgb[0]||0);
+        this.g = this.clampToRange(rgb[1]||0);
+        this.b = this.clampToRange(rgb[2]||0);
     }
 
     private clampToRange(value: number): number {
@@ -96,6 +169,10 @@ export class RGB {
 
     public toString(): string {
         return `r: ${this.r}, g: ${this.g}, b: ${this.b}`;
+    }
+
+    public toCssString(): string {
+        return `rgb(${this.r}, ${this.g}, ${this.b})`;
     }
 }
 

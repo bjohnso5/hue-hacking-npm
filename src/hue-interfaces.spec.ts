@@ -14,6 +14,10 @@ test('RGB toString', t => {
   t.deepEqual(rgb.toString(), 'r: 1, g: 2, b: 255');
 });
 
+test('RGB toCssString', t => {
+  t.deepEqual(rgb.toCssString(), 'rgb(1, 2, 255)');
+});
+
 test('XYPoint constructor', t => {
   t.is(coords.x, 0.1);
   t.is(coords.y, 0.2);
