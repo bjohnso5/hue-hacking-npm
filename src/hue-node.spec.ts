@@ -204,7 +204,7 @@ test.serial('search', async t => {
 
 test.serial('setColorTemperature', async t => {
 
-	const responsePayload = [
+	const responsePayload: any = [
 		{ success: { "/lights/1/state/ct": 124 } }
 	];
 
@@ -217,4 +217,34 @@ test.serial('setColorTemperature', async t => {
 	const setCTResponse = await hue.setColorTemperature(1, 4000);
 	t.deepEqual(setCTResponse, new HueBridgeStateChangeResponse(responsePayload));
 
+});
+
+test.serial('brighten', async t => {
+	const responsePayload: any = [
+		{ success: { "lights/1/state/bri": 254 } }
+	];
+
+	moxios.stubRequest(`${baseURL}/lights/1/state`, {
+		status: 200,
+		method: 'PUT',
+		response: responsePayload
+	});
+
+	const brightenResponse = await hue.brighten(1, 10);
+	t.deepEqual(brightenResponse, new HueBridgeStateChangeResponse(responsePayload));
+});
+
+test.serial('dim', async t => {
+	const responsePayload: any = [
+		{ success: { "lights/1/state/bri": 244 } }
+	];
+
+	moxios.stubRequest(`${baseURL}/lights/1/state`, {
+		status: 200,
+		method: 'PUT',
+		response: responsePayload
+	});
+
+	const dimResponse = await hue.dim(1, 10);
+	t.deepEqual(dimResponse, new HueBridgeStateChangeResponse(responsePayload));
 });
