@@ -1,24 +1,24 @@
-
-export const state_off = (lightIndex: number) => {
+import { StateChangeConfirmation, GroupActionConfirmation } from './hue-interfaces';
+export const state_off = (lightIndex: number): StateChangeConfirmation => {
   return {
     attribute: `/lights/${lightIndex}/state/on`,
     value: false  
   }
 };
-export const state_on = (lightIndex: number) => {
+export const state_on = (lightIndex: number): StateChangeConfirmation => {
    return {
     attribute: `/lights/${lightIndex}/state/on`,
     value: true  
   }
 };
 
-export const group_off = (groupIndex: number) => {
+export const group_off = (groupIndex: number): GroupActionConfirmation => {
   return {
     "address": `/groups/${groupIndex}/action/on`,
     "value": false
   };
 };
-export const group_on = (groupIndex: number) => {
+export const group_on = (groupIndex: number): GroupActionConfirmation => {
   return {
     "address": `/groups/${groupIndex}/action/on`,
     "value": true

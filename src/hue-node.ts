@@ -455,7 +455,9 @@ export class Hue {
      * @return {Promise<AxiosResponse>} Promise representing the remote call
      */
     public async brighten(lampIndex: number, increment?: number): Promise<HueBridgeStateChangeResponse> {
-        return this.setBrightness(lampIndex, increment);
+        return this.put(lampIndex, this.buildBrightenState(increment)).then(response => {
+            return new HueBridgeStateChangeResponse(response.data);
+        });
     }
 
     /**

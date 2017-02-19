@@ -91,6 +91,10 @@ export interface Lamp {
 
 export type HueStateValue = string | number | number[] | boolean;
 
+export interface UpdateConfirmation {
+    success: StateChangeConfirmation | GroupActionConfirmation;
+}
+
 export interface StateChangeConfirmation {
     attribute: string;
     value: HueStateValue;

@@ -1,5 +1,5 @@
 import { Hue } from '../index';
-import { HueBridgeStateChangeResponse, HueBridgeGroupActionResponse } from './hue-interfaces';
+import { HueBridgeStateChangeResponse, HueBridgeGroupActionResponse, UpdateConfirmation } from './hue-interfaces';
 import { AxiosResponse } from 'axios';
 import test from 'ava';
 import * as TestConstants from './hue-test-constants';
@@ -12,7 +12,91 @@ const baseURL = `http://${ip}/api/${key}`;
 
 let hue: Hue = null;
 
-/** Why does this never complete? Investigate use of async / await (it works in a practical sense)*/
+function lightStatePath(index: number): string {
+	return `${baseURL}/lights/${index}/state`;
+}
+
+function groupActionPath(index: number): string {
+	return `${baseURL}/groups/${index}/action`;
+}
+
+function successfulPut(responsePayload: any): any {
+	return successfulRequest("PUT", responsePayload);
+}
+
+function successfulGet(responsePayload: any): any {
+	return successfulRequest("GET", responsePayload);
+}
+
+function successfulRequest(requestMethod: string, responsePayload: any): any {
+	return {
+		status: 200,
+		method: requestMethod,
+		response: responsePayload
+	};
+}
+
+test.serial('init with retrieval', async t => {
+
+	hue = new Hue({
+		ip: ip,
+		key: key,
+		retrieveInitialState: true
+	});
+
+	moxios.install(hue.getHttp());
+	
+	moxios.stubRequest(`${baseURL}/lights/1`, {
+		status: 200,
+		response: {
+			state: {
+				bri: TestConstants.full_brightness
+			}
+		}
+	});
+
+	moxios.stubRequest(`${baseURL}/lights/2`, {
+		status: 200,
+		response: {
+			state: {
+				bri: TestConstants.full_brightness
+			}
+		}
+	});
+
+	moxios.stubRequest(`${baseURL}/lights/3`, {
+		status: 200,
+		response: {
+			state: {
+				bri: TestConstants.no_brightness
+			}
+		}
+	});
+	
+	await hue.init();
+
+	moxios.uninstall(hue.getHttp());
+
+	t.pass();
+});
+
+test.serial.beforeEach(async t => {
+	hue = new Hue({
+		ip: ip,
+		key: key,
+		retrieveInitialState: false
+	});
+	
+	moxios.install(hue.getHttp());
+	moxios.install(Hue.getHttp());
+	await hue.init();
+});
+
+test.serial.afterEach(t => {
+	moxios.uninstall(hue.getHttp());
+	moxios.uninstall(Hue.getHttp());
+});
+
 test.serial('init with retrieval', async t => {
 
 	hue = new Hue({
@@ -234,17 +318,57 @@ test.serial('brighten', async t => {
 	t.deepEqual(brightenResponse, new HueBridgeStateChangeResponse(responsePayload));
 });
 
-test.serial('dim', async t => {
-	const responsePayload: any = [
-		{ success: { "lights/1/state/bri": 244 } }
+test.serial('brightenAll', async t => {
+	const responsePayload: UpdateConfirmation[] = [
+		{ success: { address: "groups/0/action/bri_inc", value: 10 } }
 	];
 
-	moxios.stubRequest(`${baseURL}/lights/1/state`, {
-		status: 200,
-		method: 'PUT',
-		response: responsePayload
-	});
+	moxios.stubRequest(groupActionPath(0), successfulPut(responsePayload));
+
+	const groupFlashResponse = await hue.brightenAll(10);
+	t.deepEqual(groupFlashResponse, new HueBridgeGroupActionResponse(responsePayload));
+});
+
+test.serial('dim', async t => {
+	const responsePayload: any = [
+		{ success: { "lights/1/state/bri_inc": -10 } }
+	];
+
+	moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
 
 	const dimResponse = await hue.dim(1, 10);
 	t.deepEqual(dimResponse, new HueBridgeStateChangeResponse(responsePayload));
+});
+
+test.serial('dimAll', async t => {
+	const responsePayload: UpdateConfirmation[] = [
+		{ success: { address: "groups/0/action/bri_inc", value: -10 } }
+	];
+
+	moxios.stubRequest(groupActionPath(0), successfulPut(responsePayload));
+
+	const groupFlashResponse = await hue.dimAll(10);
+	t.deepEqual(groupFlashResponse, new HueBridgeGroupActionResponse(responsePayload));
+});
+
+test.serial('flash', async t => {
+	const responsePayload = [
+		{ success: { "lights/1/state/alert": "select" } }
+	];
+
+	moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
+
+	const flashResponse = await hue.flash(1);
+	t.deepEqual(flashResponse, new HueBridgeStateChangeResponse(responsePayload));
+});
+
+test.serial('flashAll', async t => {
+	const responsePayload: UpdateConfirmation[] = [
+		{ success: { address: "groups/0/action/alert", value: "select" } }
+	];
+
+	moxios.stubRequest(groupActionPath(0), successfulPut(responsePayload));
+
+	const groupFlashResponse = await hue.flashAll();
+	t.deepEqual(groupFlashResponse, new HueBridgeGroupActionResponse(responsePayload));
 });
