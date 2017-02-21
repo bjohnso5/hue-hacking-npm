@@ -45,6 +45,6 @@
     "gulp-clean": "^0.3.2",
     "moxios": "^0.3.0",
     "nyc": "^10.1.2",
-    "typescript": "^2.1.5"
+    "typescript": "^2.1.6"
   }
 }
