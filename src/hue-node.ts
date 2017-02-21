@@ -556,6 +556,13 @@ export class Hue {
     }
 
     /**
+     * Get the number of lamps available to control.
+     */
+    public getNumberOfLamps(): number {
+        return this.config.numberOfLamps;
+    }
+
+    /**
      * Get a reference to the bundled color utility module.
      */
     public getColors(): HueColors {

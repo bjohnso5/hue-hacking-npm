@@ -373,26 +373,46 @@ test.serial('flashAll', async t => {
 	t.deepEqual(groupFlashResponse, new HueBridgeGroupActionResponse(responsePayload));
 });
 
+test.serial('startColorLoop', async t => {
+	const responsePayload: any[] = [
+		{ success: { "lights/1/state/effect": "colorloop" } }
+	];
+
+	moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
+
+	const colorLoopResponse = await hue.startColorLoop(1);
+	t.deepEqual(colorLoopResponse, new HueBridgeStateChangeResponse(responsePayload));
+});
+
+test.serial('stopEffect', async t => {
+	const responsePayload: any[] = [
+		{ success: { "lights/1/state/effect": "none" } }
+	];
+
+	moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
+
+	const stopEffectResponse = await hue.startColorLoop(1);
+	t.deepEqual(stopEffectResponse, new HueBridgeStateChangeResponse(responsePayload));
+});
+
 test.serial('setNumberOfLamps', t => {
-	let config = hue.getConfig();
-	const defaultNumLamps = config.numberOfLamps;
+	const defaultNumLamps = hue.getNumberOfLamps();
 
 	t.is(defaultNumLamps, 3);
 
 	hue.setnumberOfLamps(2);
-	const updatedNumLamps = config.numberOfLamps;
+	const updatedNumLamps = hue.getNumberOfLamps();
 
 	t.is(updatedNumLamps, 2);
 });
 
 test.serial('setTransitionTime', t => {
-	let config = hue.getConfig();
-	const defaultTransitionTime = config.transitionTime;
+	const defaultTransitionTime = hue.getTransitionTime();
 
 	t.is(defaultTransitionTime, 400);
 
 	hue.setTransitionTime(150);
-	const updatedTransitionTime = config.transitionTime;
+	const updatedTransitionTime = hue.getTransitionTime();
 
 	t.is(updatedTransitionTime, 150);
 });
