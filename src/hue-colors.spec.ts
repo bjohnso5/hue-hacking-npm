@@ -1,5 +1,5 @@
 import { HueColors, hexFullBlue, hexFullWhite } from './hue-colors';
-import { XYPoint } from '../src/hue-interfaces';
+import { XYPoint, RGB } from '../src/hue-interfaces';
 import test from 'ava';
 
 const colors = new HueColors();
@@ -43,4 +43,22 @@ test('getCIEColor white', t => {
 
 test('getCIEColor random values', t => {
   t.truthy(colors.getCIEColor());
+});
+
+test('CIE1931ToRGB', t => {
+  const rgb: RGB = new RGB(...[167, 167, 255]);
+  const xyPoint: XYPoint = new XYPoint(...[0.22, 0.22]);
+  t.deepEqual(rgb, colors.CIE1931ToRGB(xyPoint));
+});
+
+test('miredToKelvin', t => {
+  const mired: number = 0.2;
+  const expectedOutcome: number = 1e6 / mired;
+  t.is(expectedOutcome, colors.miredToKelvin(mired));
+});
+
+test('kelvinToMired', t => {
+  const kelvin: number = 3500;
+  const expectedOutcome: number = 1e6 / kelvin;
+  t.is(expectedOutcome, colors.kelvinToMired(kelvin));
 });
