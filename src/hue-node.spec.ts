@@ -372,3 +372,27 @@ test.serial('flashAll', async t => {
 	const groupFlashResponse = await hue.flashAll();
 	t.deepEqual(groupFlashResponse, new HueBridgeGroupActionResponse(responsePayload));
 });
+
+test.serial('setNumberOfLamps', t => {
+	let config = hue.getConfig();
+	const defaultNumLamps = config.numberOfLamps;
+
+	t.is(defaultNumLamps, 3);
+
+	hue.setnumberOfLamps(2);
+	const updatedNumLamps = config.numberOfLamps;
+
+	t.is(updatedNumLamps, 2);
+});
+
+test.serial('setTransitionTime', t => {
+	let config = hue.getConfig();
+	const defaultTransitionTime = config.transitionTime;
+
+	t.is(defaultTransitionTime, 400);
+
+	hue.setTransitionTime(150);
+	const updatedTransitionTime = config.transitionTime;
+
+	t.is(updatedTransitionTime, 150);
+});

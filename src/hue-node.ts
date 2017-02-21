@@ -403,9 +403,7 @@ export class Hue {
      * @return {Promise<AxiosResponse>} Promise representing the remote call
      */
     public async setAllBrightness(brightness: number): Promise<HueBridgeGroupActionResponse> {
-        return this.putGroupAction(0, this.buildBrightnessState(brightness)).then(response => {
-            return new HueBridgeGroupActionResponse(response.data);
-        });
+        return this.setGroupBrightness(0, brightness);
     }
 
     /**
@@ -562,6 +560,13 @@ export class Hue {
      */
     public getColors(): HueColors {
         return this.colors;
+    }
+
+    /**
+     * Get the currently set options.
+     */
+    public getConfig(): HueConfig {
+        return this.config;
     }
 
     /**
