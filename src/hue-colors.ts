@@ -256,10 +256,6 @@ export class HueColors {
      */
     private getRGBFromXYAndBrightness(coords: XYPoint, bri: number): RGB {
 
-        if (bri === undefined) {
-            bri = 1;
-        }
-
         // Check if the xy value is within the color gamut of the lamp.
         // If not continue with step 2, otherwise step 3.
         // We do this to calculate the most accurate color the given light can actually do.
