@@ -1,5 +1,5 @@
 import { Hue } from '../index';
-import { HueBridgeStateChangeResponse, HueBridgeGroupActionResponse, UpdateConfirmation } from './hue-interfaces';
+import { HueUPNPResponse, HueBridgeStateChangeResponse, HueBridgeGroupActionResponse, UpdateConfirmation } from './hue-interfaces';
 import { AxiosResponse } from 'axios';
 import test from 'ava';
 import * as TestConstants from './hue-test-constants';
@@ -281,8 +281,10 @@ test.serial('search', async t => {
 		response: nupnpResponse
 	});
 
-	const foundIp = await Hue.search();
-	t.is('192.168.x.x', foundIp);
+	const foundBridges = await Hue.search();
+	t.deepEqual(foundBridges, [new HueUPNPResponse(nupnpResponse[0])]);
+	t.is(foundBridges.length, 1);
+	t.is(foundBridges[0].internalipaddress, '192.168.x.x');
 
 });
 

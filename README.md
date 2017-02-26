@@ -15,10 +15,23 @@ For a full breakdown of what the Philips Hue API/SDK offers, check out the [offi
 
 1. Generate and save your MD5 hash (any [MD5 generator](http://www.miraclesalad.com/webtools/md5.php) will do). Be sure to save your hash and the passphrase used to generate it in a safe place.
 
-2. Find the IP address of your Hue wireless bridge. This can be gathered in a number of ways, including the meethue.com control panel, https://www.meethue.com/en-US/user/preferencessmartbridge, by clicking on the "Show me more" link. See [screenshot](http://imgur.com/yDhCp) for an example. Alternatively, you can browse to [this URL](http://www.meethue.com/api/nupnp), and use the value displayed in `internalipaddress`.
+2. Find the IP address of your Hue wireless bridge. This can be gathered in a number of ways, including the meethue.com control panel, https://www.meethue.com/en-US/user/preferencessmartbridge, by clicking on the "Show me more" link. See [screenshot](http://imgur.com/yDhCp) for an example. Alternatively, you can browse to [this URL](http://www.meethue.com/api/nupnp), and use the value displayed in `internalipaddress`. This module now supports a static `search` operation, allowing you to find the first Hue bridge IP address found on the local network:
+```typescript
+import { Hue } from 'hue-hacking-node';
 
-3. Quick example configuration: 
-```typescript 
+const foundIP = await Hue.search();
+
+// or, if you can't use ES6 async / await
+let foundIP = null;
+
+Hue.search().then(ip => {
+  foundIP = ip;
+});
+
+```
+
+3. Quick example configuration:
+```typescript
 import { Hue } from 'hue-hacking-node';
 
 const bridgeIP = '192.168.x.x';
@@ -32,8 +45,6 @@ const hue = new Hue({
 });
 ```
 
-4. __Optional:__ If you have more than 3 bulbs (the number included in the Hue starter kit), call the setNumberOfLamps() function, passing in the total number of lamps available, prior to using the lamp control functions.
-
-For the best introduction to instantiating / using this module, please see the hue-node.spec.ts file.
+For the best introduction to using this module, please see the `hue-node.spec.ts` file.
 
 &copy; 2013 Bryan Johnson; Licensed MIT.

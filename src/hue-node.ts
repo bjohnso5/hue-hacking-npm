@@ -3,7 +3,7 @@
 import axios = require('axios');
 import { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
 import { HueColors } from './hue-colors';
-import { HueConfig, XYPoint, States, Lamp, HueBridgeStateChangeResponse, HueBridgeGroupActionResponse } from './hue-interfaces';
+import { HueConfig, XYPoint, States, Lamp, HueUPNPResponse, HueBridgeStateChangeResponse, HueBridgeGroupActionResponse } from './hue-interfaces';
 
 const offState: States.PoweredState = { "on": false };
 const onState: States.PoweredState = { "on": true };
@@ -33,7 +33,7 @@ export class Hue {
      * Set the IP address of the bridge and the API key to use to control
      * the Hue lamps.
      * 
-     * @param {HueConfig} Configuration object.
+     * @param {HueConfig} config Configuration object.
      */
     private setConfig(config?: HueConfig): void {
         this.config = config || {ip: 'localhost', key: 'testapp', retrieveInitialState: false, numberOfLamps: 3};
@@ -89,7 +89,7 @@ export class Hue {
      * Convenience function used to query the state of a Hue lamp or other
      * bridge-administered resource.
      *
-     * @param {String} destination URL to send HTTP GET request to
+     * @param {string} destination URL to send HTTP GET request to
      * @return {Promise<AxiosResponse>} Promise representing the remote call to the Hue bridge
      */
     private async get(destination: string): Promise<AxiosResponse> {
@@ -119,7 +119,7 @@ export class Hue {
      * Convenience function used to build a URL to query a lamp's status.
      *
      * @param {number} lampIndex 1-based index of the Hue lamp.
-     * @return {String} URL to query a specific lamp.
+     * @return {string} URL to query a specific lamp.
      */
     private buildLampQueryURL(lampIndex: number): string {
         return `${this.buildLampCompositeURL()}/${lampIndex}`;
@@ -130,7 +130,7 @@ export class Hue {
      * index.
      *
      * @param {number} lampIndex 1-based index of the Hue lamp
-     * @return {String} URL to put state to a lamp
+     * @return {string} URL to put state to a lamp
      */
     private buildStateURL(lampIndex: number): string {
         return `${this.buildLampQueryURL(lampIndex)}/state`;
@@ -141,7 +141,7 @@ export class Hue {
      * group.
      *
      * @param {number} groupIndex 0-based index of the lamp group (where 0 refers to the reserved group of all connected lamps)
-     * @return {String} URL to trigger a group action
+     * @return {string} URL to trigger a group action
      */
     private buildGroupActionURL(groupIndex?: number): string {
         const group = groupIndex || 0;
@@ -153,7 +153,7 @@ export class Hue {
      * state.
      *
      * @param {number} lampIndex 1-based index of the Hue lamp to modify.
-     * @param {String} data String containing the JSON state object to commit to the lamp.
+     * @param {string} data String containing the JSON state object to commit to the lamp.
      * @return {AxiosPromise} Promise representing the remote call to the Hue bridge
      */
     private async put(lampIndex: number, data: any): Promise<AxiosResponse> {
@@ -229,8 +229,14 @@ export class Hue {
      * 
      * @return {Promise<string>} Promise representing the remote call
      */
-    public static async search(): Promise<string> {
-        return _http.get(nupnpEndpoint).then(r => r.data[0].internalipaddress);
+    public static async search(): Promise<HueUPNPResponse[]> {
+        return _http.get(nupnpEndpoint).then(r => {
+            let response: HueUPNPResponse[] = [];
+            for(let bridge of r.data) {
+                response.push(new HueUPNPResponse(bridge));
+            }
+            return response;
+        });
     }
 
     /**
@@ -288,7 +294,7 @@ export class Hue {
      * the provided hex color.
      *
      * @param {number} lampIndex 1-based index of the Hue lamp to colorize.
-     * @param {String} color String representing a hexadecimal color value.
+     * @param {string} color String representing a hexadecimal color value.
      * @return {Promise<AxiosResponse>} Promise representing the remote call
      */
     public async setColor(lampIndex: number, color: string): Promise<HueBridgeStateChangeResponse> {
@@ -316,7 +322,7 @@ export class Hue {
      * Sets all connected lamps to the approximate CIE x,y equivalent of 
      * the provided hex color.
      *
-     * @param {String} color String representing a hexadecimal color value.
+     * @param {string} color String representing a hexadecimal color value.
      * @return {Promise<AxiosResponse>} Promise representing the remote call
      */
     public async setAllColors(color: string): Promise<HueBridgeGroupActionResponse> {

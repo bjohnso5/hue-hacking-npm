@@ -13,6 +13,26 @@ export interface HueConfig {
     timeout?: number;
 }
 
+export interface IHueUPNPResponse {
+    id: string;
+    internalipaddress: string;
+}
+
+export class HueUPNPResponse implements IHueUPNPResponse {
+    
+    id: string;
+    internalipaddress: string;
+    
+    constructor(data: any) {
+        if(data.id && typeof data.id === 'string') {
+            this.id = data.id;
+        }
+        if(data.internalipaddress && typeof data.internalipaddress === 'string') {
+            this.internalipaddress = data.internalipaddress;
+        }
+    }
+}
+
 export module States {
     export interface PoweredState {
         on?: boolean;
