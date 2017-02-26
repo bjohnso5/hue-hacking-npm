@@ -61,8 +61,8 @@ export class Hue {
                 let promise = this.getLampState(i + 1);
                 promises.push(promise);
                 
-                promise.then(response => {
-                    this.lampStates[i] = response.data.state;
+                promise.then(r => {
+                    this.lampStates[i] = r.data.state;
                 }); 
             }
         } else {
@@ -190,8 +190,8 @@ export class Hue {
      * @return {Promise<number>} Promise to retrieve the brightness of the lamp at lampIndex. 0 - 254.
      */
     public async getBrightness(lampIndex: number): Promise<number> {
-        return this.get(this.buildLampQueryURL(lampIndex)).then(response => {
-            let state: States.LampState = response.data && response.data.state ? response.data.state : {};
+        return this.get(this.buildLampQueryURL(lampIndex)).then(r => {
+            let state: States.LampState = r.data && r.data.state ? r.data.state : {};
             return state.bri || undefined;
         });
     }
@@ -230,7 +230,7 @@ export class Hue {
      * @return {Promise<string>} Promise representing the remote call
      */
     public static async search(): Promise<string> {
-        return _http.get(nupnpEndpoint).then(response => response.data[0].internalipaddress);
+        return _http.get(nupnpEndpoint).then(r => r.data[0].internalipaddress);
     }
 
     /**
@@ -252,7 +252,7 @@ export class Hue {
      * @return {Promise<AxiosResponse>} Promise representing the remote call
      */
     public async flash(lampIndex: number): Promise<HueBridgeStateChangeResponse> {
-        return this.put(lampIndex, shortFlashState).then(response => new HueBridgeStateChangeResponse(response.data));
+        return this.put(lampIndex, shortFlashState).then(r => new HueBridgeStateChangeResponse(r.data));
     }
 
     /** 
@@ -261,7 +261,7 @@ export class Hue {
      * @return {Promise<AxiosResponse>} Promise representing the remote call
      */
     public async flashAll(): Promise<HueBridgeGroupActionResponse> {
-        return this.putGroupAction(0, shortFlashState).then(response => new HueBridgeGroupActionResponse(response.data));
+        return this.putGroupAction(0, shortFlashState).then(r => new HueBridgeGroupActionResponse(r.data));
     }
 
     /** 
@@ -271,7 +271,7 @@ export class Hue {
      * @return {Promise<AxiosResponse>} Promise representing the remote call
      */
     public async longFlash(lampIndex: number): Promise<HueBridgeStateChangeResponse> {
-        return this.put(lampIndex, longFlashState).then(response => new HueBridgeStateChangeResponse(response.data));
+        return this.put(lampIndex, longFlashState).then(r => new HueBridgeStateChangeResponse(r.data));
     }
 
     /** 
@@ -439,7 +439,7 @@ export class Hue {
      * @return {Promise<AxiosResponse>} Promise representing the remote call
      */
     public async brightenAll(increment?: number): Promise<HueBridgeGroupActionResponse> {
-        return this.putGroupAction(0, this.buildBrightenState(increment)).then(response => new HueBridgeGroupActionResponse(response.data));
+        return this.putGroupAction(0, this.buildBrightenState(increment)).then(r => new HueBridgeGroupActionResponse(r.data));
     }
 
     /**
@@ -449,7 +449,7 @@ export class Hue {
      * @return {Promise<AxiosResponse>} Promise representing the remote call
      */
     public async startColorLoop(lampIndex: number): Promise<HueBridgeStateChangeResponse> {
-        return this.put(lampIndex, colorLoopEffect).then(response => new HueBridgeStateChangeResponse(response.data));
+        return this.put(lampIndex, colorLoopEffect).then(r => new HueBridgeStateChangeResponse(r.data));
     }
 
     /**
@@ -459,7 +459,7 @@ export class Hue {
      * @return {Promise<AxiosResponse>} Promise representing the remote call
      */
     public async stopEffect(lampIndex: number): Promise<HueBridgeStateChangeResponse> {
-        return this.put(lampIndex, noEffect).then(response => new HueBridgeStateChangeResponse(response.data));
+        return this.put(lampIndex, noEffect).then(r => new HueBridgeStateChangeResponse(r.data));
     }
 
     /**
@@ -468,9 +468,9 @@ export class Hue {
      * @return {Promise<AxiosResponse>} Promise representing the remote call
      */
     public async getLampStates(): Promise<States.LampState[]> {
-        return this.get(this.buildLampCompositeURL()).then(response => {
+        return this.get(this.buildLampCompositeURL()).then(r => {
             let states: States.LampState[] = [];
-            let data = response.data;
+            let data = r.data;
             for(let key in data) {
                 let state = data[key].state;
                 if(state.reachable) {
@@ -485,10 +485,10 @@ export class Hue {
      * Get a collection
      */
     public async getLamps(): Promise<Lamp[]> {
-        return this.get(this.buildLampCompositeURL()).then(response => {
+        return this.get(this.buildLampCompositeURL()).then(r => {
             let lamps: Lamp[] = [];
-            for(let key in response.data) {
-                let lamp: Lamp = response.data[key];
+            for(let key in r.data) {
+                let lamp: Lamp = r.data[key];
                 lamps.push(lamp);
             }
             return lamps;
