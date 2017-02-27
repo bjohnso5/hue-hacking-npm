@@ -271,6 +271,38 @@ test.serial('setBrightness', async t => {
 	t.deepEqual(getBriResponse, 231);
 });
 
+test.serial('setGroupBrightness', async t => {
+
+	const responsePayload: UpdateConfirmation[] = [
+		{ success: { address: "groups/1/action/bri", value: 231 } }
+	];
+
+	moxios.stubRequest(`${baseURL}/groups/1/action`, {
+		status: 200,
+		method: 'PUT',
+		response: responsePayload
+	});
+
+	const setBriResponse = await hue.setGroupBrightness(1, 231);
+	t.deepEqual(setBriResponse, new HueBridgeGroupActionResponse(responsePayload));
+});
+
+test.serial('setAllBrightness', async t => {
+
+	const responsePayload: UpdateConfirmation[] = [
+		{ success: { address: "groups/0/action/bri", value: 231 } }
+	];
+
+	moxios.stubRequest(`${baseURL}/groups/0/action`, {
+		status: 200,
+		method: 'PUT',
+		response: responsePayload
+	});
+
+	const setBriResponse = await hue.setAllBrightness(231);
+	t.deepEqual(setBriResponse, new HueBridgeGroupActionResponse(responsePayload));
+});
+
 test.serial('search', async t => {
 
 	const nupnpResponse = [{"id":"785d973935391ad0","internalipaddress":"192.168.x.x"}];
@@ -375,6 +407,28 @@ test.serial('flashAll', async t => {
 	t.deepEqual(groupFlashResponse, new HueBridgeGroupActionResponse(responsePayload));
 });
 
+test.serial('longFlash', async t => {
+const responsePayload = [
+		{ success: { "lights/1/state/alert": "lselect" } }
+	];
+
+	moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
+
+	const flashResponse = await hue.longFlash(1);
+	t.deepEqual(flashResponse, new HueBridgeStateChangeResponse(responsePayload));
+});
+
+test.serial('longFlashAll', async t => {
+	const responsePayload: UpdateConfirmation[] = [
+		{ success: { address: "groups/0/action/alert", value: "lselect" } }
+	];
+
+	moxios.stubRequest(groupActionPath(0), successfulPut(responsePayload));
+
+	const groupFlashResponse = await hue.longFlashAll();
+	t.deepEqual(groupFlashResponse, new HueBridgeGroupActionResponse(responsePayload));
+});
+
 test.serial('startColorLoop', async t => {
 	const responsePayload: any[] = [
 		{ success: { "lights/1/state/effect": "colorloop" } }
@@ -393,7 +447,7 @@ test.serial('stopEffect', async t => {
 
 	moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
 
-	const stopEffectResponse = await hue.startColorLoop(1);
+	const stopEffectResponse = await hue.stopEffect(1);
 	t.deepEqual(stopEffectResponse, new HueBridgeStateChangeResponse(responsePayload));
 });
 
@@ -417,4 +471,8 @@ test.serial('setTransitionTime', t => {
 	const updatedTransitionTime = hue.getTransitionTime();
 
 	t.is(updatedTransitionTime, 150);
+});
+
+test.serial('getConfig', t => {
+	t.truthy(hue.getConfig());
 });
