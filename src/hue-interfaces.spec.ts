@@ -1,4 +1,4 @@
-import { RGB, XYPoint } from './hue-interfaces';
+import { RGB, XYPoint, clampToRange } from './hue-interfaces';
 import test from 'ava';
 
 const rgb: RGB = new RGB(...[1, 2, 256]);
@@ -25,4 +25,11 @@ test('XYPoint constructor', t => {
 
 test('XYPoint toString', t => {
   t.deepEqual(coords.toString(), '{x: 0.1, y: 0.2}');
+});
+
+test('clampToRange', t => {
+  const min = 0, max = 255;
+  t.is(clampToRange(min, max, 254), 254);
+  t.is(clampToRange(min, max, 256), max);
+  t.is(clampToRange(min, max, -15), min);
 });

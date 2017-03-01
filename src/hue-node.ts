@@ -3,7 +3,7 @@
 import axios = require('axios');
 import { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
 import { HueColors } from './hue-colors';
-import { HueConfig, XYPoint, States, Lamp, HueUPNPResponse, HueBridgeStateChangeResponse, HueBridgeGroupActionResponse } from './hue-interfaces';
+import { HueConfig, XYPoint, States, Lamp, HueUPNPResponse, HueBridgeStateChangeResponse, HueBridgeGroupActionResponse, clampToRange } from './hue-interfaces';
 
 const offState: States.PoweredState = { "on": false };
 const onState: States.PoweredState = { "on": true };
@@ -311,9 +311,8 @@ export class Hue {
      * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call.
      */
     public async setColorTemperature(lampIndex: number, colorTemperature: number): Promise<HueBridgeStateChangeResponse> {
-        let temperature = (colorTemperature < 2000) ? 2000 : colorTemperature;
-        temperature = (temperature > 6000) ? 6000 : colorTemperature;
-        const convertedTemp = Math.floor(this.colors.kelvinToMired(temperature));
+        const clampedK = clampToRange(2000, 6000, colorTemperature);
+        const convertedTemp = Math.floor(this.colors.kelvinToMired(clampedK));
 
         return this.put(lampIndex, { "ct": convertedTemp }).then(r => new HueBridgeStateChangeResponse(r.data));
     }

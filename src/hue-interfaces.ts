@@ -162,6 +162,10 @@ export class HueBridgeGroupActionResponse {
     }
 }
 
+export function clampToRange(min: number, max: number, value: number): number {
+    return Math.min(Math.max(min, value), max);
+}
+
 export class XYPoint {
     x: number;
     y: number;
@@ -177,18 +181,17 @@ export class XYPoint {
 }
 
 export class RGB {
+    private static MIN_VALUE = 0;
+    private static MAX_VALUE = 255;
+    
     public r: number;
     public g: number;
     public b: number;
 
     constructor(...rgb: number[]) {
-        this.r = this.clampToRange(rgb[0]||0);
-        this.g = this.clampToRange(rgb[1]||0);
-        this.b = this.clampToRange(rgb[2]||0);
-    }
-
-    private clampToRange(value: number): number {
-        return Math.min(Math.max(0, value), 255);
+        this.r = clampToRange(RGB.MIN_VALUE, RGB.MAX_VALUE, rgb[0]||0);
+        this.g = clampToRange(RGB.MIN_VALUE, RGB.MAX_VALUE, rgb[1]||0);
+        this.b = clampToRange(RGB.MIN_VALUE, RGB.MAX_VALUE, rgb[2]||0);
     }
 
     public toString(): string {
