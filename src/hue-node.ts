@@ -476,7 +476,7 @@ export class Hue {
     public async getLampStates(): Promise<States.LampState[]> {
         return this.get(this.buildLampCompositeURL()).then(r => {
             let states: States.LampState[] = [];
-            let data = r.data;
+            const data = r.data;
             for(let key in data) {
                 let state = data[key].state;
                 if(state.reachable) {
@@ -493,8 +493,9 @@ export class Hue {
     public async getLamps(): Promise<Lamp[]> {
         return this.get(this.buildLampCompositeURL()).then(r => {
             let lamps: Lamp[] = [];
-            for(let key in r.data) {
-                let lamp: Lamp = r.data[key];
+            const data = r.data;
+            for(let key in data) {
+                let lamp: Lamp = data[key];
                 lamps.push(lamp);
             }
             return lamps;

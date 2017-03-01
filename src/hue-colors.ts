@@ -9,7 +9,7 @@
  * Copyright (c) 2013 Bryan Johnson; Licensed MIT */
 
 import { CssColors } from './hue-css-colors';
-import { RGB, XYPoint, __debug } from './hue-interfaces';
+import { RGB, XYPoint } from './hue-interfaces';
 
 export const CIERed = new XYPoint(0.675, 0.322);
 export const CIELime = new XYPoint(0.4091, 0.518);
@@ -336,14 +336,11 @@ export class HueColors {
             cssColor = this.cssColors.getHexCode(lowerCaseHex);
         if(cssColor !== undefined) {
             xy = this.hexToCIE1931(cssColor);
-            __debug(`CSS Color found: ${hexColor}, with CIE coordinates: ${xy}`);
         } else if (null !== hex) {
             xy = this.hexToCIE1931(hex);
-            __debug(`Hex literal found: ${hex}, with CIE coordinates: ${xy}`);
         } else {
             let rgb = new RGB(this.randomRGBValue(), this.randomRGBValue(), this.randomRGBValue());
             xy = this.rgbToCIE1931(rgb);
-            __debug(`No value found, generating random RGB value: ${rgb}, with CIE coordinates: ${xy}`);
         }
         return xy;
     }

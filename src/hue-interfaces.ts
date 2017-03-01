@@ -199,12 +199,3 @@ export class RGB {
         return `rgb(${this.r}, ${this.g}, ${this.b})`;
     }
 }
-
-/**
- * Debug-only output
- */
-export function __debug(message: string) {
-    if(process.env.DEBUG) {
-        console.log(message);
-    }
-}
