@@ -91,7 +91,7 @@ export module States {
         sat: number;
         effect: EffectOption;
         xy: number[];
-        colortemp: number;
+        ct: number;
         alert: AlertOption;
         colormode: ColormodeOption;
         reachable: boolean;

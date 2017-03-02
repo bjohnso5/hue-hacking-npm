@@ -12,22 +12,43 @@ const baseURL = `http://${ip}/api/${key}`;
 
 let hue: Hue = null;
 
+/**
+ * Return a string representing the state URI path to a specific indexed Hue lamp
+ * @param index Lamp index
+ */
 function lightStatePath(index: number): string {
 	return `${baseURL}/lights/${index}/state`;
 }
 
+/**
+ * Return a string representing the action URI path to a specific indexed Hue lamp group 
+ * @param index Lamp group index
+ */
 function groupActionPath(index: number): string {
 	return `${baseURL}/groups/${index}/action`;
 }
 
+/**
+ * Return an object representing a successful axios/moxios PUT response from a remote server
+ * @param responsePayload Response body
+ */
 function successfulPut(responsePayload: any): any {
 	return successfulRequest("PUT", responsePayload);
 }
 
+/**
+ * Return an object representing a successful axios/moxios GET response from a remote server
+ * @param responsePayload Response body
+ */
 function successfulGet(responsePayload: any): any {
 	return successfulRequest("GET", responsePayload);
 }
 
+/**
+ * Return an object representing a successful axios/moxios response from a remote server
+ * @param requestMethod HTTP method (e.g. GET, PUT, etc.)
+ * @param responsePayload Response body
+ */
 function successfulRequest(requestMethod: string, responsePayload: any): any {
 	return {
 		status: 200,
@@ -479,4 +500,12 @@ test.serial('setTransitionTime', t => {
 
 test.serial('getConfig', t => {
 	t.truthy(hue.getConfig());
+});
+
+test.serial('getLamps', async t => {
+	
+	moxios.stubRequest(`${baseURL}/lights`, successfulGet(TestConstants.lamp_response));	
+	const response = await hue.getLamps();
+	
+	t.deepEqual(response, TestConstants.lamps);
 });
