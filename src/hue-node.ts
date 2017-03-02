@@ -473,13 +473,11 @@ export class Hue {
      * @return {Promise<AxiosResponse>} Promise representing the remote call
      */
     public async getLampStates(): Promise<States.LampState[]> {
-        return this.get(this.buildLampCompositeURL()).then(r => {
+        return this.getLamps().then(r => {
             let states: States.LampState[] = [];
-            const data = r.data;
-            for(let key in data) {
-                let state = data[key].state;
-                if(state.reachable) {
-                    states.push(state);
+            for(let lamp of r) {
+                if(lamp.state.reachable) {
+                    states.push(lamp.state);
                 }
             }
             return states;
