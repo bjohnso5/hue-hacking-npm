@@ -1,4 +1,4 @@
-import { RGB, XYPoint, clampToRange } from './hue-interfaces';
+import { RGB, XYPoint, HueUPNPResponse, clampToRange } from './hue-interfaces';
 import test from 'ava';
 
 const rgb: RGB = new RGB(...[1, 2, 256]);
@@ -25,6 +25,16 @@ test('XYPoint constructor', t => {
 
 test('XYPoint toString', t => {
   t.deepEqual(coords.toString(), '{x: 0.1, y: 0.2}');
+});
+
+test('HueUPNPResponse constructor', t => {
+  const ok = new HueUPNPResponse({id: '1234', internalipaddress: '192.168.x.x'});
+  t.is(ok.id, '1234')
+  t.is(ok.internalipaddress, '192.168.x.x');
+
+  const empty = new HueUPNPResponse({thing1: 'narp', thing2: 'pfft'});
+  t.falsy(empty.id);
+  t.falsy(empty.internalipaddress);
 });
 
 test('clampToRange', t => {
