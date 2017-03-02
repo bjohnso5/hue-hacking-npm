@@ -15,17 +15,25 @@ For a full breakdown of what the Philips Hue API/SDK offers, check out the [offi
 
 1. Generate and save your MD5 hash (any [MD5 generator](http://www.miraclesalad.com/webtools/md5.php) will do). Be sure to save your hash and the passphrase used to generate it in a safe place.
 
-2. Find the IP address of your Hue wireless bridge. This can be gathered in a number of ways, including the meethue.com control panel, https://www.meethue.com/en-US/user/preferencessmartbridge, by clicking on the "Show me more" link. See [screenshot](http://imgur.com/yDhCp) for an example. Alternatively, you can browse to [this URL](http://www.meethue.com/api/nupnp), and use the value displayed in `internalipaddress`. This module now supports a static `search` operation, allowing you to find the first Hue bridge IP address found on the local network:
+2. Find the IP address of your Hue wireless bridge. This can be gathered in a number of ways, including the meethue.com control panel, https://www.meethue.com/en-US/user/preferencessmartbridge, by clicking on the "Show me more" link. See [screenshot](http://imgur.com/yDhCp) for an example. Alternatively, you can browse to [this URL](http://www.meethue.com/api/nupnp), and use the value displayed in `internalipaddress`. This module now supports a static `search` operation, allowing you to find any Hue bridges attached to the local network (using the same UPNP approach as mentioned previously):
 ```typescript
-import { Hue } from 'hue-hacking-node';
+import { Hue, HueUPNPResponse } from 'hue-hacking-node';
 
-const foundIP = await Hue.search();
+const foundBridges: HueUPNPResponse[] = await Hue.search();
+let validBridgeIPs: string[] = [];
+for(let bridge of foundBridges) {
+  validBridgeIPs.push(bridge.internalipaddress);
+}
+```
+Or, if you can't use async / await semantics in your module:
+```typescript
+import { Hue, HueUPNPResponse } from 'hue-hacking-node';
 
-// or, if you can't use ES6 async / await
-let foundIP = null;
-
-Hue.search().then(ip => {
-  foundIP = ip;
+let validBridgeIPs: string[] = [];
+Hue.search().then(bridges => {
+  for(let bridge of foundBridges) {
+    validBridgeIPs.push(bridge.internalipaddress);
+  }
 });
 
 ```
