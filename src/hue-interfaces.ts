@@ -162,6 +162,12 @@ export class HueBridgeGroupActionResponse {
     }
 }
 
+/**
+ * Clamp a provided value into a range such that min <= value <= max.
+ * @param min Smallest possible acceptable value
+ * @param max Largest possible acceptable value
+ * @param value Value that must be between min and max, inclusive
+ */
 export function clampToRange(min: number, max: number, value: number): number {
     return Math.min(Math.max(min, value), max);
 }
@@ -181,17 +187,17 @@ export class XYPoint {
 }
 
 export class RGB {
-    private static MIN_VALUE = 0;
-    private static MAX_VALUE = 255;
+    private static MIN = 0;
+    private static MAX = 255;
     
     public r: number;
     public g: number;
     public b: number;
 
     constructor(...rgb: number[]) {
-        this.r = clampToRange(RGB.MIN_VALUE, RGB.MAX_VALUE, rgb[0]||0);
-        this.g = clampToRange(RGB.MIN_VALUE, RGB.MAX_VALUE, rgb[1]||0);
-        this.b = clampToRange(RGB.MIN_VALUE, RGB.MAX_VALUE, rgb[2]||0);
+        this.r = clampToRange(RGB.MIN, RGB.MAX, rgb[0]||0);
+        this.g = clampToRange(RGB.MIN, RGB.MAX, rgb[1]||0);
+        this.b = clampToRange(RGB.MIN, RGB.MAX, rgb[2]||0);
     }
 
     public toString(): string {

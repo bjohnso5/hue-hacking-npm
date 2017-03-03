@@ -13,11 +13,16 @@ const cieRGBBlue: XYPoint = { x: 0.167, y: 0.04 };
 const cieRGBWhite: XYPoint = { x: 0.3, y: 0.3 };
 const coordinateEpsilon: number = 1e-1; // fairly loose definition of equality
 
+/**
+ * Check equality with an epsilon window value for floating point friendliness.
+ * @param actual Output value from some routine
+ * @param expected Value that is reasonable to have expected from said routine
+ */
 function closeEnoughForGovernmentWork(actual: XYPoint, expected: XYPoint): boolean {
-  const dX = Math.abs(actual.x - expected.x),
-        dY = Math.abs(actual.y - expected.y);
+  const dX = Math.abs(actual.x) - Math.abs(expected.x),
+        dY = Math.abs(actual.y) - Math.abs(expected.y);
 
-  return dX < coordinateEpsilon && dY < coordinateEpsilon;
+  return dX <= coordinateEpsilon && dY <= coordinateEpsilon;
 }
 
 test('known parameter returns known coordinates (full red)', t => {
