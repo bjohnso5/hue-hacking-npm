@@ -206,7 +206,7 @@ export class HueColors {
         const dx = one.x - two.x, // horizontal difference
             dy = one.y - two.y; // vertical difference
         
-        return Math.sqrt(dx * dx + dy * dy);
+        return Math.sqrt((dx * dx) + (dy * dy));
     }
 
     /**
