@@ -34,8 +34,7 @@
   "author": "Bryan Johnson",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.15.3",
-    "dotenv": "^4.0.0"
+    "axios": "^0.15.3"
   },
   "devDependencies": {
     "@types/node": "^7.0.0",
