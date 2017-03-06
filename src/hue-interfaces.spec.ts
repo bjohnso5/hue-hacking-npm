@@ -35,6 +35,10 @@ test('HueUPNPResponse constructor', t => {
   const empty = new HueUPNPResponse({thing1: 'narp', thing2: 'pfft'});
   t.falsy(empty.id);
   t.falsy(empty.internalipaddress);
+
+  const nullResponse = new HueUPNPResponse(null);
+  t.is(undefined, nullResponse.id);
+  t.is(undefined, nullResponse.internalipaddress);
 });
 
 test('clampToRange', t => {
