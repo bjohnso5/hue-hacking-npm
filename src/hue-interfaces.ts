@@ -1,3 +1,4 @@
+
 export interface HueConfig {
     /** API key / appname registered with the Hue bridge (requires physical access to the hardware to initially configure) */
     key: string;
@@ -24,11 +25,13 @@ export class HueUPNPResponse implements IHueUPNPResponse {
     internalipaddress: string;
     
     constructor(data: any) {
-        if(data.id && typeof data.id === 'string') {
-            this.id = data.id;
-        }
-        if(data.internalipaddress && typeof data.internalipaddress === 'string') {
-            this.internalipaddress = data.internalipaddress;
+        if(data) {
+            if(data.id && typeof data.id === 'string') {
+                this.id = data.id;
+            }
+            if(data.internalipaddress && typeof data.internalipaddress === 'string') {
+                this.internalipaddress = data.internalipaddress;
+            }
         }
     }
 }
@@ -141,6 +144,7 @@ export class HueBridgeStateChangeResponse {
                 changedStates.push(changedState);
             }
         }
+
         this.changedStates = changedStates;
     }
 }
@@ -158,6 +162,7 @@ export class HueBridgeGroupActionResponse {
         for(let update of response) {
             acknowledgedActions.push(update.success);
         }
+
         this.acknowledgedActions = acknowledgedActions;
     }
 }
@@ -172,20 +177,31 @@ export function clampToRange(min: number, max: number, value: number): number {
     return Math.min(Math.max(min, value), max);
 }
 
+/**
+ * Convenience wrapper class around the two floating point numbers that represent
+ * a position in the CIE 1931 color gamut triangle.
+ */
 export class XYPoint {
-    x: number;
-    y: number;
+    public x: number;
+    public y: number;
 
     constructor(...xy: number[]) {
         this.x = xy[0];
         this.y = xy[1];
     }
 
+    /**
+     * Return a human readable representation of this XYPoint instance.
+     */
     public toString(): string {
         return `{x: ${this.x}, y: ${this.y}}`;
     }
 }
 
+/**
+ * Convenience wrapper class around the three 0-255 range integer values representing
+ * a traditional RGB color.
+ */
 export class RGB {
     private static MIN = 0;
     private static MAX = 255;
@@ -200,10 +216,16 @@ export class RGB {
         this.b = clampToRange(RGB.MIN, RGB.MAX, rgb[2]||0);
     }
 
+    /**
+     * Return a human-readable representation of this RGB color value.
+     */
     public toString(): string {
         return `r: ${this.r}, g: ${this.g}, b: ${this.b}`;
     }
 
+    /**
+     * Return a usable CSS rgb() function notation representation of this RGB color value.
+     */
     public toCssString(): string {
         return `rgb(${this.r}, ${this.g}, ${this.b})`;
     }
