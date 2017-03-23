@@ -21,3 +21,6 @@ src/**/*.js*
 src/**/*.d.ts
 index.js*
 index.d.ts
+
+/compiled
+*.metadata.json

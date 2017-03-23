@@ -8,10 +8,10 @@
     "url": "https://github.com/bjohnso5/hue-hacking-npm"
   },
   "scripts": {
-    "test": "tsc && nyc --reporter=lcov ava --verbose && gulp",
+    "test": "ngc && nyc --reporter=lcov ava --verbose && gulp",
     "clean": "rm -rf dist",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "prepublish": "rm -rf dist && tsc && ava && gulp"
+    "prepublish": "rm -rf dist && ngc && ava && gulp"
   },
   "ava": {
     "files": [
@@ -37,6 +37,12 @@
     "axios": "^0.15.3"
   },
   "devDependencies": {
+    "@angular/common": "^2.4.10",
+    "@angular/compiler": "^2.4.10",
+    "@angular/compiler-cli": "^2.4.10",
+    "@angular/core": "^2.4.10",
+    "@angular/platform-browser": "^2.4.10",
+    "@angular/platform-server": "^2.4.10",
     "@types/node": "^7.0.0",
     "ava": "^0.17.0",
     "coveralls": "^2.11.15",
@@ -44,6 +50,8 @@
     "gulp-clean": "^0.3.2",
     "moxios": "^0.3.0",
     "nyc": "^10.1.2",
-    "typescript": "^2.2.1"
+    "rxjs": "^5.2.0",
+    "typescript": "^2.2.1",
+    "zone.js": "^0.8.5"
   }
 }

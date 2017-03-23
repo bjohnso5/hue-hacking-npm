@@ -1,3 +1,5 @@
 # Intentionally empty! Used to override .gitignore
 
 **/.coveralls.yml
+
+/compiled
