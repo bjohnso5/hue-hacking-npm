@@ -1,6 +1,6 @@
 /* Copyright (c) 2013 Bryan Johnson; Licensed MIT */
 
-import axios = require('axios');
+import * as axios from 'axios';
 import { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
 import { HueColors } from './hue-colors';
 import { HueConfig, XYPoint, States, Lamp, HueUPNPResponse, HueBridgeStateChangeResponse, HueBridgeGroupActionResponse, clampToRange } from './hue-interfaces';
