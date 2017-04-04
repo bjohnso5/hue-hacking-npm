@@ -20,8 +20,8 @@ For a full breakdown of what the Philips Hue API/SDK offers, check out the [offi
 import { Hue, HueUPNPResponse } from 'hue-hacking-node';
 
 const foundBridges: HueUPNPResponse[] = await Hue.search();
-let validBridgeIPs: string[] = [];
-for(let bridge of foundBridges) {
+const validBridgeIPs: string[] = [];
+for (let bridge of foundBridges) {
   validBridgeIPs.push(bridge.internalipaddress);
 }
 ```
@@ -31,7 +31,7 @@ import { Hue, HueUPNPResponse } from 'hue-hacking-node';
 
 let validBridgeIPs: string[] = [];
 Hue.search().then(bridges => {
-  for(let bridge of foundBridges) {
+  for (let bridge of bridges) {
     validBridgeIPs.push(bridge.internalipaddress);
   }
 });
