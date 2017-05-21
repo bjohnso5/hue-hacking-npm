@@ -101,7 +101,7 @@ test.serial('init with retrieval', async t => {
 	t.pass();
 });
 
-test.serial.beforeEach(async t => {
+test.beforeEach.serial(async t => {
 	hue = new Hue({
 		ip: ip,
 		key: key,
@@ -113,7 +113,7 @@ test.serial.beforeEach(async t => {
 	await hue.init();
 });
 
-test.serial.afterEach(t => {
+test.afterEach.serial(t => {
 	moxios.uninstall(hue.getHttp());
 	moxios.uninstall(Hue.getHttp());
 });
@@ -162,7 +162,7 @@ test.serial('init with retrieval', async t => {
 	t.pass();
 });
 
-test.serial.beforeEach(async t => {
+test.beforeEach.serial(async t => {
 	hue = new Hue({
 		ip: ip,
 		key: key,
@@ -174,7 +174,7 @@ test.serial.beforeEach(async t => {
 	await hue.init();
 });
 
-test.serial.afterEach(t => {
+test.afterEach.serial(t => {
 	moxios.uninstall(hue.getHttp());
 	moxios.uninstall(Hue.getHttp());
 });
