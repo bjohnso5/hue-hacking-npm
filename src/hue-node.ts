@@ -485,7 +485,9 @@ export class Hue {
     }
 
     /**
-     * Get a collection
+     * Get a collection of lamps that the local bridge is aware of.
+     * 
+     * @return {Promise<Lamp[]>} Collection of known lamps.
      */
     public async getLamps(): Promise<Lamp[]> {
         return this.get(this.buildLampCompositeURL()).then(r => {
