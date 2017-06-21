@@ -1,5 +1,5 @@
 /**
- * Color utility functions, exposed as an AMD module.
+ * Color utility functions, exposed as a Typescript class.
  * No external dependencies.
  * Special thanks for the RGB to CIE conversion code goes out to the Q42 team 
  * for their Q42.HueApi work. Dank u!
