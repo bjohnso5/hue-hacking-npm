@@ -53,17 +53,17 @@ test('getCIEColor random values', t => {
 test('CIE1931ToRGB', t => {
   const rgb: RGB = new RGB(...[167, 167, 255]);
   const xyPoint: XYPoint = new XYPoint(...[0.22, 0.22]);
-  t.deepEqual(rgb, colors.CIE1931ToRGB(xyPoint));
+  t.deepEqual(colors.CIE1931ToRGB(xyPoint), rgb);
 });
 
 test('miredToKelvin', t => {
   const mired: number = 0.2;
   const expectedOutcome: number = 1e6 / mired;
-  t.is(expectedOutcome, colors.miredToKelvin(mired));
+  t.is(colors.miredToKelvin(mired), expectedOutcome);
 });
 
 test('kelvinToMired', t => {
   const kelvin: number = 3500;
   const expectedOutcome: number = 1e6 / kelvin;
-  t.is(expectedOutcome, colors.kelvinToMired(kelvin));
+  t.is(colors.kelvinToMired(kelvin), expectedOutcome);
 });
