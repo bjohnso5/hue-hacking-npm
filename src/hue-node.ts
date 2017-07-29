@@ -21,7 +21,7 @@ const _http = axios.default.create({
 
 export class Hue {
 
-    private lampStates: States.LampState = [];
+    private lampStates: States.LampState[] = [];
     private baseApiUrl: string = '';
     private _http: AxiosInstance = null;
 
