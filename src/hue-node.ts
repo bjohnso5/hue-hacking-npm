@@ -255,7 +255,7 @@ export class Hue {
      * Flash the lamp at lampIndex for a short time. 
      *	
      * @param {number} lampIndex 1-based index of the Hue lamp to flash.
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
      */
     public async flash(lampIndex: number): Promise<HueBridgeStateChangeResponse> {
         return this.put(lampIndex, shortFlashState).then(r => new HueBridgeStateChangeResponse(r.data));
@@ -264,7 +264,7 @@ export class Hue {
     /** 
      * Flash all connected lamps for a short time.
      *
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
      */
     public async flashAll(): Promise<HueBridgeGroupActionResponse> {
         return this.putGroupAction(0, shortFlashState).then(r => new HueBridgeGroupActionResponse(r.data));
@@ -274,7 +274,7 @@ export class Hue {
      * Flash the lamp at lampIndex for a long time.
      *
      * @param {number} lampIndex 1-based index of the Hue lamp to flash.
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
      */
     public async longFlash(lampIndex: number): Promise<HueBridgeStateChangeResponse> {
         return this.put(lampIndex, longFlashState).then(r => new HueBridgeStateChangeResponse(r.data));
@@ -283,7 +283,7 @@ export class Hue {
     /** 
      * Flash all connected lamps for a long time.
      *
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
      */
     public async longFlashAll(): Promise<HueBridgeGroupActionResponse> {
         return this.putGroupAction(0, longFlashState).then(r => new HueBridgeGroupActionResponse(r.data));
@@ -295,7 +295,7 @@ export class Hue {
      *
      * @param {number} lampIndex 1-based index of the Hue lamp to colorize.
      * @param {string} color String representing a hexadecimal color value.
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
      */
     public async setColor(lampIndex: number, color: string): Promise<HueBridgeStateChangeResponse> {
         const cieColor: XYPoint = this.colors.getCIEColor(color);
@@ -322,7 +322,7 @@ export class Hue {
      * the provided hex color.
      *
      * @param {string} color String representing a hexadecimal color value.
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
      */
     public async setAllColors(color: string): Promise<HueBridgeGroupActionResponse> {
         const cieColor: XYPoint = this.colors.getCIEColor(color);
@@ -334,7 +334,7 @@ export class Hue {
      * Turn off the lamp at lampIndex.
      *
      * @param {number} lampIndex 1-based index of the Hue lamp to turn off.
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
      */
     public async turnOff(lampIndex: number): Promise<HueBridgeStateChangeResponse> {
         return this.put(lampIndex, offState).then(r => new HueBridgeStateChangeResponse(r.data));
@@ -344,7 +344,7 @@ export class Hue {
      * Turn on the lamp at lampIndex.
      *
      * @param {number} lampIndex 1-based index of the Hue lamp to turn on.
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
      */
     public async turnOn(lampIndex: number): Promise<HueBridgeStateChangeResponse> {
         return this.put(lampIndex, onState).then(r => new HueBridgeStateChangeResponse(r.data));
@@ -353,7 +353,7 @@ export class Hue {
     /** 
      * Turn off all connected lamps.
      *
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
      */
     public async turnOffAll(): Promise<HueBridgeGroupActionResponse> {
         return this.putGroupAction(0, offState).then(r => new HueBridgeGroupActionResponse(r.data));
@@ -362,7 +362,7 @@ export class Hue {
     /** 
      * Turn on all connected lamps.
      *
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
      */
     public async turnOnAll(): Promise<HueBridgeGroupActionResponse> {
         return this.putGroupAction(0, onState).then(r => new HueBridgeGroupActionResponse(r.data));
@@ -373,7 +373,7 @@ export class Hue {
      *
      * @param {number} lampIndex 1-based index of the Hue lamp to modify.
      * @param {number} brightness Integer value between 0 and 254.
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
      */
     public async setBrightness(lampIndex: number, brightness: number): Promise<HueBridgeStateChangeResponse> {
         const briState: States.BrightnessState = this.buildBrightnessState(brightness);
@@ -384,7 +384,7 @@ export class Hue {
      * Set the brightness of all connected lamps.
      *
      * @param {number} brightness Integer value between 0 and 254.
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
      */
     public async setAllBrightness(brightness: number): Promise<HueBridgeGroupActionResponse> {
         return this.setGroupBrightness(0, brightness);
@@ -395,7 +395,7 @@ export class Hue {
      *
      * @param {number} groupIndex 0-based lamp group index.
      * @param {number} brightness Integer value between 0 and 254.
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
      */
     public async setGroupBrightness(groupIndex: number, brightness: number): Promise<HueBridgeGroupActionResponse> {
         const briState: States.BrightnessState = this.buildBrightnessState(brightness);
@@ -407,7 +407,7 @@ export class Hue {
      * 
      * @param {number} lampIndex 1-based lamp index.
      * @param {number} [decrement] Amount to decrement brightness by (between 0 and 255).
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
      */
     public async dim(lampIndex: number, decrement?: number): Promise<HueBridgeStateChangeResponse> {
         const dimState: States.BrightnessIncrementState = this.buildDimState(decrement);
@@ -418,7 +418,7 @@ export class Hue {
      * Dim all lamps by decrement.
      * 
      * @param {number} [decrement] Amount to decrement brightness by (between 0 and 255).
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
      */
     public async dimAll(decrement?: number): Promise<HueBridgeGroupActionResponse> {
         const dimState: States.BrightnessIncrementState = this.buildDimState(decrement);
@@ -430,7 +430,7 @@ export class Hue {
      *
      * @param {number} lampIndex 1-based lamp index.
      * @param {number} [increment] Amount to increment brightness by (between 0 and 255).
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
      */
     public async brighten(lampIndex: number, increment?: number): Promise<HueBridgeStateChangeResponse> {
         const brightenState: States.BrightnessIncrementState = this.buildBrightenState(increment);
@@ -441,7 +441,7 @@ export class Hue {
      * Brighten all lamps by increment.
      *
      * @param {number} increment Amount to increment brightness by (between 0 and 255).
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
      */
     public async brightenAll(increment?: number): Promise<HueBridgeGroupActionResponse> {
         return this.putGroupAction(0, this.buildBrightenState(increment)).then(r => new HueBridgeGroupActionResponse(r.data));
@@ -451,7 +451,7 @@ export class Hue {
      * Enable the colorloop effect on the indexed Hue lamp.
      * 
      * @param {number} lampIndex The indexed lamp to enable the effect on
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
      */
     public async startColorLoop(lampIndex: number): Promise<HueBridgeStateChangeResponse> {
         return this.put(lampIndex, colorLoopEffect).then(r => new HueBridgeStateChangeResponse(r.data));
@@ -461,7 +461,7 @@ export class Hue {
      * Stop the currently enabled effect (if any) on the indexed Hue lamp.
      * 
      * @param {number} lampIndex The indexed lamp to enable the effect on
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
      */
     public async stopEffect(lampIndex: number): Promise<HueBridgeStateChangeResponse> {
         return this.put(lampIndex, noEffect).then(r => new HueBridgeStateChangeResponse(r.data));
@@ -470,7 +470,7 @@ export class Hue {
     /**
      * Get the attributes of all lamps currently connected to the Hue bridge.
      * 
-     * @return {Promise<AxiosResponse>} Promise representing the remote call
+     * @return {Promise<States.LampState[]>} Promise representing the remote call
      */
     public async getLampStates(): Promise<States.LampState[]> {
         return this.getLamps().then(r => {
