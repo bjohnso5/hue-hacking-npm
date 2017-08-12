@@ -3,7 +3,7 @@
 import * as axios from 'axios';
 import { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
 import { HueColors } from './hue-colors';
-import { HueConfig, XYPoint, States, Lamp, HueUPNPResponse, HueBridgeStateChangeResponse, HueBridgeGroupActionResponse, clampToRange } from './hue-interfaces';
+import { HueBridge, HueConfig, XYPoint, States, Lamp, HueUPNPResponse, HueBridgeStateChangeResponse, HueBridgeGroupActionResponse, clampToRange } from './hue-interfaces';
 
 const offState: States.PoweredState = { "on": false };
 const onState: States.PoweredState = { "on": true };
@@ -19,13 +19,14 @@ const _http = axios.default.create({
     timeout: 5000
 });
 
-export class Hue {
+export class Hue extends HueBridge {
 
     private lampStates: States.LampState[] = [];
     private baseApiUrl: string = '';
     private _http: AxiosInstance = null;
 
     constructor(private config?: HueConfig) {
+        super();
         this.setConfig(config);
     }
 
