@@ -18,9 +18,12 @@ const coordinateEpsilon: number = 1e-1; // fairly loose definition of equality
  * @param actual Output value from some routine
  * @param expected Value that is reasonable to have expected from said routine
  */
-function closeEnoughForGovernmentWork(actual: XYPoint, expected: XYPoint): boolean {
+function closeEnoughForGovernmentWork(
+  actual: XYPoint,
+  expected: XYPoint
+): boolean {
   const dX = Math.abs(actual.x) - Math.abs(expected.x),
-        dY = Math.abs(actual.y) - Math.abs(expected.y);
+    dY = Math.abs(actual.y) - Math.abs(expected.y);
 
   return dX <= coordinateEpsilon && dY <= coordinateEpsilon;
 }
@@ -38,12 +41,16 @@ test('known parameter returns known coordinates (full blue with brightness)', t 
 });
 
 test('getCIEColor full blue', t => {
-  t.true(closeEnoughForGovernmentWork(colors.getCIEColor(hexFullBlue), cieRGBBlue));
+  t.true(
+    closeEnoughForGovernmentWork(colors.getCIEColor(hexFullBlue), cieRGBBlue)
+  );
   t.true(closeEnoughForGovernmentWork(colors.getCIEColor('0000f'), cieRGBBlue));
 });
 
 test('getCIEColor white', t => {
-  t.true(closeEnoughForGovernmentWork(colors.getCIEColor(hexFullWhite), cieRGBWhite));
+  t.true(
+    closeEnoughForGovernmentWork(colors.getCIEColor(hexFullWhite), cieRGBWhite)
+  );
 });
 
 test('getCIEColor random values', t => {

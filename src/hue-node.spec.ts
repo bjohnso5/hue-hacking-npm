@@ -1,5 +1,10 @@
 import { Hue } from '../index';
-import { HueUPNPResponse, HueBridgeStateChangeResponse, HueBridgeGroupActionResponse, UpdateConfirmation } from './hue-interfaces';
+import {
+  HueUPNPResponse,
+  HueBridgeStateChangeResponse,
+  HueBridgeGroupActionResponse,
+  UpdateConfirmation
+} from './hue-interfaces';
 import { AxiosResponse } from 'axios';
 import test from 'ava';
 import * as TestConstants from './hue-test-constants';
@@ -17,7 +22,7 @@ let hue: Hue = null;
  * @param index Lamp index
  */
 function lightStatePath(index: number): string {
-	return `${baseURL}/lights/${index}/state`;
+  return `${baseURL}/lights/${index}/state`;
 }
 
 /**
@@ -25,7 +30,7 @@ function lightStatePath(index: number): string {
  * @param index Lamp group index
  */
 function groupActionPath(index: number): string {
-	return `${baseURL}/groups/${index}/action`;
+  return `${baseURL}/groups/${index}/action`;
 }
 
 /**
@@ -33,7 +38,7 @@ function groupActionPath(index: number): string {
  * @param responsePayload Response body
  */
 function successfulPut(responsePayload: any): any {
-	return successfulRequest("PUT", responsePayload);
+  return successfulRequest('PUT', responsePayload);
 }
 
 /**
@@ -41,7 +46,7 @@ function successfulPut(responsePayload: any): any {
  * @param responsePayload Response body
  */
 function successfulGet(responsePayload: any): any {
-	return successfulRequest("GET", responsePayload);
+  return successfulRequest('GET', responsePayload);
 }
 
 /**
@@ -50,473 +55,470 @@ function successfulGet(responsePayload: any): any {
  * @param responsePayload Response body
  */
 function successfulRequest(requestMethod: string, responsePayload: any): any {
-	return {
-		status: 200,
-		method: requestMethod,
-		response: responsePayload
-	};
+  return {
+    status: 200,
+    method: requestMethod,
+    response: responsePayload
+  };
 }
 
 test.serial('init with retrieval', async t => {
+  hue = new Hue({
+    ip: ip,
+    key: key,
+    retrieveInitialState: true
+  });
 
-	hue = new Hue({
-		ip: ip,
-		key: key,
-		retrieveInitialState: true
-	});
+  moxios.install(hue.getHttp());
 
-	moxios.install(hue.getHttp());
-	
-	moxios.stubRequest(`${baseURL}/lights/1`, {
-		status: 200,
-		response: {
-			state: {
-				bri: TestConstants.full_brightness
-			}
-		}
-	});
+  moxios.stubRequest(`${baseURL}/lights/1`, {
+    status: 200,
+    response: {
+      state: {
+        bri: TestConstants.full_brightness
+      }
+    }
+  });
 
-	moxios.stubRequest(`${baseURL}/lights/2`, {
-		status: 200,
-		response: {
-			state: {
-				bri: TestConstants.full_brightness
-			}
-		}
-	});
+  moxios.stubRequest(`${baseURL}/lights/2`, {
+    status: 200,
+    response: {
+      state: {
+        bri: TestConstants.full_brightness
+      }
+    }
+  });
 
-	moxios.stubRequest(`${baseURL}/lights/3`, {
-		status: 200,
-		response: {
-			state: {
-				bri: TestConstants.no_brightness
-			}
-		}
-	});
-	
-	await hue.init();
+  moxios.stubRequest(`${baseURL}/lights/3`, {
+    status: 200,
+    response: {
+      state: {
+        bri: TestConstants.no_brightness
+      }
+    }
+  });
 
-	moxios.uninstall(hue.getHttp());
+  await hue.init();
 
-	t.pass();
+  moxios.uninstall(hue.getHttp());
+
+  t.pass();
 });
 
 test.beforeEach.serial(async t => {
-	hue = new Hue({
-		ip: ip,
-		key: key,
-		retrieveInitialState: false
-	});
-	
-	moxios.install(hue.getHttp());
-	moxios.install(Hue.getHttp());
-	await hue.init();
+  hue = new Hue({
+    ip: ip,
+    key: key,
+    retrieveInitialState: false
+  });
+
+  moxios.install(hue.getHttp());
+  moxios.install(Hue.getHttp());
+  await hue.init();
 });
 
 test.afterEach.serial(t => {
-	moxios.uninstall(hue.getHttp());
-	moxios.uninstall(Hue.getHttp());
+  moxios.uninstall(hue.getHttp());
+  moxios.uninstall(Hue.getHttp());
 });
 
 test.serial('init with retrieval', async t => {
+  hue = new Hue({
+    ip: ip,
+    key: key,
+    retrieveInitialState: true
+  });
 
-	hue = new Hue({
-		ip: ip,
-		key: key,
-		retrieveInitialState: true
-	});
+  moxios.install(hue.getHttp());
 
-	moxios.install(hue.getHttp());
-	
-	moxios.stubRequest(`${baseURL}/lights/1`, {
-		status: 200,
-		response: {
-			state: {
-				bri: TestConstants.full_brightness
-			}
-		}
-	});
+  moxios.stubRequest(`${baseURL}/lights/1`, {
+    status: 200,
+    response: {
+      state: {
+        bri: TestConstants.full_brightness
+      }
+    }
+  });
 
-	moxios.stubRequest(`${baseURL}/lights/2`, {
-		status: 200,
-		response: {
-			state: {
-				bri: TestConstants.full_brightness
-			}
-		}
-	});
+  moxios.stubRequest(`${baseURL}/lights/2`, {
+    status: 200,
+    response: {
+      state: {
+        bri: TestConstants.full_brightness
+      }
+    }
+  });
 
-	moxios.stubRequest(`${baseURL}/lights/3`, {
-		status: 200,
-		response: {
-			state: {
-				bri: TestConstants.no_brightness
-			}
-		}
-	});
-	
-	await hue.init();
+  moxios.stubRequest(`${baseURL}/lights/3`, {
+    status: 200,
+    response: {
+      state: {
+        bri: TestConstants.no_brightness
+      }
+    }
+  });
 
-	moxios.uninstall(hue.getHttp());
+  await hue.init();
 
-	t.pass();
+  moxios.uninstall(hue.getHttp());
+
+  t.pass();
 });
 
 test.beforeEach.serial(async t => {
-	hue = new Hue({
-		ip: ip,
-		key: key,
-		retrieveInitialState: false
-	});
-	
-	moxios.install(hue.getHttp());
-	moxios.install(Hue.getHttp());
-	await hue.init();
+  hue = new Hue({
+    ip: ip,
+    key: key,
+    retrieveInitialState: false
+  });
+
+  moxios.install(hue.getHttp());
+  moxios.install(Hue.getHttp());
+  await hue.init();
 });
 
 test.afterEach.serial(t => {
-	moxios.uninstall(hue.getHttp());
-	moxios.uninstall(Hue.getHttp());
+  moxios.uninstall(hue.getHttp());
+  moxios.uninstall(Hue.getHttp());
 });
 
 test.serial('turnOnLamp1', async t => {
+  moxios.stubRequest(`${baseURL}/lights/1/state`, {
+    status: 200,
+    response: [{ success: { '/lights/1/state/on': true } }]
+  });
 
-	moxios.stubRequest(`${baseURL}/lights/1/state`, {
-		status: 200,
-		response: [
-			{"success": { "/lights/1/state/on": true }}
-		]
-	});
-
-	const response = await hue.turnOn(1);
-	t.deepEqual(response.changedStates[0], TestConstants.state_on(1));
-
+  const response = await hue.turnOn(1);
+  t.deepEqual(response.changedStates[0], TestConstants.state_on(1));
 });
 
 test.serial('turnOffLamp1', async t => {
+  moxios.stubRequest(`${baseURL}/lights/1/state`, {
+    status: 200,
+    response: [{ success: { '/lights/1/state/on': false } }]
+  });
 
-	moxios.stubRequest(`${baseURL}/lights/1/state`, {
-		status: 200,
-		response: [
-			{ "success": { "/lights/1/state/on": false } }
-		]
-	});
-
-	const response = await hue.turnOff(1);
-	t.deepEqual(response.changedStates[0], TestConstants.state_off(1));
-
+  const response = await hue.turnOff(1);
+  t.deepEqual(response.changedStates[0], TestConstants.state_off(1));
 });
 
-test.serial('turnOffAll', async t =>{
+test.serial('turnOffAll', async t => {
+  moxios.stubRequest(`${baseURL}/groups/0/action`, {
+    status: 200,
+    response: [{ success: { address: '/groups/0/action/on', value: false } }]
+  });
 
-	moxios.stubRequest(`${baseURL}/groups/0/action`, {
-		status: 200,
-		response: [
-			{ "success": { "address": "/groups/0/action/on", "value": false } }
-		]
-	});
-
-	const response = await hue.turnOffAll();
-	t.deepEqual(response.acknowledgedActions[0], TestConstants.group_off(0));
-
+  const response = await hue.turnOffAll();
+  t.deepEqual(response.acknowledgedActions[0], TestConstants.group_off(0));
 });
 
-test.serial('turnOnAll', async t =>{
-	
-	moxios.stubRequest(`${baseURL}/groups/0/action`, {
-		status: 200,
-		response: [
-			{ "success": { "address": "/groups/0/action/on", "value": true } }
-		]
-	});
+test.serial('turnOnAll', async t => {
+  moxios.stubRequest(`${baseURL}/groups/0/action`, {
+    status: 200,
+    response: [{ success: { address: '/groups/0/action/on', value: true } }]
+  });
 
-	const response = await hue.turnOnAll();
-	t.deepEqual(response.acknowledgedActions[0], TestConstants.group_on(0));
-
+  const response = await hue.turnOnAll();
+  t.deepEqual(response.acknowledgedActions[0], TestConstants.group_on(0));
 });
 
 test.serial('setCssColor', async t => {
-	
-	moxios.stubRequest(`${baseURL}/lights/1/state`, {
-		status: 200,
-		response: [
-			{ "success": { "/lights/1/state/xy": TestConstants.color_red } }
-		]
-	});
+  moxios.stubRequest(`${baseURL}/lights/1/state`, {
+    status: 200,
+    response: [{ success: { '/lights/1/state/xy': TestConstants.color_red } }]
+  });
 
-	const response = await hue.setColor(1, 'red');
-	t.deepEqual(response.changedStates[0], TestConstants.color_red_response);
-
+  const response = await hue.setColor(1, 'red');
+  t.deepEqual(response.changedStates[0], TestConstants.color_red_response);
 });
 
 test.serial('setCssColorAll', async t => {
-	
-	moxios.stubRequest(`${baseURL}/groups/0/action`, {
-		status: 200,
-		response: TestConstants.color_white_response
-	});
+  moxios.stubRequest(`${baseURL}/groups/0/action`, {
+    status: 200,
+    response: TestConstants.color_white_response
+  });
 
-	const response = await hue.setAllColors('white');
-	t.deepEqual(response, new HueBridgeGroupActionResponse(TestConstants.color_white_response));
+  const response = await hue.setAllColors('white');
+  t.deepEqual(
+    response,
+    new HueBridgeGroupActionResponse(TestConstants.color_white_response)
+  );
 });
 
 test.serial('testEmptyConfig', async t => {
-	hue = new Hue();
-	t.truthy(hue);
+  hue = new Hue();
+  t.truthy(hue);
 });
 
 test.serial('getColors', t => {
-	t.truthy(hue.getColors());
+  t.truthy(hue.getColors());
 });
 
 test.serial('setBrightness', async t => {
+  const responsePayload = [{ success: { '/lights/1/state/bri': 231 } }];
 
-	const responsePayload = [{ "success": { "/lights/1/state/bri": 231 } }];
+  moxios.stubRequest(`${baseURL}/lights/1/state`, {
+    status: 200,
+    method: 'PUT',
+    response: responsePayload
+  });
 
-	moxios.stubRequest(`${baseURL}/lights/1/state`, {
-		status: 200,
-		method: 'PUT',
-		response: responsePayload
-	});
+  const setBriResponse = await hue.setBrightness(1, 231);
+  t.deepEqual(
+    setBriResponse,
+    new HueBridgeStateChangeResponse(responsePayload)
+  );
 
-	const setBriResponse = await hue.setBrightness(1, 231);
-	t.deepEqual(setBriResponse, new HueBridgeStateChangeResponse(responsePayload));
+  moxios.stubRequest(`${baseURL}/lights/1`, {
+    status: 200,
+    method: 'GET',
+    response: { state: { bri: 231 } }
+  });
 
-	moxios.stubRequest(`${baseURL}/lights/1`, {
-		status: 200,
-		method: 'GET',
-		response: { "state": { "bri": 231 } }
-	});
-
-	const getBriResponse = await hue.getBrightness(1);
-	t.deepEqual(getBriResponse, 231);
+  const getBriResponse = await hue.getBrightness(1);
+  t.deepEqual(getBriResponse, 231);
 });
 
 test.serial('setGroupBrightness', async t => {
+  const responsePayload: UpdateConfirmation[] = [
+    { success: { address: 'groups/1/action/bri', value: 231 } }
+  ];
 
-	const responsePayload: UpdateConfirmation[] = [
-		{ success: { address: "groups/1/action/bri", value: 231 } }
-	];
+  moxios.stubRequest(`${baseURL}/groups/1/action`, {
+    status: 200,
+    method: 'PUT',
+    response: responsePayload
+  });
 
-	moxios.stubRequest(`${baseURL}/groups/1/action`, {
-		status: 200,
-		method: 'PUT',
-		response: responsePayload
-	});
-
-	const setBriResponse = await hue.setGroupBrightness(1, 231);
-	t.deepEqual(setBriResponse, new HueBridgeGroupActionResponse(responsePayload));
+  const setBriResponse = await hue.setGroupBrightness(1, 231);
+  t.deepEqual(
+    setBriResponse,
+    new HueBridgeGroupActionResponse(responsePayload)
+  );
 });
 
 test.serial('setAllBrightness', async t => {
+  const responsePayload: UpdateConfirmation[] = [
+    { success: { address: 'groups/0/action/bri', value: 231 } }
+  ];
 
-	const responsePayload: UpdateConfirmation[] = [
-		{ success: { address: "groups/0/action/bri", value: 231 } }
-	];
+  moxios.stubRequest(`${baseURL}/groups/0/action`, {
+    status: 200,
+    method: 'PUT',
+    response: responsePayload
+  });
 
-	moxios.stubRequest(`${baseURL}/groups/0/action`, {
-		status: 200,
-		method: 'PUT',
-		response: responsePayload
-	});
-
-	const setBriResponse = await hue.setAllBrightness(231);
-	t.deepEqual(setBriResponse, new HueBridgeGroupActionResponse(responsePayload));
+  const setBriResponse = await hue.setAllBrightness(231);
+  t.deepEqual(
+    setBriResponse,
+    new HueBridgeGroupActionResponse(responsePayload)
+  );
 });
 
 test.serial('search', async t => {
+  const nupnpResponse = [
+    { id: '785d973935391ad0', internalipaddress: '192.168.x.x' }
+  ];
 
-	const nupnpResponse = [{"id":"785d973935391ad0","internalipaddress":"192.168.x.x"}];
+  moxios.stubRequest(`https://www.meethue.com/api/nupnp`, {
+    status: 200,
+    method: 'GET',
+    response: nupnpResponse
+  });
 
-	moxios.stubRequest(`https://www.meethue.com/api/nupnp`, {
-		status: 200,
-		method: 'GET',
-		response: nupnpResponse
-	});
-
-	const foundBridges = await Hue.search();
-	t.deepEqual(foundBridges, [new HueUPNPResponse(nupnpResponse[0])]);
-	t.is(foundBridges.length, 1);
-	t.is(foundBridges[0].internalipaddress, '192.168.x.x');
-
+  const foundBridges = await Hue.search();
+  t.deepEqual(foundBridges, [new HueUPNPResponse(nupnpResponse[0])]);
+  t.is(foundBridges.length, 1);
+  t.is(foundBridges[0].internalipaddress, '192.168.x.x');
 });
 
 test.serial('setColorTemperature', async t => {
+  const responsePayload: any = [{ success: { '/lights/1/state/ct': 124 } }];
 
-	const responsePayload: any = [
-		{ success: { "/lights/1/state/ct": 124 } }
-	];
+  moxios.stubRequest(`${baseURL}/lights/1/state`, {
+    status: 200,
+    method: 'PUT',
+    response: responsePayload
+  });
 
-	moxios.stubRequest(`${baseURL}/lights/1/state`, {
-		status: 200,
-		method: 'PUT',
-		response: responsePayload
-	});
-
-	const setCTResponse = await hue.setColorTemperature(1, 4000);
-	t.deepEqual(setCTResponse, new HueBridgeStateChangeResponse(responsePayload));
-
+  const setCTResponse = await hue.setColorTemperature(1, 4000);
+  t.deepEqual(setCTResponse, new HueBridgeStateChangeResponse(responsePayload));
 });
 
 test.serial('brighten', async t => {
-	const responsePayload: any = [
-		{ success: { "lights/1/state/bri": 254 } }
-	];
+  const responsePayload: any = [{ success: { 'lights/1/state/bri': 254 } }];
 
-	moxios.stubRequest(`${baseURL}/lights/1/state`, {
-		status: 200,
-		method: 'PUT',
-		response: responsePayload
-	});
+  moxios.stubRequest(`${baseURL}/lights/1/state`, {
+    status: 200,
+    method: 'PUT',
+    response: responsePayload
+  });
 
-	const brightenResponse = await hue.brighten(1, 10);
-	t.deepEqual(brightenResponse, new HueBridgeStateChangeResponse(responsePayload));
+  const brightenResponse = await hue.brighten(1, 10);
+  t.deepEqual(
+    brightenResponse,
+    new HueBridgeStateChangeResponse(responsePayload)
+  );
 });
 
 test.serial('brightenAll', async t => {
-	const responsePayload: UpdateConfirmation[] = [
-		{ success: { address: "groups/0/action/bri_inc", value: 10 } }
-	];
+  const responsePayload: UpdateConfirmation[] = [
+    { success: { address: 'groups/0/action/bri_inc', value: 10 } }
+  ];
 
-	moxios.stubRequest(groupActionPath(0), successfulPut(responsePayload));
+  moxios.stubRequest(groupActionPath(0), successfulPut(responsePayload));
 
-	const groupFlashResponse = await hue.brightenAll(10);
-	t.deepEqual(groupFlashResponse, new HueBridgeGroupActionResponse(responsePayload));
+  const groupFlashResponse = await hue.brightenAll(10);
+  t.deepEqual(
+    groupFlashResponse,
+    new HueBridgeGroupActionResponse(responsePayload)
+  );
 });
 
 test.serial('dim', async t => {
-	const responsePayload: any = [
-		{ success: { "lights/1/state/bri_inc": -10 } }
-	];
+  const responsePayload: any = [{ success: { 'lights/1/state/bri_inc': -10 } }];
 
-	moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
+  moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
 
-	const dimResponse = await hue.dim(1, 10);
-	t.deepEqual(dimResponse, new HueBridgeStateChangeResponse(responsePayload));
+  const dimResponse = await hue.dim(1, 10);
+  t.deepEqual(dimResponse, new HueBridgeStateChangeResponse(responsePayload));
 
-	moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
-	const dimResponseDefault = await hue.dim(1);
-	t.deepEqual(dimResponse, new HueBridgeStateChangeResponse(responsePayload));
+  moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
+  const dimResponseDefault = await hue.dim(1);
+  t.deepEqual(dimResponse, new HueBridgeStateChangeResponse(responsePayload));
 });
 
 test.serial('dimAll', async t => {
-	const responsePayload: UpdateConfirmation[] = [
-		{ success: { address: "groups/0/action/bri_inc", value: -10 } }
-	];
+  const responsePayload: UpdateConfirmation[] = [
+    { success: { address: 'groups/0/action/bri_inc', value: -10 } }
+  ];
 
-	moxios.stubRequest(groupActionPath(0), successfulPut(responsePayload));
+  moxios.stubRequest(groupActionPath(0), successfulPut(responsePayload));
 
-	const groupFlashResponse = await hue.dimAll(10);
-	t.deepEqual(groupFlashResponse, new HueBridgeGroupActionResponse(responsePayload));
+  const groupFlashResponse = await hue.dimAll(10);
+  t.deepEqual(
+    groupFlashResponse,
+    new HueBridgeGroupActionResponse(responsePayload)
+  );
 });
 
 test.serial('flash', async t => {
-	const responsePayload = [
-		{ success: { "lights/1/state/alert": "select" } }
-	];
+  const responsePayload = [{ success: { 'lights/1/state/alert': 'select' } }];
 
-	moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
+  moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
 
-	const flashResponse = await hue.flash(1);
-	t.deepEqual(flashResponse, new HueBridgeStateChangeResponse(responsePayload));
+  const flashResponse = await hue.flash(1);
+  t.deepEqual(flashResponse, new HueBridgeStateChangeResponse(responsePayload));
 });
 
 test.serial('flashAll', async t => {
-	const responsePayload: UpdateConfirmation[] = [
-		{ success: { address: "groups/0/action/alert", value: "select" } }
-	];
+  const responsePayload: UpdateConfirmation[] = [
+    { success: { address: 'groups/0/action/alert', value: 'select' } }
+  ];
 
-	moxios.stubRequest(groupActionPath(0), successfulPut(responsePayload));
+  moxios.stubRequest(groupActionPath(0), successfulPut(responsePayload));
 
-	const groupFlashResponse = await hue.flashAll();
-	t.deepEqual(groupFlashResponse, new HueBridgeGroupActionResponse(responsePayload));
+  const groupFlashResponse = await hue.flashAll();
+  t.deepEqual(
+    groupFlashResponse,
+    new HueBridgeGroupActionResponse(responsePayload)
+  );
 });
 
 test.serial('longFlash', async t => {
-const responsePayload = [
-		{ success: { "lights/1/state/alert": "lselect" } }
-	];
+  const responsePayload = [{ success: { 'lights/1/state/alert': 'lselect' } }];
 
-	moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
+  moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
 
-	const flashResponse = await hue.longFlash(1);
-	t.deepEqual(flashResponse, new HueBridgeStateChangeResponse(responsePayload));
+  const flashResponse = await hue.longFlash(1);
+  t.deepEqual(flashResponse, new HueBridgeStateChangeResponse(responsePayload));
 });
 
 test.serial('longFlashAll', async t => {
-	const responsePayload: UpdateConfirmation[] = [
-		{ success: { address: "groups/0/action/alert", value: "lselect" } }
-	];
+  const responsePayload: UpdateConfirmation[] = [
+    { success: { address: 'groups/0/action/alert', value: 'lselect' } }
+  ];
 
-	moxios.stubRequest(groupActionPath(0), successfulPut(responsePayload));
+  moxios.stubRequest(groupActionPath(0), successfulPut(responsePayload));
 
-	const groupFlashResponse = await hue.longFlashAll();
-	t.deepEqual(groupFlashResponse, new HueBridgeGroupActionResponse(responsePayload));
+  const groupFlashResponse = await hue.longFlashAll();
+  t.deepEqual(
+    groupFlashResponse,
+    new HueBridgeGroupActionResponse(responsePayload)
+  );
 });
 
 test.serial('startColorLoop', async t => {
-	const responsePayload: any[] = [
-		{ success: { "lights/1/state/effect": "colorloop" } }
-	];
+  const responsePayload: any[] = [
+    { success: { 'lights/1/state/effect': 'colorloop' } }
+  ];
 
-	moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
+  moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
 
-	const colorLoopResponse = await hue.startColorLoop(1);
-	t.deepEqual(colorLoopResponse, new HueBridgeStateChangeResponse(responsePayload));
+  const colorLoopResponse = await hue.startColorLoop(1);
+  t.deepEqual(
+    colorLoopResponse,
+    new HueBridgeStateChangeResponse(responsePayload)
+  );
 });
 
 test.serial('stopEffect', async t => {
-	const responsePayload: any[] = [
-		{ success: { "lights/1/state/effect": "none" } }
-	];
+  const responsePayload: any[] = [
+    { success: { 'lights/1/state/effect': 'none' } }
+  ];
 
-	moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
+  moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
 
-	const stopEffectResponse = await hue.stopEffect(1);
-	t.deepEqual(stopEffectResponse, new HueBridgeStateChangeResponse(responsePayload));
+  const stopEffectResponse = await hue.stopEffect(1);
+  t.deepEqual(
+    stopEffectResponse,
+    new HueBridgeStateChangeResponse(responsePayload)
+  );
 });
 
 test.serial('setNumberOfLamps', t => {
-	const defaultNumLamps = hue.getNumberOfLamps();
+  const defaultNumLamps = hue.getNumberOfLamps();
 
-	t.is(defaultNumLamps, 3);
+  t.is(defaultNumLamps, 3);
 
-	hue.setnumberOfLamps(2);
-	const updatedNumLamps = hue.getNumberOfLamps();
+  hue.setnumberOfLamps(2);
+  const updatedNumLamps = hue.getNumberOfLamps();
 
-	t.is(updatedNumLamps, 2);
+  t.is(updatedNumLamps, 2);
 });
 
 test.serial('setTransitionTime', t => {
-	const defaultTransitionTime = hue.getTransitionTime();
+  const defaultTransitionTime = hue.getTransitionTime();
 
-	t.is(defaultTransitionTime, 400);
+  t.is(defaultTransitionTime, 400);
 
-	hue.setTransitionTime(150);
-	const updatedTransitionTime = hue.getTransitionTime();
+  hue.setTransitionTime(150);
+  const updatedTransitionTime = hue.getTransitionTime();
 
-	t.is(updatedTransitionTime, 150);
+  t.is(updatedTransitionTime, 150);
 });
 
 test.serial('getConfig', t => {
-	t.truthy(hue.getConfig());
+  t.truthy(hue.getConfig());
 });
 
 test.serial('getLamps', async t => {
-	
-	moxios.stubRequest(`${baseURL}/lights`, successfulGet(TestConstants.lamp_response));	
-	const response = await hue.getLamps();
-	
-	t.deepEqual(response, TestConstants.lamps);
+  moxios.stubRequest(
+    `${baseURL}/lights`,
+    successfulGet(TestConstants.lamp_response)
+  );
+  const response = await hue.getLamps();
+
+  t.deepEqual(response, TestConstants.lamps);
 });
 
 test.serial('getLampStates', async t => {
-	moxios.stubRequest(`${baseURL}/lights`, successfulGet(TestConstants.lamp_response));
-	const response = await hue.getLampStates();
-	const expected = [
-		TestConstants.lamp_response["1"].state
-	];
+  moxios.stubRequest(
+    `${baseURL}/lights`,
+    successfulGet(TestConstants.lamp_response)
+  );
+  const response = await hue.getLampStates();
+  const expected = [TestConstants.lamp_response['1'].state];
 
-	t.deepEqual(response, expected);
-
+  t.deepEqual(response, expected);
 });

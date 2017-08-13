@@ -28,11 +28,14 @@ test('XYPoint toString', t => {
 });
 
 test('HueUPNPResponse constructor', t => {
-  const ok = new HueUPNPResponse({id: '1234', internalipaddress: '192.168.x.x'});
-  t.is(ok.id, '1234')
+  const ok = new HueUPNPResponse({
+    id: '1234',
+    internalipaddress: '192.168.x.x'
+  });
+  t.is(ok.id, '1234');
   t.is(ok.internalipaddress, '192.168.x.x');
 
-  const empty = new HueUPNPResponse({thing1: 'narp', thing2: 'pfft'});
+  const empty = new HueUPNPResponse({ thing1: 'narp', thing2: 'pfft' });
   t.falsy(empty.id);
   t.falsy(empty.internalipaddress);
 
@@ -42,7 +45,8 @@ test('HueUPNPResponse constructor', t => {
 });
 
 test('clampToRange', t => {
-  const min = 0, max = 255;
+  const min = 0,
+    max = 255;
   t.is(clampToRange(min, max, 254), 254);
   t.is(clampToRange(min, max, 256), max);
   t.is(clampToRange(min, max, -15), min);
