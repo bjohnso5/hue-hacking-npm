@@ -239,6 +239,14 @@ export abstract class HueBridge {
   public abstract async getLampStates(): Promise<States.LampState[]>;
 
   /**
+   * Get the attributes of a specifically indexed lamp.
+   *
+   * @param index 1-based index of the lamp for which to retrieve current state
+   * @return {Promise<States.LampState} Promise representing the remote call
+   */
+  public abstract async getLampState(index: number): Promise<States.LampState>;
+
+  /**
      * Get a collection of lamps that the local bridge is aware of.
      * 
      * @return {Promise<Lamp[]>} Collection of known lamps.

@@ -74,7 +74,7 @@ export class Hue extends HueBridge {
     let promises: Promise<any>[] = [];
     if (this.config.retrieveInitialState) {
       for (let i = 0; i < this.config.numberOfLamps; i++) {
-        let promise = this.getLampState(i + 1);
+        let promise = this.getState(i + 1);
         promises.push(promise);
 
         promise.then(r => {
@@ -118,7 +118,7 @@ export class Hue extends HueBridge {
      * @param {number} lampIndex 1-based index of the Hue lamp
      * @return {Promise<AxiosResponse>} Promise representing the remote call to the Hue bridge
      */
-  private async getLampState(lampIndex: number): Promise<AxiosResponse> {
+  private async getState(lampIndex: number): Promise<AxiosResponse> {
     return this.get(this.buildLampQueryURL(lampIndex));
   }
 
@@ -586,6 +586,12 @@ export class Hue extends HueBridge {
         }
       }
       return states;
+    });
+  }
+
+  public async getLampState(index: number): Promise<States.LampState> {
+    return this.getState(index).then(r => {
+      return r.data.state;
     });
   }
 

@@ -522,3 +522,14 @@ test.serial('getLampStates', async t => {
 
   t.deepEqual(response, expected);
 });
+
+test.serial('getLampState', async t => {
+  moxios.stubRequest(
+    `${baseURL}/lights/1`,
+    successfulGet(TestConstants.lamp_response['1'])
+  );
+  const response = await hue.getLampState(1);
+  const expected = TestConstants.lamp_response['1'].state;
+
+  t.deepEqual(response, expected);
+});
