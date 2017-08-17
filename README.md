@@ -1,4 +1,5 @@
 # hue-hacking-npm: Hue Control Library #
+[![npm version](https://badge.fury.io/js/hue-hacking-node.svg)](https://badge.fury.io/js/hue-hacking-node)
 [![Build Status](https://travis-ci.org/bjohnso5/hue-hacking-npm.svg?branch=master)](https://travis-ci.org/bjohnso5/hue-hacking-npm)
 [![Coverage Status](https://coveralls.io/repos/github/bjohnso5/hue-hacking-npm/badge.svg?branch=master)](https://coveralls.io/github/bjohnso5/hue-hacking-npm?branch=master)
 
