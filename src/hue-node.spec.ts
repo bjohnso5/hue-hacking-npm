@@ -5,7 +5,6 @@ import {
   HueBridgeGroupActionResponse,
   UpdateConfirmation
 } from './hue-interfaces';
-import { AxiosResponse } from 'axios';
 import test from 'ava';
 import * as TestConstants from './hue-test-constants';
 

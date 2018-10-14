@@ -11,7 +11,7 @@
     "test": "ngc && nyc --reporter=lcov ava --verbose && gulp",
     "clean": "rm -rf dist",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "prepublish": "rm -rf dist && ngc && ava && gulp"
+    "prepublish": "node ./node_modules/rimraf/bin.js dist && ngc && ava && gulp"
   },
   "ava": {
     "files": [
@@ -34,25 +34,26 @@
   "author": "Bryan Johnson",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.16.2"
+    "axios": "^0.18.0"
   },
   "devDependencies": {
-    "@angular/animations": "^4.3.4",
-    "@angular/common": "^4.3.4",
-    "@angular/compiler": "^4.3.4",
-    "@angular/compiler-cli": "^4.3.4",
-    "@angular/core": "^4.3.4",
-    "@angular/platform-browser": "^4.3.4",
-    "@angular/platform-server": "^4.3.4",
-    "@types/node": "^7.0.39",
-    "ava": "^0.19.1",
-    "coveralls": "^2.13.1",
-    "gulp": "^3.9.1",
-    "gulp-clean": "^0.3.2",
+    "@angular/animations": "^6.0.5",
+    "@angular/common": "^6.0.5",
+    "@angular/compiler": "^6.0.5",
+    "@angular/compiler-cli": "^6.0.5",
+    "@angular/core": "^6.0.5",
+    "@angular/platform-browser": "^6.0.5",
+    "@angular/platform-browser-dynamic": "^6.0.5",
+    "@angular/platform-server": "^6.0.5",
+    "@types/node": "^10.3.3",
+    "ava": "^0.25.0",
+    "coveralls": "^3.0.1",
+    "gulp": "^4.0.0",
+    "gulp-clean": "^0.4.0",
     "moxios": "^0.4.0",
-    "nyc": "^11.0.1",
-    "rxjs": "^5.4.3",
-    "typescript": "^2.4.2",
-    "zone.js": "^0.8.16"
+    "nyc": "^12.0.2",
+    "rxjs": "^6.2.1",
+    "typescript": "2.7.2",
+    "zone.js": "^0.8.26"
   }
 }
