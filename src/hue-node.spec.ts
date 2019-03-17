@@ -25,7 +25,7 @@ function lightStatePath(index: number): string {
 }
 
 /**
- * Return a string representing the action URI path to a specific indexed Hue lamp group 
+ * Return a string representing the action URI path to a specific indexed Hue lamp group
  * @param index Lamp group index
  */
 function groupActionPath(index: number): string {
@@ -104,7 +104,7 @@ test.serial('init with retrieval', async t => {
   t.pass();
 });
 
-test.beforeEach.serial(async t => {
+test.serial.beforeEach(async t => {
   hue = new Hue({
     ip: ip,
     key: key,
@@ -116,67 +116,7 @@ test.beforeEach.serial(async t => {
   await hue.init();
 });
 
-test.afterEach.serial(t => {
-  moxios.uninstall(hue.getHttp());
-  moxios.uninstall(Hue.getHttp());
-});
-
-test.serial('init with retrieval', async t => {
-  hue = new Hue({
-    ip: ip,
-    key: key,
-    retrieveInitialState: true
-  });
-
-  moxios.install(hue.getHttp());
-
-  moxios.stubRequest(`${baseURL}/lights/1`, {
-    status: 200,
-    response: {
-      state: {
-        bri: TestConstants.full_brightness
-      }
-    }
-  });
-
-  moxios.stubRequest(`${baseURL}/lights/2`, {
-    status: 200,
-    response: {
-      state: {
-        bri: TestConstants.full_brightness
-      }
-    }
-  });
-
-  moxios.stubRequest(`${baseURL}/lights/3`, {
-    status: 200,
-    response: {
-      state: {
-        bri: TestConstants.no_brightness
-      }
-    }
-  });
-
-  await hue.init();
-
-  moxios.uninstall(hue.getHttp());
-
-  t.pass();
-});
-
-test.beforeEach.serial(async t => {
-  hue = new Hue({
-    ip: ip,
-    key: key,
-    retrieveInitialState: false
-  });
-
-  moxios.install(hue.getHttp());
-  moxios.install(Hue.getHttp());
-  await hue.init();
-});
-
-test.afterEach.serial(t => {
+test.serial.afterEach(t => {
   moxios.uninstall(hue.getHttp());
   moxios.uninstall(Hue.getHttp());
 });
