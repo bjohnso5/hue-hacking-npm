@@ -104,7 +104,7 @@ test.serial('init with retrieval', async t => {
   t.pass();
 });
 
-test.serial.beforeEach(async t => {
+test.serial.beforeEach(async _ => {
   hue = new Hue({
     ip: ip,
     key: key,
