@@ -251,13 +251,10 @@ export class Hue extends HueBridge {
    * @return {Promise<string>} Promise representing the remote call
    */
   public static async search(): Promise<HueUPNPResponse[]> {
-    return _http.get(nupnpEndpoint).then(r => {
-      let response: HueUPNPResponse[] = [];
-      for (let bridge of r.data) {
-        response.push(new HueUPNPResponse(bridge));
-      }
-      return response;
-    });
+    const nupnpResponse = await _http.get(nupnpEndpoint);
+    const bridges: any[] = nupnpResponse.data;
+
+    return bridges.map(b => new HueUPNPResponse(b));
   }
 
   /**
@@ -269,7 +266,7 @@ export class Hue extends HueBridge {
    * Perform initialization of this Hue instance
    */
   public async init(): Promise<void> {
-    return this.retrieveInitialState();
+    return await this.retrieveInitialState();
   }
 
   /**
@@ -330,9 +327,10 @@ export class Hue extends HueBridge {
   ): Promise<HueBridgeStateChangeResponse> {
     const cieColor: XYPoint = this.colors.getCIEColor(color);
     const xyState: States.ColorState = this.buildXYState(cieColor);
-    return this.put(lampIndex, xyState).then(
-      r => new HueBridgeStateChangeResponse(r.data)
-    );
+
+    const { data } = await this.put(lampIndex, xyState);
+
+    return new HueBridgeStateChangeResponse(data);
   }
 
   /**
@@ -349,9 +347,9 @@ export class Hue extends HueBridge {
     const clampedK = clampToRange(2000, 6000, colorTemperature);
     const convertedTemp = Math.floor(this.colors.kelvinToMired(clampedK));
 
-    return this.put(lampIndex, { ct: convertedTemp }).then(
-      r => new HueBridgeStateChangeResponse(r.data)
-    );
+    const { data } = await this.put(lampIndex, { ct: convertedTemp });
+
+    return new HueBridgeStateChangeResponse(data);
   }
 
   /**
@@ -366,9 +364,10 @@ export class Hue extends HueBridge {
   ): Promise<HueBridgeGroupActionResponse> {
     const cieColor: XYPoint = this.colors.getCIEColor(color);
     const xyState: States.ColorState = this.buildXYState(cieColor);
-    return this.putGroupAction(0, xyState).then(
-      r => new HueBridgeGroupActionResponse(r.data)
-    );
+
+    const { data } = await this.putGroupAction(0, xyState);
+
+    return new HueBridgeGroupActionResponse(data);
   }
 
   /**
@@ -380,9 +379,9 @@ export class Hue extends HueBridge {
   public async turnOff(
     lampIndex: number
   ): Promise<HueBridgeStateChangeResponse> {
-    return this.put(lampIndex, offState).then(
-      r => new HueBridgeStateChangeResponse(r.data)
-    );
+    const { data } = await this.put(lampIndex, offState);
+
+    return new HueBridgeStateChangeResponse(data);
   }
 
   /**
@@ -394,9 +393,9 @@ export class Hue extends HueBridge {
   public async turnOn(
     lampIndex: number
   ): Promise<HueBridgeStateChangeResponse> {
-    return this.put(lampIndex, onState).then(
-      r => new HueBridgeStateChangeResponse(r.data)
-    );
+    const { data } = await this.put(lampIndex, onState);
+
+    return new HueBridgeStateChangeResponse(data);
   }
 
   /**
@@ -405,9 +404,9 @@ export class Hue extends HueBridge {
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
   public async turnOffAll(): Promise<HueBridgeGroupActionResponse> {
-    return this.putGroupAction(0, offState).then(
-      r => new HueBridgeGroupActionResponse(r.data)
-    );
+    const { data } = await this.putGroupAction(0, offState);
+
+    return new HueBridgeGroupActionResponse(data);
   }
 
   /**
@@ -416,9 +415,9 @@ export class Hue extends HueBridge {
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
   public async turnOnAll(): Promise<HueBridgeGroupActionResponse> {
-    return this.putGroupAction(0, onState).then(
-      r => new HueBridgeGroupActionResponse(r.data)
-    );
+    const { data } = await this.putGroupAction(0, onState);
+
+    return new HueBridgeGroupActionResponse(data);
   }
 
   /**
@@ -432,12 +431,10 @@ export class Hue extends HueBridge {
     lampIndex: number,
     brightness: number
   ): Promise<HueBridgeStateChangeResponse> {
-    const briState: States.BrightnessState = this.buildBrightnessState(
-      brightness
-    );
-    return this.put(lampIndex, briState).then(
-      r => new HueBridgeStateChangeResponse(r.data)
-    );
+    const briState = this.buildBrightnessState(brightness);
+    const { data } = await this.put(lampIndex, briState);
+
+    return new HueBridgeStateChangeResponse(data);
   }
 
   /**
@@ -449,7 +446,7 @@ export class Hue extends HueBridge {
   public async setAllBrightness(
     brightness: number
   ): Promise<HueBridgeGroupActionResponse> {
-    return this.setGroupBrightness(0, brightness);
+    return await this.setGroupBrightness(0, brightness);
   }
 
   /**
@@ -466,9 +463,9 @@ export class Hue extends HueBridge {
     const briState: States.BrightnessState = this.buildBrightnessState(
       brightness
     );
-    return this.putGroupAction(groupIndex, briState).then(
-      r => new HueBridgeGroupActionResponse(r.data)
-    );
+    const { data } = await this.putGroupAction(groupIndex, briState);
+
+    return new HueBridgeGroupActionResponse(data);
   }
 
   /**
@@ -485,9 +482,9 @@ export class Hue extends HueBridge {
     const dimState: States.BrightnessIncrementState = this.buildDimState(
       decrement
     );
-    return this.put(lampIndex, dimState).then(
-      r => new HueBridgeStateChangeResponse(r.data)
-    );
+    const { data } = await this.put(lampIndex, dimState);
+
+    return new HueBridgeStateChangeResponse(data);
   }
 
   /**
@@ -502,9 +499,9 @@ export class Hue extends HueBridge {
     const dimState: States.BrightnessIncrementState = this.buildDimState(
       decrement
     );
-    return this.putGroupAction(0, dimState).then(
-      r => new HueBridgeGroupActionResponse(r.data)
-    );
+    const { data } = await this.putGroupAction(0, dimState);
+
+    return new HueBridgeGroupActionResponse(data);
   }
 
   /**
@@ -518,12 +515,10 @@ export class Hue extends HueBridge {
     lampIndex: number,
     increment?: number
   ): Promise<HueBridgeStateChangeResponse> {
-    const brightenState: States.BrightnessIncrementState = this.buildBrightenState(
-      increment
-    );
-    return this.put(lampIndex, brightenState).then(
-      r => new HueBridgeStateChangeResponse(r.data)
-    );
+    const brightenState = this.buildBrightenState(increment);
+    const { data } = await this.put(lampIndex, brightenState);
+
+    return new HueBridgeStateChangeResponse(data);
   }
 
   /**
@@ -535,9 +530,11 @@ export class Hue extends HueBridge {
   public async brightenAll(
     increment?: number
   ): Promise<HueBridgeGroupActionResponse> {
-    return this.putGroupAction(0, this.buildBrightenState(increment)).then(
-      r => new HueBridgeGroupActionResponse(r.data)
+    const { data } = await this.putGroupAction(
+      0,
+      this.buildBrightenState(increment)
     );
+    return new HueBridgeGroupActionResponse(data);
   }
 
   /**
@@ -549,9 +546,9 @@ export class Hue extends HueBridge {
   public async startColorLoop(
     lampIndex: number
   ): Promise<HueBridgeStateChangeResponse> {
-    return this.put(lampIndex, colorLoopEffect).then(
-      r => new HueBridgeStateChangeResponse(r.data)
-    );
+    const { data } = await this.put(lampIndex, colorLoopEffect);
+
+    return new HueBridgeStateChangeResponse(data);
   }
 
   /**
@@ -563,9 +560,8 @@ export class Hue extends HueBridge {
   public async stopEffect(
     lampIndex: number
   ): Promise<HueBridgeStateChangeResponse> {
-    return this.put(lampIndex, noEffect).then(
-      r => new HueBridgeStateChangeResponse(r.data)
-    );
+    const { data } = await this.put(lampIndex, noEffect);
+    return new HueBridgeStateChangeResponse(data);
   }
 
   /**
