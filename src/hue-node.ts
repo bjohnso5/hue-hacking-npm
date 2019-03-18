@@ -98,7 +98,7 @@ export class Hue extends HueBridge {
    * @return {Promise<AxiosResponse>} Promise representing the remote call to the Hue bridge
    */
   private async putJSON(url: string, data: any): Promise<AxiosResponse> {
-    return this._http.put(url, data);
+    return await this._http.put(url, data);
   }
 
   /**
@@ -109,7 +109,7 @@ export class Hue extends HueBridge {
    * @return {Promise<AxiosResponse>} Promise representing the remote call to the Hue bridge
    */
   private async get(destination: string): Promise<AxiosResponse> {
-    return this._http.get(destination);
+    return await this._http.get(destination);
   }
 
   /**
@@ -120,7 +120,7 @@ export class Hue extends HueBridge {
    */
   private async getState(lampIndex: number): Promise<AxiosResponse<Lamp>> {
     const url = this.buildLampQueryURL(lampIndex);
-    return this.get(url);
+    return await this.get(url);
   }
 
   /**
@@ -174,7 +174,7 @@ export class Hue extends HueBridge {
    * @return {AxiosPromise} Promise representing the remote call to the Hue bridge
    */
   private async put(lampIndex: number, data: any): Promise<AxiosResponse> {
-    return this.putJSON(this.buildStateURL(lampIndex), data);
+    return await this.putJSON(this.buildStateURL(lampIndex), data);
   }
 
   /**
@@ -188,7 +188,7 @@ export class Hue extends HueBridge {
     groupIndex: number,
     action: any
   ): Promise<AxiosResponse> {
-    return this.putJSON(this.buildGroupActionURL(groupIndex), action);
+    return await this.putJSON(this.buildGroupActionURL(groupIndex), action);
   }
 
   /**
@@ -240,7 +240,7 @@ export class Hue extends HueBridge {
   private buildBrightenState(
     increment?: number
   ): States.BrightnessIncrementState {
-    let incrementState = this.buildDimState(increment);
+    const incrementState = this.buildDimState(increment);
     incrementState.bri_inc = Math.abs(incrementState.bri_inc);
     return incrementState;
   }
