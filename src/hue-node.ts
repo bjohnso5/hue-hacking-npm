@@ -1,7 +1,7 @@
 /* Copyright (c) 2013 Bryan Johnson; Licensed MIT */
 
 import * as axios from 'axios';
-import { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 import { HueColors } from './hue-colors';
 import {
   HueBridge,
@@ -21,8 +21,6 @@ const shortFlashState: States.AlertState = { alert: 'select' };
 const longFlashState: States.AlertState = { alert: 'lselect' };
 const colorLoopEffect: States.EffectState = { effect: 'colorloop' };
 const noEffect: States.EffectState = { effect: 'none' };
-const maxBrightness: number = 254;
-const minBrightness: number = 1;
 const _colors = new HueColors();
 const nupnpEndpoint: string = `https://www.meethue.com/api/nupnp`;
 const _http = axios.default.create({
