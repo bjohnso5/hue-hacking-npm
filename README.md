@@ -47,7 +47,7 @@ const bridgeIP = '192.168.x.x';
 const appname = 'myfirsthueapp'; // This is the hash / name / id that you registered with the bridge previously using the official Hue docs
 
 const hue = new Hue({
-  ip: bridgeIP, 
+  ip: bridgeIP,
   key: appname,
   numberOfLamps: 3,
   retrieveInitialState: false
@@ -56,4 +56,4 @@ const hue = new Hue({
 
 For the best introduction to using this module, please see the `hue-node.spec.ts` file.
 
-&copy; 2013 Bryan Johnson; Licensed MIT.
+&copy; 2019 Bryan Johnson; Licensed MIT.
