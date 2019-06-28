@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const clean = require('gulp-clean')
 const sourceFiles = [
     "index.js*",
+    "index.*.json",
     "src/**.js*",
     "**/*.d.ts",
     "!**/node_modules/**",
