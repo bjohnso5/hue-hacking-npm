@@ -355,13 +355,14 @@ export class Hue extends HueBridge {
    * Sets all connected lamps to the approximate CIE x,y equivalent of
    * the provided hex color.
    *
-   * @param {string} color String representing a hexadecimal color value.
+   * @param {string | XYPoint} color String representing a hexadecimal color value (or an XYPoint)
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
   public async setAllColors(
-    color: string
+    color: string | XYPoint
   ): Promise<HueBridgeGroupActionResponse> {
-    const cieColor: XYPoint = this.colors.getCIEColor(color);
+    const cieColor: XYPoint =
+      color instanceof XYPoint ? color : this.colors.getCIEColor(color);
     const xyState: States.ColorState = this.buildXYState(cieColor);
 
     const { data } = await this.putGroupAction(0, xyState);
