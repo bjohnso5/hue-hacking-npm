@@ -47,6 +47,7 @@ export const no_brightness: any = 1;
 
 export const lamp_response: any = {
   '1': {
+    lampIndex: 1,
     state: {
       on: true,
       bri: 144,
@@ -75,6 +76,7 @@ export const lamp_response: any = {
     }
   },
   '2': {
+    lampIndex: 2,
     state: {
       on: false,
       bri: 0,

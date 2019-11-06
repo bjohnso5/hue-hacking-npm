@@ -585,7 +585,7 @@ export class Hue extends HueBridge {
   public async getLamps(): Promise<Lamp[]> {
     const url = this.buildLampCompositeURL();
     const { data } = await this.get(url);
-    return Object.keys(data).map(k => data[k]);
+    return Object.keys(data).map(k => ({...data[k], lampIndex: parseInt(k)}));
   }
 
   /**
