@@ -383,6 +383,7 @@ export namespace States {
 }
 
 export interface Lamp {
+  lampIndex: number;
   state: States.LampState;
   type: string;
   name: string;
