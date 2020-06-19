@@ -22,7 +22,7 @@ const longFlashState: States.AlertState = { alert: 'lselect' };
 const colorLoopEffect: States.EffectState = { effect: 'colorloop' };
 const noEffect: States.EffectState = { effect: 'none' };
 const _colors = new HueColors();
-const nupnpEndpoint: string = `https://www.meethue.com/api/nupnp`;
+const nupnpEndpoint: string = `https://discovery.meethue.com/`;
 const _http = axios.default.create({
   timeout: 5000
 });
