@@ -259,7 +259,7 @@ test.serial('search', async t => {
     { id: '785d973935391ad0', internalipaddress: '192.168.x.x' }
   ];
 
-  moxios.stubRequest(`https://www.meethue.com/api/nupnp`, {
+  moxios.stubRequest(`https://discovery.meethue.com/`, {
     status: 200,
     method: 'GET',
     response: nupnpResponse
