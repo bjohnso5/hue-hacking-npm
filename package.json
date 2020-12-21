@@ -46,7 +46,7 @@
     "@angular/platform-server": "^7.2.15",
     "@babel/register": "^7.4.4",
     "@types/node": "^10.14.9",
-    "ava": "^2.1.0",
+    "ava": "^3.14.0",
     "ava-ts": "^0.25.2",
     "coveralls": "^3.0.4",
     "gulp": "^4.0.2",
