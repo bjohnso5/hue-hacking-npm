@@ -22,12 +22,12 @@ export abstract class HueBridge {
    * @param {number} lampIndex 1-based index of the lamp to query.
    * @return {Promise<number>} Promise to retrieve the brightness of the lamp at lampIndex. 0 - 254.
    */
-  public abstract async getBrightness(lampIndex: number): Promise<number>;
+  public abstract getBrightness(lampIndex: number): Promise<number>;
 
   /**
    * Perform initialization of this Hue instance
    */
-  public abstract async init(): Promise<void>;
+  public abstract init(): Promise<void>;
 
   /**
    * Flash the lamp at lampIndex for a short time.
@@ -35,7 +35,7 @@ export abstract class HueBridge {
    * @param {number} lampIndex 1-based index of the Hue lamp to flash.
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
-  public abstract async flash(
+  public abstract flash(
     lampIndex: number
   ): Promise<HueBridgeStateChangeResponse>;
 
@@ -44,7 +44,7 @@ export abstract class HueBridge {
    *
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
-  public abstract async flashAll(): Promise<HueBridgeGroupActionResponse>;
+  public abstract flashAll(): Promise<HueBridgeGroupActionResponse>;
 
   /**
    * Flash the lamp at lampIndex for a long time.
@@ -52,7 +52,7 @@ export abstract class HueBridge {
    * @param {number} lampIndex 1-based index of the Hue lamp to flash.
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
-  public abstract async longFlash(
+  public abstract longFlash(
     lampIndex: number
   ): Promise<HueBridgeStateChangeResponse>;
 
@@ -61,7 +61,7 @@ export abstract class HueBridge {
    *
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
-  public abstract async longFlashAll(): Promise<HueBridgeGroupActionResponse>;
+  public abstract longFlashAll(): Promise<HueBridgeGroupActionResponse>;
 
   /**
    * Set the lamp at lampIndex to the approximate CIE x,y equivalent of
@@ -71,7 +71,7 @@ export abstract class HueBridge {
    * @param {string} color String representing a hexadecimal color value.
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
-  public abstract async setColor(
+  public abstract setColor(
     lampIndex: number,
     color: string
   ): Promise<HueBridgeStateChangeResponse>;
@@ -83,7 +83,7 @@ export abstract class HueBridge {
    * @param {number} colorTemperature Color temperature (in Kelvin) to set the lamp to (The approximate range is 2000 - 6000).
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call.
    */
-  public abstract async setColorTemperature(
+  public abstract setColorTemperature(
     lampIndex: number,
     colorTemperature: number
   ): Promise<HueBridgeStateChangeResponse>;
@@ -95,7 +95,7 @@ export abstract class HueBridge {
    * @param {string} color String representing a hexadecimal color value.
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
-  public abstract async setAllColors(
+  public abstract setAllColors(
     color: string
   ): Promise<HueBridgeGroupActionResponse>;
 
@@ -105,7 +105,7 @@ export abstract class HueBridge {
    * @param {number} lampIndex 1-based index of the Hue lamp to turn off.
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
-  public abstract async turnOff(
+  public abstract turnOff(
     lampIndex: number
   ): Promise<HueBridgeStateChangeResponse>;
 
@@ -115,7 +115,7 @@ export abstract class HueBridge {
    * @param {number} lampIndex 1-based index of the Hue lamp to turn on.
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
-  public abstract async turnOn(
+  public abstract turnOn(
     lampIndex: number
   ): Promise<HueBridgeStateChangeResponse>;
 
@@ -124,14 +124,14 @@ export abstract class HueBridge {
    *
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
-  public abstract async turnOffAll(): Promise<HueBridgeGroupActionResponse>;
+  public abstract turnOffAll(): Promise<HueBridgeGroupActionResponse>;
 
   /**
    * Turn on all connected lamps.
    *
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
-  public abstract async turnOnAll(): Promise<HueBridgeGroupActionResponse>;
+  public abstract turnOnAll(): Promise<HueBridgeGroupActionResponse>;
 
   /**
    * Set the brightness of the lamp at lampIndex.
@@ -140,7 +140,7 @@ export abstract class HueBridge {
    * @param {number} brightness Integer value between 0 and 254.
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
-  public abstract async setBrightness(
+  public abstract setBrightness(
     lampIndex: number,
     brightness: number
   ): Promise<HueBridgeStateChangeResponse>;
@@ -151,7 +151,7 @@ export abstract class HueBridge {
    * @param {number} brightness Integer value between 0 and 254.
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
-  public abstract async setAllBrightness(
+  public abstract setAllBrightness(
     brightness: number
   ): Promise<HueBridgeGroupActionResponse>;
 
@@ -162,7 +162,7 @@ export abstract class HueBridge {
    * @param {number} brightness Integer value between 0 and 254.
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
-  public abstract async setGroupBrightness(
+  public abstract setGroupBrightness(
     groupIndex: number,
     brightness: number
   ): Promise<HueBridgeGroupActionResponse>;
@@ -174,7 +174,7 @@ export abstract class HueBridge {
    * @param {number} [decrement] Amount to decrement brightness by (between 0 and 255).
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
-  public abstract async dim(
+  public abstract dim(
     lampIndex: number,
     decrement?: number
   ): Promise<HueBridgeStateChangeResponse>;
@@ -185,7 +185,7 @@ export abstract class HueBridge {
    * @param {number} [decrement] Amount to decrement brightness by (between 0 and 255).
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
-  public abstract async dimAll(
+  public abstract dimAll(
     decrement?: number
   ): Promise<HueBridgeGroupActionResponse>;
 
@@ -196,7 +196,7 @@ export abstract class HueBridge {
    * @param {number} [increment] Amount to increment brightness by (between 0 and 255).
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
-  public abstract async brighten(
+  public abstract brighten(
     lampIndex: number,
     increment?: number
   ): Promise<HueBridgeStateChangeResponse>;
@@ -207,7 +207,7 @@ export abstract class HueBridge {
    * @param {number} increment Amount to increment brightness by (between 0 and 255).
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
-  public abstract async brightenAll(
+  public abstract brightenAll(
     increment?: number
   ): Promise<HueBridgeGroupActionResponse>;
 
@@ -217,7 +217,7 @@ export abstract class HueBridge {
    * @param {number} lampIndex The indexed lamp to enable the effect on
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
-  public abstract async startColorLoop(
+  public abstract startColorLoop(
     lampIndex: number
   ): Promise<HueBridgeStateChangeResponse>;
 
@@ -227,7 +227,7 @@ export abstract class HueBridge {
    * @param {number} lampIndex The indexed lamp to enable the effect on
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
-  public abstract async stopEffect(
+  public abstract stopEffect(
     lampIndex: number
   ): Promise<HueBridgeStateChangeResponse>;
 
@@ -236,7 +236,7 @@ export abstract class HueBridge {
    *
    * @return {Promise<States.LampState[]>} Promise representing the remote call
    */
-  public abstract async getLampStates(): Promise<States.LampState[]>;
+  public abstract getLampStates(): Promise<States.LampState[]>;
 
   /**
    * Get the attributes of a specifically indexed lamp.
@@ -244,14 +244,14 @@ export abstract class HueBridge {
    * @param index 1-based index of the lamp for which to retrieve current state
    * @return {Promise<States.LampState} Promise representing the remote call
    */
-  public abstract async getLampState(index: number): Promise<States.LampState>;
+  public abstract getLampState(index: number): Promise<States.LampState>;
 
   /**
    * Get a collection of lamps that the local bridge is aware of.
    *
    * @return {Promise<Lamp[]>} Collection of known lamps.
    */
-  public abstract async getLamps(): Promise<Lamp[]>;
+  public abstract getLamps(): Promise<Lamp[]>;
 
   /**
    * Return the value of the configured transitionTime property.
