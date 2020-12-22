@@ -324,7 +324,7 @@ test.serial('dim', async t => {
 
   moxios.stubRequest(lightStatePath(1), successfulPut(responsePayload));
   const dimResponseDefault = await hue.dim(1);
-  t.deepEqual(dimResponse, new HueBridgeStateChangeResponse(responsePayload));
+  t.deepEqual(dimResponseDefault, new HueBridgeStateChangeResponse(responsePayload));
 });
 
 test.serial('dimAll', async t => {
