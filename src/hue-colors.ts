@@ -77,7 +77,7 @@ export class HueColors {
      */
   private componentToHex(c: number): string {
     const hex = c.toString(16);
-    return hex.length == 1 ? '0' + hex : hex;
+    return hex.length == 1 ? `0${hex}` : hex;
   }
 
   /**
@@ -166,7 +166,7 @@ export class HueColors {
   }
 
   /**
-     * Find the closest Hue-producivle point to a provided point.
+     * Find the closest Hue-producible point to a provided point.
      *
      * @param {XYPoint} xyPoint The point to find the closest reproducible point to
      * @return {XYPoint} The closest Hue-reproducible point to the provided point

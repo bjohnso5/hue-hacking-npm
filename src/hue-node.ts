@@ -69,7 +69,7 @@ export class Hue extends HueBridge {
    * @return {Promise<any>} Promise representing the remote call(s)
    */
   private async retrieveInitialState(): Promise<any> {
-    let promises: Promise<any>[] = [];
+    let promises: (Promise<axios.AxiosResponse<Lamp>> | Promise<any>)[] = [];
     if (this.config.retrieveInitialState) {
       for (let i = 0; i < this.config.numberOfLamps; i++) {
         let promise = this.getState(i + 1);
