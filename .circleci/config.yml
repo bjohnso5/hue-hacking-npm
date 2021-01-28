@@ -8,6 +8,6 @@ workflows:
 jobs:
   test:
     steps:
-      - run: "echo hi"
+      - run: "echo hi there"
     docker:
       - image: "alpine:latest"
