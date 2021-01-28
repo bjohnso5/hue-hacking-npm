@@ -1,0 +1,13 @@
+version: 2.1
+
+workflows:
+  build:
+    jobs:
+      - test
+
+jobs:
+  test:
+    steps:
+      - run: "echo hi"
+    docker:
+      - image: "alpine:latest"
