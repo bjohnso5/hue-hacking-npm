@@ -8,22 +8,10 @@
     "url": "https://github.com/bjohnso5/hue-hacking-npm"
   },
   "scripts": {
-    "test": "nyc --reporter=lcov ava-ts --verbose && gulp",
+    "test": "nyc --reporter=lcov ava --verbose && gulp",
     "clean": "npx rimraf dist coverage",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "prepublish": "npx rimraf dist && ava-ts && ngc && gulp"
-  },
-  "ava": {
-    "files": [
-      "src/**/*.spec.ts"
-    ],
-    "compileEnhancements": false,
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ]
+    "prepublish": "npx rimraf dist && ava && ngc && gulp"
   },
   "keywords": [
     "Philips",
@@ -37,15 +25,14 @@
     "@angular/compiler": "^11.0.5",
     "@angular/compiler-cli": "^11.0.5",
     "@angular/core": "^11.0.5",
-    "@angular/http": "^7.2.16",
     "@angular/platform-browser": "^11.0.5",
     "@angular/platform-browser-dynamic": "^11.0.5",
     "@angular/platform-server": "^11.0.5",
+    "@ava/babel": "^1.0.1",
     "@babel/register": "^7.12.10",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
-    "@types/node": "^10.17.49",
-    "ava": "^3.14.0",
-    "ava-ts": "^0.25.2",
+    "@types/node": "^15.12.2",
+    "ava": "^3.15.0",
     "axios": "^0.21.0",
     "coveralls": "^3.1.0",
     "gulp": "^4.0.2",
