@@ -8,7 +8,7 @@
     "url": "https://github.com/bjohnso5/hue-hacking-npm"
   },
   "scripts": {
-    "test": "nyc --reporter=lcov ava --verbose && gulp",
+    "test": "nyc --reporter=lcov ava --verbose",
     "clean": "npx rimraf dist coverage",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "prepublish": "npx rimraf dist && ava && ngc && gulp"
