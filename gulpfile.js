@@ -4,7 +4,8 @@ const sourceFiles = [
   "index.js*",
   "index.*.json",
   "src/**.js*",
-  "**/*.d.ts",
+  "index.d.ts",
+  "src/**.d.ts",
   "!**/node_modules/**",
   "!dist/**/*",
 ];
@@ -19,3 +20,4 @@ function cleanUp() {
 var build = gulp.series(cleanUp);
 
 exports.default = build;
+

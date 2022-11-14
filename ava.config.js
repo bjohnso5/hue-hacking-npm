@@ -1,8 +1,6 @@
-export default {
-  babel: {
-    compileEnhancements: true,
-  },
+module.exports = {
   files: ["src/**/*.spec.ts"],
-  require: ["ts-node/register"],
+  require: ["ts-node/register", "@babel/register"],
   extensions: ["ts"],
 };
+

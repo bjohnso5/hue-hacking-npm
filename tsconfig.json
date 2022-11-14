@@ -16,7 +16,13 @@
   "angularCompilerOptions": {
     "genDir": "compiled"
   },
-  "exclude": ["node_modules", "dist/**", "coverage", "gulpfile.js"],
+  "exclude": [
+    "node_modules",
+    "dist/**",
+    "coverage",
+    "gulpfile.js",
+    "src/*.spec.*"
+  ],
   "typeAcquisition": {
     "enable": true
   }
