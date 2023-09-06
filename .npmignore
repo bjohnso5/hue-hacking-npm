@@ -9,4 +9,7 @@
 .vscode
 .eslintrc.json
 .nycrc
+.editorconfig
+tsconfig.json
 ava.config.js
+src/**
