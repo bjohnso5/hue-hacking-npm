@@ -198,7 +198,6 @@ test.serial('setBrightness', async t => {
 
   moxios.stubRequest(`${baseURL}/lights/1/state`, {
     status: 200,
-    method: 'PUT',
     response: responsePayload
   });
 
@@ -210,7 +209,6 @@ test.serial('setBrightness', async t => {
 
   moxios.stubRequest(`${baseURL}/lights/1`, {
     status: 200,
-    method: 'GET',
     response: { state: { bri: 231 } }
   });
 
@@ -225,7 +223,6 @@ test.serial('setGroupBrightness', async t => {
 
   moxios.stubRequest(`${baseURL}/groups/1/action`, {
     status: 200,
-    method: 'PUT',
     response: responsePayload
   });
 
@@ -243,7 +240,6 @@ test.serial('setAllBrightness', async t => {
 
   moxios.stubRequest(`${baseURL}/groups/0/action`, {
     status: 200,
-    method: 'PUT',
     response: responsePayload
   });
 
@@ -261,7 +257,6 @@ test.serial('search', async t => {
 
   moxios.stubRequest(`https://discovery.meethue.com/`, {
     status: 200,
-    method: 'GET',
     response: nupnpResponse
   });
 
@@ -276,7 +271,6 @@ test.serial('setColorTemperature', async t => {
 
   moxios.stubRequest(`${baseURL}/lights/1/state`, {
     status: 200,
-    method: 'PUT',
     response: responsePayload
   });
 
@@ -289,7 +283,6 @@ test.serial('brighten', async t => {
 
   moxios.stubRequest(`${baseURL}/lights/1/state`, {
     status: 200,
-    method: 'PUT',
     response: responsePayload
   });
 
