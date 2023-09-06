@@ -1,5 +1,5 @@
-import { HueColors, hexFullBlue, hexFullWhite } from './hue-colors';
-import { XYPoint, RGB } from '../src/hue-interfaces';
+import { HueColors, hexFullBlue, hexFullWhite } from './hue-colors.js';
+import { XYPoint, RGB } from './hue-interfaces.js';
 import test from 'ava';
 
 const colors = new HueColors();

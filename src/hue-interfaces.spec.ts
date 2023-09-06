@@ -1,4 +1,4 @@
-import { RGB, XYPoint, HueUPNPResponse, clampToRange } from './hue-interfaces';
+import { RGB, XYPoint, HueUPNPResponse, clampToRange } from './hue-interfaces.js';
 import test from 'ava';
 
 const rgb: RGB = new RGB(...[1, 2, 256]);

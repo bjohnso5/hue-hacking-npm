@@ -8,8 +8,8 @@
  * https://github.com/bjohnso5/hue-hacking
  * Copyright (c) 2013 Bryan Johnson; Licensed MIT */
 
-import { CssColors } from './hue-css-colors';
-import { RGB, XYPoint } from './hue-interfaces';
+import { CssColors } from './hue-css-colors.js';
+import { RGB, XYPoint } from './hue-interfaces.js';
 
 export const CIERed = new XYPoint(0.675, 0.322);
 export const CIELime = new XYPoint(0.4091, 0.518);

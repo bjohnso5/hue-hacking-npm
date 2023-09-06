@@ -1,8 +1,8 @@
 /* Copyright (c) 2013 Bryan Johnson; Licensed MIT */
 
-import * as axios from 'axios';
+import axios from 'axios';
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { HueColors } from './hue-colors';
+import { HueColors } from './hue-colors.js';
 import {
   HueBridge,
   HueConfig,
@@ -13,7 +13,7 @@ import {
   HueBridgeStateChangeResponse,
   HueBridgeGroupActionResponse,
   clampToRange
-} from './hue-interfaces';
+} from './hue-interfaces.js';
 
 const offState: States.PoweredState = { on: false };
 const onState: States.PoweredState = { on: true };
@@ -23,7 +23,7 @@ const colorLoopEffect: States.EffectState = { effect: 'colorloop' };
 const noEffect: States.EffectState = { effect: 'none' };
 const _colors = new HueColors();
 const nupnpEndpoint: string = `https://discovery.meethue.com/`;
-const _http = axios.default.create({
+const _http = axios.create({
   timeout: 5000
 });
 
@@ -56,7 +56,7 @@ export class Hue extends HueBridge {
     this.config.transitionTime = this.config.transitionTime || 400;
     this.config.timeout = this.config.timeout || 2000;
 
-    this._http = axios.default.create({
+    this._http = axios.create({
       timeout: this.config.timeout
     });
 
@@ -69,7 +69,7 @@ export class Hue extends HueBridge {
    * @return {Promise<any>} Promise representing the remote call(s)
    */
   private async retrieveInitialState(): Promise<any> {
-    let promises: (Promise<axios.AxiosResponse<Lamp>> | Promise<any>)[] = [];
+    let promises: (Promise<AxiosResponse<Lamp>> | Promise<any>)[] = [];
     if (this.config.retrieveInitialState) {
       for (let i = 0; i < this.config.numberOfLamps; i++) {
         let promise = this.getState(i + 1);
