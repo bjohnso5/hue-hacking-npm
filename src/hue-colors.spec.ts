@@ -64,8 +64,8 @@ test('CIE1931ToRGB', t => {
 });
 
 test('miredToKelvin', t => {
-  const mired: number = 0.2;
-  const expectedOutcome: number = 1e6 / mired;
+  const mired: number = 2500;
+  const expectedOutcome: number = 1e6 * mired;
   t.is(colors.miredToKelvin(mired), expectedOutcome);
 });
 

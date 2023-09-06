@@ -30,7 +30,7 @@ export class HueColors {
   /**
      * Parses a valid hex color string and returns the Red RGB integer value.
      *
-     * @param {string} Hex color string.
+     * @param {string} hex Hexadecimal color string.
      * @return {number} Red integer value.
      */
 
@@ -41,7 +41,7 @@ export class HueColors {
   /**
      * Parses a valid hex color string and returns the Green RGB integer value.
      *
-     * @param {string} Hex color string.
+     * @param {string} hex Hexadecimal color string.
      * @return {number} Green integer value.
      */
 
@@ -52,7 +52,7 @@ export class HueColors {
   /**
      * Parses a valid hex color string and returns the Blue RGB integer value.
      *
-     * @param {string} Hex color string.
+     * @param {string} hex Hexadecimal color string.
      * @return {number} Blue integer value.
      */
   private hexToBlue(hex: string): number {
@@ -62,7 +62,7 @@ export class HueColors {
   /**
      * Converts a valid hex color string to an RGB array.
      *
-     * @param {string} Hex color String (e.g. FF00FF)
+     * @param {string} h Hexadecimal color String (e.g. FF00FF)
      * @return {Array<number>} Array containing R, G, B values
      */
   private hexToRGB(h: string): RGB {
@@ -72,8 +72,8 @@ export class HueColors {
   /**
      * Converts an RGB component to a hex string.
      *
-     * @param {number} RGB value, integer between 0 and 255.
-     * @returns {string} Hex value string (e.g. FF)
+     * @param {number} c RGB value, integer between 0 and 255.
+     * @returns {string} Hexadecimal value string (e.g. FF)
      */
   private componentToHex(c: number): string {
     const hex = c.toString(16);
@@ -83,8 +83,8 @@ export class HueColors {
   /**
      * Converts RGB color components to a valid hex color string.
      *
-     * @param {number[]} RGB components with values between 0 and 255.
-     * @returns {string} Hex color string (e.g. FF0000)
+     * @param {number[]} rgb RGB components with values between 0 and 255.
+     * @returns {string} Hexadecimal color string (e.g. FF0000)
      */
   private rgbToHex(rgb: RGB) {
     return (
@@ -128,7 +128,7 @@ export class HueColors {
   /**
      * Check if the provided XYPoint can be recreated by a Hue lamp.
      *
-     * @param {XYPoint} XYPoint to check
+     * @param {XYPoint} p XYPoint to check
      * @return {boolean} Flag indicating if the point is within reproducible range
      */
   private checkPointInLampsReach(p: XYPoint): boolean {
@@ -239,7 +239,7 @@ export class HueColors {
     cx = isNaN(cx) ? 0.0 : cx;
     cy = isNaN(cy) ? 0.0 : cy;
 
-    //Check if the given XY value is within the colourreach of our lamps.
+    //Check if the given XY value is within the colour reach of our lamps.
     let xyPoint = new XYPoint(cx, cy),
       inReachOfLamps = this.checkPointInLampsReach(xyPoint);
 
@@ -314,7 +314,7 @@ export class HueColors {
      * Converts hexadecimal colors represented as a String to approximate
      * CIE 1931 coordinates. May not produce accurate values.
      *
-     * @param {string} Value representing a hexadecimal color value
+     * @param {string} h Hexadecimal color value
      * @return {XYPoint} Approximate CIE 1931 x,y coordinates
      */
   public hexToCIE1931(h: string): XYPoint {
@@ -340,7 +340,7 @@ export class HueColors {
      * supplied hexColor parameter, or of a random color if the parameter
      * is not passed.
      *
-     * @param {string} hexColor String representing a hexidecimal color value OR a named CSS color (e.g. "red", "yellow", etc.)
+     * @param {string} hexColor Hexidecimal color value OR a named CSS color (e.g. "red", "yellow", etc.)
      * @return {XYPoint} Approximate CIE 1931 x,y coordinates
      */
   public getCIEColor(hexColor?: string): XYPoint {
@@ -397,13 +397,17 @@ export class HueColors {
 
   /**
      * Convert a Mired temperature to its Kelvin equivalent.
+     * @param {number} mired Mired temperature value
+     * @return {number} Kelvin-equivalent of the provided mired temperature
      */
   public miredToKelvin(mired: number): number {
-    return 1e6 / mired;
+    return mired * 1e6;
   }
 
   /**
      * Convert a Kelvin temperature to its Mired equivalent.
+     * @param {number} kelvin Kelvin temperature value
+     * @return {number} Mired-equivalent of the provided Kelvin temperature
      */
   public kelvinToMired(kelvin: number): number {
     return 1e6 / kelvin;
