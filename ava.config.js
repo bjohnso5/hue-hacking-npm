@@ -1,0 +1,3 @@
+{
+  files: ["dist/**/*.spec.js"]
+}

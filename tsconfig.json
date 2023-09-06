@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "noImplicitAny": false,
     "removeComments": false,
     "preserveConstEnums": true,
@@ -9,14 +9,17 @@
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "moduleResolution": "Node",
+    "target": "ES5",
     "lib": ["es2015"],
-    "types": ["node"]
+    "types": ["node"],
+    "outDir": "dist/",
   },
   "angularCompilerOptions": {
     "genDir": "compiled"
   },
-  "exclude": ["node_modules", "dist/**", "coverage", "gulpfile.js"],
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules/**", "dist/**", "coverage", "gulpfile.js"],
   "typeAcquisition": {
     "enable": true
   }

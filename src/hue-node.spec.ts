@@ -1,14 +1,14 @@
-import { Hue } from '../index';
+import { Hue } from './hue-node.js';
 import {
   HueUPNPResponse,
   HueBridgeStateChangeResponse,
   HueBridgeGroupActionResponse,
   UpdateConfirmation
-} from './hue-interfaces';
+} from './hue-interfaces.js';
 import test from 'ava';
-import * as TestConstants from './hue-test-constants';
+import * as TestConstants from './hue-test-constants.js';
 
-const moxios = require('moxios');
+import * as moxios from 'moxios';
 
 const ip = 'localhost';
 const key = 'testapp';

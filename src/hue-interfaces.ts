@@ -1,4 +1,4 @@
-import { HueColors } from './hue-colors';
+import { HueColors } from './hue-colors.js';
 
 export interface HueConfig {
   /** API key / appname registered with the Hue bridge (requires physical access to the hardware to initially configure) */
