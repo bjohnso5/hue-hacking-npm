@@ -11,7 +11,7 @@
     "test": "nyc --reporter=lcov ava --verbose && gulp",
     "clean": "npx rimraf dist coverage",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "prepublish": "npx rimraf dist && tsc && ava"
+    "prepublish": "npx rimraf dist && tsc && ava && git clean -Xf"
   },
   "keywords": [
     "Philips",

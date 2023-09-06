@@ -3,3 +3,10 @@
 **/.coveralls.yml
 
 !**/dist
+
+.circleci
+.devcontainer
+.vscode
+.eslintrc.json
+.nycrc
+ava.config.js
