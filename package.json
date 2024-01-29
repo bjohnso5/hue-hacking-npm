@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bjohnso5/hue-hacking-npm"
+    "url": "git+https://github.com/bjohnso5/hue-hacking-npm.git"
   },
   "scripts": {
     "test": "npx tsc && ava",
