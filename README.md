@@ -56,4 +56,4 @@ const hue = new Hue({
 
 For the best introduction to using this module, please see the `hue-node.spec.ts` file.
 
-&copy; 2019 Bryan Johnson; Licensed MIT.
+&copy; 2024 Bryan Johnson; Licensed MIT.
