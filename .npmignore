@@ -1,15 +1,12 @@
 # Intentionally empty! Used to override .gitignore
-
-**/.coveralls.yml
-
 !**/dist
 
 .circleci
 .devcontainer
 .vscode
 .eslintrc.json
-.nycrc
 .editorconfig
 tsconfig.json
+index.ts
 src/**
 ava.config.js
