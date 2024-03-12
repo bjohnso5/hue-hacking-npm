@@ -1,5 +1,5 @@
-import { RGB, XYPoint, HueUPNPResponse, clampToRange } from './hue-interfaces.js';
 import test from 'ava';
+import { HueUPNPResponse, RGB, XYPoint, clampToRange } from './hue-interfaces.js';
 
 const rgb: RGB = new RGB(...[1, 2, 256]);
 const coords: XYPoint = new XYPoint(...[0.1, 0.2]);

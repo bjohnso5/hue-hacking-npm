@@ -1,17 +1,16 @@
 /* Copyright (c) 2013 Bryan Johnson; Licensed MIT */
 
-import axios from 'axios';
-import { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { HueColors } from './hue-colors.js';
 import {
   HueBridge,
-  HueConfig,
-  XYPoint,
-  States,
-  Lamp,
-  HueUPNPResponse,
-  HueBridgeStateChangeResponse,
   HueBridgeGroupActionResponse,
+  HueBridgeStateChangeResponse,
+  HueConfig,
+  HueUPNPResponse,
+  Lamp,
+  States,
+  XYPoint,
   clampToRange
 } from './hue-interfaces.js';
 
@@ -587,7 +586,7 @@ export class Hue extends HueBridge {
   public async getLamps(): Promise<Lamp[]> {
     const url = this.buildLampCompositeURL();
     const { data } = await this.get(url);
-    return Object.keys(data).map(k => ({...data[k], lampIndex: parseInt(k)}));
+    return Object.keys(data).map(k => ({ ...data[k], lampIndex: parseInt(k) }));
   }
 
   /**
