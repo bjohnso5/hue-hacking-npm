@@ -12,12 +12,14 @@
     "clean": "npx rimraf dist coverage",
     "prepublish": "npx rimraf dist && tsc && ava && git clean -Xf"
   },
-  "keywords": [
-    "Philips",
-    "Hue"
-  ],
+  "keywords": ["Philips", "Hue"],
   "dependencies": {
     "axios": "^1.5.0"
+  },
+  "prettier": {
+    "trailingComma": "es2015",
+    "singleQuote": true,
+    "tabWidth": 2
   },
   "author": "Bryan Johnson",
   "license": "MIT",
@@ -26,6 +28,7 @@
     "@types/node": "^20.5.9",
     "ava": "^6.1.2",
     "moxios": "^0.4.0",
+    "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
     "rxjs": "^7.8.1",
     "ts-node": "^10.9.1",

@@ -1,7 +1,7 @@
 import {
-  StateChangeConfirmation,
   GroupActionConfirmation,
-  Lamp
+  Lamp,
+  StateChangeConfirmation
 } from './hue-interfaces.js';
 
 export const state_off = (lightIndex: number): StateChangeConfirmation => {

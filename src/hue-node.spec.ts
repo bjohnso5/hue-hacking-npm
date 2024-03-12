@@ -1,11 +1,11 @@
-import { Hue } from './hue-node.js';
+import test from 'ava';
 import {
-  HueUPNPResponse,
-  HueBridgeStateChangeResponse,
   HueBridgeGroupActionResponse,
+  HueBridgeStateChangeResponse,
+  HueUPNPResponse,
   UpdateConfirmation
 } from './hue-interfaces.js';
-import test from 'ava';
+import { Hue } from './hue-node.js';
 import * as TestConstants from './hue-test-constants.js';
 
 import * as moxios from 'moxios';
