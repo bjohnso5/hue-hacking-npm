@@ -1,7 +1,7 @@
 /**
  * Color utility functions, exposed as a Typescript class.
  * No external dependencies.
- * Special thanks for the RGB to CIE conversion code goes out to the Q42 team 
+ * Special thanks for the RGB to CIE conversion code goes out to the Q42 team
  * for their Q42.HueApi work. Dank u!
  * More info: https://github.com/Q42/Q42.HueApi.
  *
@@ -30,7 +30,7 @@ export class HueColors {
   /**
      * Parses a valid hex color string and returns the Red RGB integer value.
      *
-     * @param {string} Hex color string.
+     * @param {string} hex Hex color string.
      * @return {number} Red integer value.
      */
 
@@ -41,7 +41,7 @@ export class HueColors {
   /**
      * Parses a valid hex color string and returns the Green RGB integer value.
      *
-     * @param {string} Hex color string.
+     * @param {string} hex Hex color string.
      * @return {number} Green integer value.
      */
 
@@ -52,7 +52,7 @@ export class HueColors {
   /**
      * Parses a valid hex color string and returns the Blue RGB integer value.
      *
-     * @param {string} Hex color string.
+     * @param {string} hex Hex color string.
      * @return {number} Blue integer value.
      */
   private hexToBlue(hex: string): number {
@@ -62,17 +62,21 @@ export class HueColors {
   /**
      * Converts a valid hex color string to an RGB array.
      *
-     * @param {string} Hex color String (e.g. FF00FF)
+     * @param {string} h Hex color String (e.g. FF00FF)
      * @return {Array<number>} Array containing R, G, B values
      */
   private hexToRGB(h: string): RGB {
-    return new RGB(this.hexToRed(h), this.hexToGreen(h), this.hexToBlue(h));
+    return new RGB(
+      this.hexToRed(h),
+      this.hexToGreen(h),
+      this.hexToBlue(h)
+    );
   }
 
   /**
      * Converts an RGB component to a hex string.
      *
-     * @param {number} RGB value, integer between 0 and 255.
+     * @param {number} c RGB value, integer between 0 and 255.
      * @returns {string} Hex value string (e.g. FF)
      */
   private componentToHex(c: number): string {
@@ -83,10 +87,10 @@ export class HueColors {
   /**
      * Converts RGB color components to a valid hex color string.
      *
-     * @param {number[]} RGB components with values between 0 and 255.
+     * @param {RGB} rgb RGB components with values between 0 and 255.
      * @returns {string} Hex color string (e.g. FF0000)
      */
-  private rgbToHex(rgb: RGB) {
+  private rgbToHex(rgb: RGB): string {
     return (
       this.componentToHex(rgb.r) +
       this.componentToHex(rgb.g) +
@@ -128,7 +132,7 @@ export class HueColors {
   /**
      * Check if the provided XYPoint can be recreated by a Hue lamp.
      *
-     * @param {XYPoint} XYPoint to check
+     * @param {XYPoint} p XYPoint to check
      * @return {boolean} Flag indicating if the point is within reproducible range
      */
   private checkPointInLampsReach(p: XYPoint): boolean {
@@ -219,9 +223,9 @@ export class HueColors {
      */
   private getXYPointFromRGB(rgb: RGB): XYPoint {
     let r =
-        rgb.r > 0.04045
-          ? Math.pow((rgb.r + 0.055) / (1.0 + 0.055), 2.4)
-          : rgb.r / 12.92,
+      rgb.r > 0.04045
+        ? Math.pow((rgb.r + 0.055) / (1.0 + 0.055), 2.4)
+        : rgb.r / 12.92,
       g =
         rgb.g > 0.04045
           ? Math.pow((rgb.g + 0.055) / (1.0 + 0.055), 2.4)
@@ -256,7 +260,7 @@ export class HueColors {
      * Returns a rgb array for given x, y values. Not actually an inverse of
      * getXYPointFromRGB. Implementation of the instructions found on the
      * Philips Hue iOS SDK docs: http://goo.gl/kWKXKl
-     * 
+     *
      * @param {XYPoint} coords CIE 1931 x,y coordinates
      * @param {number} bri Brightness value between 0 and 1
      * @return {RGB} RGB color object
@@ -314,7 +318,7 @@ export class HueColors {
      * Converts hexadecimal colors represented as a String to approximate
      * CIE 1931 coordinates. May not produce accurate values.
      *
-     * @param {string} Value representing a hexadecimal color value
+     * @param {string} h Value representing a hexadecimal color value
      * @return {XYPoint} Approximate CIE 1931 x,y coordinates
      */
   public hexToCIE1931(h: string): XYPoint {
@@ -324,7 +328,7 @@ export class HueColors {
 
   /**
      * Converts red, green and blue integer values to approximate CIE 1931
-     * x and y coordinates. Algorithm from: 
+     * x and y coordinates. Algorithm from:
      * http://www.easyrgb.com/index.php?X=MATH&H=02#text2. May not produce
      * accurate values.
      *
@@ -336,7 +340,7 @@ export class HueColors {
   }
 
   /**
-     * Returns the approximate CIE 1931 x,y coordinates represented by the 
+     * Returns the approximate CIE 1931 x,y coordinates represented by the
      * supplied hexColor parameter, or of a random color if the parameter
      * is not passed.
      *
@@ -382,7 +386,7 @@ export class HueColors {
   /**
      * Returns the approximate RGB values represented by the supplied
      * CIE 1931 x,y coordinates and brightness value.
-     * 
+     *
      * @param {XYPoint} coords CIE 1931 coordinates
      * @param {number} bri Brightness value expressed between 0 and 1
      * @return {string} CSS rgb color expression

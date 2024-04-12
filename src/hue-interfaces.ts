@@ -24,9 +24,7 @@ export abstract class HueBridge {
    */
   public abstract getBrightness(lampIndex: number): Promise<number>;
 
-  /**
-   * Perform initialization of this Hue instance
-   */
+  /** Perform initialization of this Hue instance. */
   public abstract init(): Promise<void>;
 
   /**
@@ -271,23 +269,17 @@ export abstract class HueBridge {
   /**
    * Set the number of lamps available to control.
    *
-   * @param {number} The total number of lamps available to interact with. Default is 3.
+   * @param {number} numLamps The total number of lamps available to interact with. Default is 3.
    */
   public abstract setnumberOfLamps(numLamps: number): void;
 
-  /**
-   * Get the number of lamps available to control.
-   */
+  /** Get the number of lamps available to control. */
   public abstract getNumberOfLamps(): number;
 
-  /**
-   * Get a reference to the bundled color utility module.
-   */
+  /** Get a reference to the bundled color utility module. */
   public abstract getColors(): HueColors;
 
-  /**
-   * Get the currently set options.
-   */
+  /** Get the currently set options. */
   public abstract getConfig(): HueConfig;
 }
 
@@ -419,9 +411,9 @@ export class HueBridgeStateChangeResponse {
         }
       }
       if (
-        changedState !== undefined &&
-        changedState.attribute !== undefined &&
-        changedState.value !== undefined
+        changedState != undefined &&
+        changedState.attribute != undefined &&
+        changedState.value != undefined
       ) {
         changedStates.push(changedState);
       }
@@ -451,6 +443,7 @@ export class HueBridgeGroupActionResponse {
 
 /**
  * Clamp a provided value into a range such that min <= value <= max.
+ *
  * @param min Smallest possible acceptable value
  * @param max Largest possible acceptable value
  * @param value Value that must be between min and max, inclusive
@@ -472,9 +465,7 @@ export class XYPoint {
     this.y = xy[1];
   }
 
-  /**
-   * Return a human readable representation of this XYPoint instance.
-   */
+  /** Return a human readable representation of this XYPoint instance. */
   public toString(): string {
     return `{x: ${this.x}, y: ${this.y}}`;
   }
@@ -485,8 +476,8 @@ export class XYPoint {
  * a traditional RGB color.
  */
 export class RGB {
-  private static MIN = 0;
-  private static MAX = 255;
+  private static MIN: number = 0;
+  private static MAX: number = 255;
 
   public r: number;
   public g: number;
@@ -498,16 +489,12 @@ export class RGB {
     this.b = clampToRange(RGB.MIN, RGB.MAX, rgb[2] || 0);
   }
 
-  /**
-   * Return a human-readable representation of this RGB color value.
-   */
+  /** Return a human-readable representation of this RGB color value. */
   public toString(): string {
     return `r: ${this.r}, g: ${this.g}, b: ${this.b}`;
   }
 
-  /**
-   * Return a usable CSS rgb() function notation representation of this RGB color value.
-   */
+  /** Return a usable CSS rgb() function notation representation of this RGB color value. */
   public toCssString(): string {
     return `rgb(${this.r}, ${this.g}, ${this.b})`;
   }
