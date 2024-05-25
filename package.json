@@ -17,14 +17,14 @@
     "axios": "^1.5.0"
   },
   "prettier": {
-    "trailingComma": "es2015",
+    "trailingComma": "es5",
     "singleQuote": true,
     "tabWidth": 2
   },
   "author": "Bryan Johnson",
   "license": "MIT",
   "devDependencies": {
-    "@ava/typescript": "^4.1.0",
+    "@ava/typescript": "^5.0.0",
     "@types/node": "^20.5.9",
     "ava": "^6.1.2",
     "moxios": "^0.4.0",
