@@ -8,11 +8,15 @@
     "url": "git+https://github.com/bjohnso5/hue-hacking-npm.git"
   },
   "scripts": {
-    "test": "npx tsc && ava",
-    "clean": "npx rimraf dist coverage",
-    "prepublish": "npx rimraf dist && tsc && ava && git clean -Xf"
+    "test": "tsc && ava",
+    "test-report": "tsc && ava --tap | tap-xunit",
+    "clean": "rimraf dist coverage",
+    "prepublish": "rimraf dist && tsc && ava && git clean -Xf"
   },
-  "keywords": ["Philips", "Hue"],
+  "keywords": [
+    "Philips",
+    "Hue"
+  ],
   "dependencies": {
     "axios": "^1.5.0"
   },
@@ -31,6 +35,7 @@
     "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
     "rxjs": "^7.8.1",
+    "tap-xunit": "^2.4.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.1"
   }
