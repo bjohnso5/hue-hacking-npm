@@ -193,7 +193,7 @@ export class Hue extends HueBridge {
    * If the transitionTime property has been set, it is also included in the
    * JSON object.
    *
-   * @param {number[]} CIE 1931 X,Y color coordinates.
+   * @param {number[]} xyCoords CIE 1931 X,Y color coordinates.
    * @return {States.ColorState} State object containing CIE X,Y coordinates.
    */
   private buildXYState(xyCoords: XYPoint): States.ColorState {
@@ -217,15 +217,18 @@ export class Hue extends HueBridge {
    * the value of the brightness parameter.
    *
    * @param {number} brightness Integer value between 0 and 254. Note that 0
-   * is not equivalent to the lamp's off state.
+   * is not equivalent to the lamp's off state. A value outside of the allowed range will be clamped.
    * @return {Object} JSON object used to set brightness.
    */
   private buildBrightnessState(brightness: number): States.BrightnessState {
-    return { bri: brightness };
+    const clamped = clampToRange(0, 254, brightness);
+    return { bri: clamped };
   }
 
   /**
    * Builds a JSON state object used to set a brightness decrement of a Hue lamp (a negative bri_inc is effectively a decrement).
+   *
+   * @param {number | undefined} decrement Integer value between 0 and 254. The positive value will be negated.
    */
   private buildDimState(decrement?: number): States.BrightnessIncrementState {
     return { bri_inc: -Math.abs(decrement || 10) };
@@ -233,6 +236,8 @@ export class Hue extends HueBridge {
 
   /**
    * Builds a JSON state object used to set a brightness increment of a Hue lamp.
+   *
+   * @param {number | undefined} increment Integer value between 0 and 254. A negative value will be converted to an absolute value.
    */
   private buildBrightenState(
     increment?: number
@@ -611,7 +616,7 @@ export class Hue extends HueBridge {
   /**
    * Set the number of lamps available to control.
    *
-   * @param {number} The total number of lamps available to interact with. Default is 3.
+   * @param {number} numLamps The total number of lamps available to interact with. Default is 3.
    */
   public setnumberOfLamps(numLamps: number): void {
     this.config.numberOfLamps = numLamps;
