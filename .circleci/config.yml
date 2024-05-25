@@ -2,15 +2,32 @@ version: 2.1
 
 jobs:
   test:
+    parameters:
+      node_version:
+        type: string
     docker:
-      - image: "cimg/node:20.11.0"
+      - image: "cimg/node:<< parameters.node_version >>"
     resource_class: small
     steps:
       - checkout
-      - run: "npm i"
+      - run: npm i
+      - run:
+          command: |
+            mkdir -p ~/reports
+            npm run test-report > ~/reports/ava.xml
+      - store_test_results:
+          path: ~/reports
+
 
 workflows:
   build:
     jobs:
-      - test
+      - test:
+          matrix:
+            parameters:
+              node_version:
+                - "18.20.3"
+                - "20.13.1"
+                - "21.7"
+                - "22.2"
 
