@@ -1,8 +1,7 @@
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.154.2/containers/typescript-node/.devcontainer/base.Dockerfile
 
 # [Choice] Node.js version: 14, 12, 10
-ARG VARIANT="14-buster"
-FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-${VARIANT}
+FROM mcr.microsoft.com/devcontainers/typescript-node:1.0.0-20
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
