@@ -10,3 +10,5 @@ tsconfig.json
 index.ts
 src/**
 ava.config.js
+.github/
+.nvmrc
