@@ -11,6 +11,8 @@
     "test": "tsc && ava",
     "test-report": "tsc && ava --tap | tap-xunit",
     "clean": "rimraf dist coverage",
+    "check": "biome check ./src && git diff --exit-code",
+    "format": "biome check --write ./src",
     "prepublish": "rimraf dist && tsc && ava && git clean -Xf"
   },
   "keywords": [
@@ -29,6 +31,7 @@
   "license": "MIT",
   "devDependencies": {
     "@ava/typescript": "^5.0.0",
+    "@biomejs/biome": "1.9.4",
     "@types/node": "^22.0.0",
     "ava": "^6.1.2",
     "moxios": "^0.4.0",
