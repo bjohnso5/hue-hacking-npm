@@ -1,6 +1,6 @@
 /* CSS Named Colors to hex code mapping, pulled from http://www.w3schools.com/cssref/css_colornames.asp */
 
-const cssColors: any = {
+const cssColors: Record<string, string> = {
   aliceblue: 'F0F8FF',
   antiquewhite: 'FAEBD7',
   aqua: '00FFFF',
@@ -140,7 +140,7 @@ const cssColors: any = {
   white: 'FFFFFF',
   whitesmoke: 'F5F5F5',
   yellow: 'FFFF00',
-  yellowgreen: '9ACD32'
+  yellowgreen: '9ACD32',
 };
 
 export class CssColors {

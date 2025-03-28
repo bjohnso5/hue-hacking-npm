@@ -1,4 +1,4 @@
-import { HueColors } from './hue-colors.js';
+import type { HueColors } from './hue-colors.js';
 
 export interface HueConfig {
   /** API key / appname registered with the Hue bridge (requires physical access to the hardware to initially configure) */
@@ -34,7 +34,7 @@ export abstract class HueBridge {
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
   public abstract flash(
-    lampIndex: number
+    lampIndex: number,
   ): Promise<HueBridgeStateChangeResponse>;
 
   /**
@@ -51,7 +51,7 @@ export abstract class HueBridge {
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
   public abstract longFlash(
-    lampIndex: number
+    lampIndex: number,
   ): Promise<HueBridgeStateChangeResponse>;
 
   /**
@@ -71,7 +71,7 @@ export abstract class HueBridge {
    */
   public abstract setColor(
     lampIndex: number,
-    color: string
+    color: string,
   ): Promise<HueBridgeStateChangeResponse>;
 
   /**
@@ -83,7 +83,7 @@ export abstract class HueBridge {
    */
   public abstract setColorTemperature(
     lampIndex: number,
-    colorTemperature: number
+    colorTemperature: number,
   ): Promise<HueBridgeStateChangeResponse>;
 
   /**
@@ -94,7 +94,7 @@ export abstract class HueBridge {
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
   public abstract setAllColors(
-    color: string
+    color: string,
   ): Promise<HueBridgeGroupActionResponse>;
 
   /**
@@ -104,7 +104,7 @@ export abstract class HueBridge {
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
   public abstract turnOff(
-    lampIndex: number
+    lampIndex: number,
   ): Promise<HueBridgeStateChangeResponse>;
 
   /**
@@ -114,7 +114,7 @@ export abstract class HueBridge {
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
   public abstract turnOn(
-    lampIndex: number
+    lampIndex: number,
   ): Promise<HueBridgeStateChangeResponse>;
 
   /**
@@ -140,7 +140,7 @@ export abstract class HueBridge {
    */
   public abstract setBrightness(
     lampIndex: number,
-    brightness: number
+    brightness: number,
   ): Promise<HueBridgeStateChangeResponse>;
 
   /**
@@ -150,7 +150,7 @@ export abstract class HueBridge {
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
   public abstract setAllBrightness(
-    brightness: number
+    brightness: number,
   ): Promise<HueBridgeGroupActionResponse>;
 
   /**
@@ -162,7 +162,7 @@ export abstract class HueBridge {
    */
   public abstract setGroupBrightness(
     groupIndex: number,
-    brightness: number
+    brightness: number,
   ): Promise<HueBridgeGroupActionResponse>;
 
   /**
@@ -174,7 +174,7 @@ export abstract class HueBridge {
    */
   public abstract dim(
     lampIndex: number,
-    decrement?: number
+    decrement?: number,
   ): Promise<HueBridgeStateChangeResponse>;
 
   /**
@@ -184,7 +184,7 @@ export abstract class HueBridge {
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
   public abstract dimAll(
-    decrement?: number
+    decrement?: number,
   ): Promise<HueBridgeGroupActionResponse>;
 
   /**
@@ -196,7 +196,7 @@ export abstract class HueBridge {
    */
   public abstract brighten(
     lampIndex: number,
-    increment?: number
+    increment?: number,
   ): Promise<HueBridgeStateChangeResponse>;
 
   /**
@@ -206,7 +206,7 @@ export abstract class HueBridge {
    * @return {Promise<HueBridgeGroupActionResponse>} Promise representing the remote call
    */
   public abstract brightenAll(
-    increment?: number
+    increment?: number,
   ): Promise<HueBridgeGroupActionResponse>;
 
   /**
@@ -216,7 +216,7 @@ export abstract class HueBridge {
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
   public abstract startColorLoop(
-    lampIndex: number
+    lampIndex: number,
   ): Promise<HueBridgeStateChangeResponse>;
 
   /**
@@ -226,7 +226,7 @@ export abstract class HueBridge {
    * @return {Promise<HueBridgeStateChangeResponse>} Promise representing the remote call
    */
   public abstract stopEffect(
-    lampIndex: number
+    lampIndex: number,
   ): Promise<HueBridgeStateChangeResponse>;
 
   /**
@@ -292,7 +292,7 @@ export class HueUPNPResponse implements IHueUPNPResponse {
   id: string;
   internalipaddress: string;
 
-  constructor(data: any) {
+  constructor(data: Record<string, unknown>) {
     if (data) {
       if (data.id && typeof data.id === 'string') {
         this.id = data.id;
@@ -381,7 +381,7 @@ export interface Lamp {
   name: string;
   modelid: string;
   swversion: string;
-  pointsymbol?: any;
+  pointsymbol?: unknown;
 }
 
 export type HueStateValue = string | number | number[] | boolean;
@@ -398,22 +398,24 @@ export interface StateChangeConfirmation {
 export class HueBridgeStateChangeResponse {
   public changedStates: StateChangeConfirmation[];
 
-  constructor(response: any[]) {
-    let changedStates: StateChangeConfirmation[] = [];
-    for (let update of response) {
+  constructor(response: Record<string, unknown>[]) {
+    const changedStates: StateChangeConfirmation[] = [];
+    for (const update of response) {
       let changedState: StateChangeConfirmation;
-      for (let key in update.success) {
-        if (key.includes(`/lights/`) && key.includes(`/state/`)) {
-          changedState = {
-            attribute: key,
-            value: update.success[key]
-          };
+      if (update.success !== undefined && typeof update.success === 'object') {
+        for (const key in update.success) {
+          if (key.includes('/lights/') && key.includes('/state/')) {
+            changedState = {
+              attribute: key,
+              value: update.success[key],
+            };
+          }
         }
       }
       if (
-        changedState != undefined &&
-        changedState.attribute != undefined &&
-        changedState.value != undefined
+        changedState != null &&
+        changedState.attribute != null &&
+        changedState.value != null
       ) {
         changedStates.push(changedState);
       }
@@ -431,10 +433,12 @@ export interface GroupActionConfirmation {
 export class HueBridgeGroupActionResponse {
   public acknowledgedActions: GroupActionConfirmation[];
 
-  constructor(response: any[]) {
-    let acknowledgedActions: GroupActionConfirmation[] = [];
-    for (let update of response) {
-      acknowledgedActions.push(update.success);
+  constructor(response: Record<string, unknown>[]) {
+    const acknowledgedActions: GroupActionConfirmation[] = [];
+    for (const update of response) {
+      if (update.success && typeof update.success === 'object') {
+        acknowledgedActions.push(update.success as GroupActionConfirmation);
+      }
     }
 
     this.acknowledgedActions = acknowledgedActions;
@@ -476,8 +480,8 @@ export class XYPoint {
  * a traditional RGB color.
  */
 export class RGB {
-  private static MIN: number = 0;
-  private static MAX: number = 255;
+  private static MIN = 0;
+  private static MAX = 255;
 
   public r: number;
   public g: number;

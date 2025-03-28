@@ -1,52 +1,52 @@
-import {
+import type {
   GroupActionConfirmation,
   Lamp,
-  StateChangeConfirmation
+  StateChangeConfirmation,
 } from './hue-interfaces.js';
 
 export const state_off = (lightIndex: number): StateChangeConfirmation => {
   return {
     attribute: `/lights/${lightIndex}/state/on`,
-    value: false
+    value: false,
   };
 };
 export const state_on = (lightIndex: number): StateChangeConfirmation => {
   return {
     attribute: `/lights/${lightIndex}/state/on`,
-    value: true
+    value: true,
   };
 };
 
 export const group_off = (groupIndex: number): GroupActionConfirmation => {
   return {
     address: `/groups/${groupIndex}/action/on`,
-    value: false
+    value: false,
   };
 };
 export const group_on = (groupIndex: number): GroupActionConfirmation => {
   return {
     address: `/groups/${groupIndex}/action/on`,
-    value: true
+    value: true,
   };
 };
 export const color_red: number[] = [0.6484272236872118, 0.330856101472778];
-export const color_red_response: any = {
+export const color_red_response: Record<string, unknown> = {
   attribute: '/lights/1/state/xy',
-  value: color_red
+  value: color_red,
 };
 export const color_white: number[] = [0.33618074375880236, 0.3603696362840742];
-export const color_white_response: any = [
+export const color_white_response: Record<string, unknown>[] = [
   {
     success: {
       address: '/groups/0/action/xy',
-      value: [0.33618074375880236, 0.3603696362840742]
-    }
-  }
+      value: [0.33618074375880236, 0.3603696362840742],
+    },
+  },
 ];
-export const full_brightness: any = 254;
-export const no_brightness: any = 1;
+export const full_brightness = 254;
+export const no_brightness = 1;
 
-export const lamp_response: any = {
+export const lamp_response: Record<string, Lamp> = {
   '1': {
     lampIndex: 1,
     state: {
@@ -59,7 +59,7 @@ export const lamp_response: any = {
       alert: 'none',
       effect: 'none',
       colormode: 'xy',
-      reachable: true
+      reachable: true,
     },
     type: 'Extended color light',
     name: 'Hue Lamp 1',
@@ -73,8 +73,8 @@ export const lamp_response: any = {
       '5': 'none',
       '6': 'none',
       '7': 'none',
-      '8': 'none'
-    }
+      '8': 'none',
+    },
   },
   '2': {
     lampIndex: 2,
@@ -88,7 +88,7 @@ export const lamp_response: any = {
       alert: 'none',
       effect: 'none',
       colormode: 'hs',
-      reachable: false
+      reachable: false,
     },
     type: 'Extended color light',
     name: 'Hue Lamp 2',
@@ -102,9 +102,9 @@ export const lamp_response: any = {
       '5': 'none',
       '6': 'none',
       '7': 'none',
-      '8': 'none'
-    }
-  }
+      '8': 'none',
+    },
+  },
 };
 
 export const lamps: Lamp[] = [lamp_response['1'], lamp_response['2']];
