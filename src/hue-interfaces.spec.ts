@@ -1,9 +1,9 @@
 import test from 'ava';
 import {
+  clampToRange,
   HueUPNPResponse,
   RGB,
   XYPoint,
-  clampToRange,
 } from './hue-interfaces.js';
 
 const rgb: RGB = new RGB(...[1, 2, 256]);

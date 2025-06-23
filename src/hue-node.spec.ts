@@ -1,4 +1,5 @@
 import test from 'ava';
+import * as moxios from 'moxios';
 import {
   HueBridgeGroupActionResponse,
   HueBridgeStateChangeResponse,
@@ -7,8 +8,6 @@ import {
 } from './hue-interfaces.js';
 import { Hue } from './hue-node.js';
 import * as TestConstants from './hue-test-constants.js';
-
-import * as moxios from 'moxios';
 
 const ip = 'localhost';
 const key = 'testapp';

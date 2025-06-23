@@ -3,6 +3,7 @@
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import { HueColors } from './hue-colors.js';
 import {
+  clampToRange,
   HueBridge,
   HueBridgeGroupActionResponse,
   HueBridgeStateChangeResponse,
@@ -11,7 +12,6 @@ import {
   type Lamp,
   type States,
   XYPoint,
-  clampToRange,
 } from './hue-interfaces.js';
 
 const offState: States.PoweredState = { on: false };
