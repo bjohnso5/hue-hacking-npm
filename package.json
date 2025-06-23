@@ -30,7 +30,7 @@
   "author": "Bryan Johnson",
   "license": "MIT",
   "devDependencies": {
-    "@ava/typescript": "^5.0.0",
+    "@ava/typescript": "^6.0.0",
     "@biomejs/biome": "1.9.4",
     "@types/node": "^24.0.1",
     "ava": "^6.1.2",
