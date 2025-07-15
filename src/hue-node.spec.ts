@@ -118,7 +118,7 @@ test.serial.beforeEach(async (_) => {
   await hue.init();
 });
 
-test.serial.afterEach((t) => {
+test.serial.afterEach((_t) => {
   moxios.uninstall(hue.getHttp());
   moxios.uninstall(Hue.getHttp());
 });
