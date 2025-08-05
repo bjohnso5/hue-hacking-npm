@@ -8,12 +8,12 @@
     "url": "git+https://github.com/bjohnso5/hue-hacking-npm.git"
   },
   "scripts": {
-    "test": "tsc && ava",
-    "test-report": "tsc && ava --tap | tap-xunit",
+    "test": "tsgo && ava",
+    "test-report": "tsgo && ava --tap | tap-xunit",
     "clean": "rimraf dist coverage",
     "check": "biome check ./src && git diff --exit-code",
     "format": "biome check --write ./src",
-    "prepublish": "rimraf dist && tsc && ava && git clean -Xf"
+    "prepublish": "rimraf dist && tsgo && ava && git clean -Xf"
   },
   "keywords": [
     "Philips",
@@ -33,6 +33,7 @@
     "@ava/typescript": "^6.0.0",
     "@biomejs/biome": "2.1.3",
     "@types/node": "^24.0.1",
+    "@typescript/native-preview": "^7.0.0-dev.20250805.1",
     "ava": "^6.1.2",
     "moxios": "^0.4.0",
     "prettier": "^3.2.5",
