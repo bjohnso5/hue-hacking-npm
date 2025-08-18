@@ -34,7 +34,6 @@ workflows:
           matrix:
             parameters:
               node_version: # explicitly not supporting Node 21
-                - '20.19.2'
-                - '22.16.0'
-                - '23.11.1'
-                - '24.2.0'
+                - '20.19.4'
+                - 'lts'
+                - '24.6.0'
